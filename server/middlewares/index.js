@@ -18,6 +18,14 @@ class Middleware {
             })
         }
     }
+
+    static isOwner(req,res,next){
+
+    }
+
+    static isMember(req,res,next){
+        
+    }
 }
 
 module.exports = Middleware

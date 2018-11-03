@@ -33,7 +33,6 @@ class Controller {
             admin : req.userId,
         })
         .then((created)=>{
-            // res.status(201).json(created)
             Group.findOneAndUpdate({
                 _id : created._id
             },{
@@ -73,10 +72,16 @@ class Controller {
             group : req.body.group
         })
         .then((created)=>{
-            res.status(200).json(created)
+            res.status(200).json({
+                message : 'Invite success',
+                created : created
+            })
         })
         .catch((err)=>{
-            res.status(500).json('Invite error')
+            res.status(500).json({
+                error : err,
+                message : 'Invite error'
+            })
         })
     }
 
@@ -87,8 +92,8 @@ class Controller {
             status : true
         })
         .then((invitation)=>{
-            let invited = invitation.receiver
             let group = invitation.group
+            let invited = invitation.receiver
 
             Group.findOneAndUpdate({
                 _id : group
@@ -106,12 +111,14 @@ class Controller {
                 })
                 .catch((err)=>{
                     res.status(500).json({
+                        error : err,
                         message : 'failed in deleting invitation after accept'
                     })
                 })
             })
             .catch((err)=>{
                 res.status(500).json({
+                    error : err,
                     message : 'Error in adding member to group'
                 })
             })
@@ -119,6 +126,7 @@ class Controller {
         })
     }
 
+    // khusus admin group nantinya bisa mengeluarkan member
     static remove(req,res){
 
     }
