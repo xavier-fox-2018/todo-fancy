@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./src/style.css">
+  <title>To Do Fancy !</title>
+  
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-company-blue">
+  <a class="navbar-brand" href="#">ToDoFancy</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <button class="btn btn-success my-2 my-sm-0 mr-2 signUp" type="submit" href="#">Sign Up</button>
+      <button class="btn btn-success my-2 my-sm-0 signIn" type="submit" href="#">Log In</button>
+      <button class="btn btn-danger my-2 my-sm-0 signOut" type="submit" href="#">Log Out</button>
+    </form>
+
+  </div>
+  </nav>
+  <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="container">
+            <form id="update" >
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control"id="usernameUpdate" placeholder="Enter username">
+                  </div>
+                <div class="form-group">
+                  <label>Email address</label>
+                  <input type="email" class="form-control" id="emailUpdate" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" class="form-control" id="passwordUpdate" placeholder="Password">
+                </div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" href="#" class="btn btn-primary" id="clickUpdate">Submit</button>
+            </form>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-3">
+    <div class="row justify-content-center" id="errorLogin">
+        <div class="card bg-danger pl-2 pr-2 mb-4" id="displayError">
+            <div class="card-body text-white" id="msg">
+            </div>
+          </div>
+    </div>
+    <div class="row justify-content-center" id="success">
+        <div class="card bg-success pl-2 pr-2 mb-4" id="displaySuccess">
+            <div class="card-body text-white" id="msg-success">
+            </div>
+          </div>
+    </div>
+    <div id="mainContent">
+        <div class="row justify-content-center" id="loginPage">
+            <div class="jumbotron">
+                <h1 class="display-4 text-center" id="welcome">Welcome to ToDoFancy!</h1>
+                <p class="lead">We are a simple apps to make your daily schedules and notes, please login first too use our apps</p>
+                <p class="lead">or you can register by clicking <a href="#" class="signUp">here</a></p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8" id="formContainer">
+                        <form id="loginForm">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Email address</label>
+                              <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="Enter email">
+                              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputPassword1">Password</label>
+                              <input type="password" class="form-control" id="passwordLogin" placeholder="Password">
+                            </div>
+                            <button type="submit" href="#" class="btn btn-primary" id="clickLogin">Submit</button>
+                        </form>
+                        <form id="registerForm" >
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" class="form-control"id="usernameRegister" placeholder="Enter username">
+                              </div>
+                            <div class="form-group">
+                              <label>Email address</label>
+                              <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp" placeholder="Enter email">
+                              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-group">
+                              <label>Password</label>
+                              <input type="password" class="form-control" id="passwordRegister" placeholder="Password">
+                            </div>
+                            <button type="submit" href="#" class="btn btn-primary" id="clickRegister">Submit</button>
+                        </form>
+                    </div>
+                  </div>
+              </div>
+        </div>
+        <div class="row" id="userContent">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div  id="toDoForm">
+                        <h5 class="bg-primary text-white rounded text-center">Create Task</h3>
+                        <form>
+                            <div class="form-group">
+                              <label>Name</label>
+                              <input type="text" class="form-control form-control-sm" id="toDoName" placeholder="Task Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" class="form-control form-control-sm" id="toDoDesc" placeholder="Task Description">
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select class="form-control form-control-sm" id="toDoStatus">
+                                    <option value="doing">just started</option>
+                                    <option value="done">finish</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" class="form-control form-control-sm" id="toDoDate">
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="addTask">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-5" id="toDoList">
+                  
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="./src/main.js"></script>
+</body>
+</html>

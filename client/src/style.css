@@ -1,0 +1,24 @@
+.bg-company-blue {
+  background-color: #508ded!important;
+}
+
+#registerForm {
+  display: none
+}
+
+#displayError {
+  width: 55rem!important;
+  display: none
+}
+
+#displaySuccess {
+  width: 55rem!important;
+  display: none
+}
+
+#userContent {
+  display: none
+}
+.signOut {
+  display: none
+}
