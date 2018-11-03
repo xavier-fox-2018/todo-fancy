@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const invitationSchema = new Schema ({
+    group : {
+        type : Schema.Types.ObjectId,
+        ref : 'Group'
+    },
     sender : {
         type : Schema.Types.ObjectId,
         ref : 'User'
