@@ -12,7 +12,7 @@ const userRoutes = require('./routes/userRoute')
 const invitationRoutes = require('./routes/invitationRoute')
 
 const mongoose = require('mongoose')
-mongoose.connect(process.env.mlocal, { useNewUrlParser: true })
+mongoose.connect(process.env.mlocal, { useNewUrlParser: true, useFindAndModify : false })
 const db = mongoose.connection
 db.once('open', function() {
     console.log('mongo connected')
