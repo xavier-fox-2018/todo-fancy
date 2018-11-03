@@ -9,7 +9,6 @@ const routes = require('./routes')
 const groupRoutes = require('./routes/groupRoute')
 const todoRoutes = require('./routes/todoRoute')
 const userRoutes = require('./routes/userRoute')
-const invitationRoutes = require('./routes/invitationRoute')
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.mlocal, { useNewUrlParser: true, useFindAndModify : false })
@@ -30,7 +29,6 @@ app.use('/',routes)
 app.use('/groups',groupRoutes)
 app.use('/todos',todoRoutes)
 app.use('/users',userRoutes)
-app.use('/invitations',invitationRoutes)
 
 //port
 const port = 3000
