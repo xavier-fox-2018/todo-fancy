@@ -1,9 +1,7 @@
 const router = require('express').Router()
+const controller = require('../controllers/userController')
 
-router.get('/',(req,res)=>{
-    res.status(200).json({
-        message : 'halo dari user route'
-    })
-})
+router.post('/register',controller.register)
+router.post('/login',controller.login)
 
 module.exports = router
