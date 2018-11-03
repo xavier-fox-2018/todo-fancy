@@ -1,0 +1,39 @@
+// basic express
+const express = require('express')
+const app = express()
+var cors = require('cors')
+require('dotenv').config()
+
+// routes
+const routes = require('./routes')
+const groupRoutes = require('./routes/groupRoute')
+const todoRoutes = require('./routes/todoRoute')
+const userRoutes = require('./routes/userRoute')
+const invitationRoutes = require('./routes/invitationRoute')
+
+const mongoose = require('mongoose')
+mongoose.connect("mongodb://127.0.0.1:27017/sportify", { useNewUrlParser: true })
+const db = mongoose.connection
+db.once('open', function() {
+    console.log('mongo connected')
+})
+
+//cors
+app.use(cors())
+
+//parser
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
+
+//path
+app.use('/',routes)
+app.use('/groups',groupRoutes)
+app.use('/todos',todoRoutes)
+app.use('/users',userRoutes)
+app.use('/invitations',invitationRoutes)
+
+//port
+const port = 3000
+app.listen(port, function() {
+    console.log('listening on port', port)
+})
