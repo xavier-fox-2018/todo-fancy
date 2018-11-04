@@ -3,13 +3,25 @@ const User = require('../models/user')
 
 class Controller {
     static create(req,res){
-        let due_date = new Date('2011-04-11T10:20:30Z')
+        if(req.body.name.length < 1 || req.body.description.length < 1){
+            res.status(500).json({
+                message : 'Invalid Name / Description'
+            })
+        }
+
+        let due_date = new Date(req.body.due_date)
+        let today = new Date()
+        if(due_date < today){
+            res.status(500).json({
+                message : 'Invalid Date'
+            })
+        }
 
         Todo.create({
             name : req.body.name,
             description : req.body.description,
             author : req.userId, //dapet dari middleware
-            due_date : due_date //jangan lupa diganti nanti
+            due_date : due_date
         })
         .then((todo)=>{
             User.findOneAndUpdate({
@@ -129,12 +141,12 @@ class Controller {
         })
         .then((resp)=>{
             res.status(200).json({
-                message : 'task completed'
+                message : 'Task Completed'
             })
         })
         .catch((err)=>{
             res.status(500).json({
-                message : 'failed to complete task'
+                message : 'failed to complete task (error)'
             })
         })
         
@@ -148,12 +160,12 @@ class Controller {
         })
         .then((resp)=>{
             res.status(200).json({
-                message : 'Uncomplete task success'
+                message : 'Task Uncompleted'
             })
         })
         .catch((err)=>{
             res.status(500).json({
-                message : "Uncomplete task failed"
+                message : "Uncomplete task failed (error)"
             })
         })
 
