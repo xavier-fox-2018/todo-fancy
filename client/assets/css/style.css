@@ -1,0 +1,17 @@
+#div-todo-list, #div-detail-list {
+    font-family: 'Roboto Slab', serif;
+}
+
+#error-msg, #error-status {
+    display: none;
+}
+
+#todo-list h4:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#btn-edit-delete {
+    cursor: pointer;
+    font-size: 20px;
+}
