@@ -136,6 +136,8 @@ function getGroup(id){
         url : `${config.port}/groups/${id}`
     })
     .done(response=>{
+        $( '#add_group_task_button' ).val(`${response._id}`)
+
         $( '#invite_menu' ).empty()
         $( '#invite_menu' ).append(`
         <div class="search-control">
@@ -144,8 +146,34 @@ function getGroup(id){
         </div>
         `)
         $(' #selected_group_task_list ').empty()
-        $(' #selected_group_task_list ').text(JSON.stringify(response))
-        console.log(response)
+        
+        let taskList = response.todo_list.reverse()
+
+        for(let i = 0 ; i < taskList.length ; i ++){
+            let status = taskList[i].status
+            let option = `<div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="uncompleteTask('${taskList[i]._id}')"><i class="fa fa-times" aria-hidden="true"></i></div>`
+            let option2 = `<i class="fas fa-check"></i>`
+            if(status === false){
+                option2 = ''
+                option = `<div class="btn text-dark winter-neva-gradient rounded ml-2" style="cursor:pointer" onclick="completeTask('${taskList[i]._id}')"><i class="fa fa-check" aria-hidden="true"></i></div>`
+            }
+
+            $(' #selected_group_task_list ').append(`
+                <div class="col-sm-12 mb-3">
+                    <div class="row rounded z-depth-1 bg-white">
+                        <div class="col-sm-6 col-md-8">
+                            <h5 class="mt-1"><strong>${taskList[i].name}  ${option2}</strong><h5>
+                            <small><strong>Description : </strong>${taskList[i].description} <strong>|</strong> <strong>Due Date :</strong> ${taskList[i].due_date.slice(0,10)}</small>
+                        </div>
+                        <div class="col-sm-6 col-md-4" align="right">
+                            ${option}
+                            <div class="btn text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>
+                            <div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="deleteTask('${taskList[i]._id}')"><i class="fas fa-trash-alt"></i></div>
+                        </div>
+                    </div>
+                </div>
+            `)
+        }
     })
     .fail(err=>{
         console.log(err)
@@ -176,6 +204,37 @@ function addTask(){
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)
         // console.log(err)
+    })
+}
+
+function addGroupTask(){
+    let data = {
+        name : $(' #add_group_task_name ').val(),
+        description : $( '#add_group_task_description' ).val(),
+        due_date : $( '#add_group_task_due_date' ).val()
+    }
+
+    let groupId = $(' #add_group_task_button').val()
+
+    $.ajax({
+        method : 'POST',
+        url : `${config.port}/todos/group/${groupId}`,
+        headers : {
+            token : localStorage.getItem('token')
+        },
+        data
+    })
+    .done(response=>{
+        toastr["success"](`${response.message}`)
+        getGroupsData()
+        $(' #add_group_task_name ').val('')
+        $( '#add_group_task_description' ).val('')
+        $( '#add_group_task_due_date' ).val('')
+        console.log(response)
+    })
+    .fail(err=>{
+        console.log(err)
+        toastr["error"](`${err.responseJSON.message}`)
     })
 }
 

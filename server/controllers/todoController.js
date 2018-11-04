@@ -1,7 +1,63 @@
 const Todo = require('../models/todo')
 const User = require('../models/user')
+const Group = require('../models/group')
 
 class Controller {
+    static groupCreate(req,res){
+        console.log('masuk controller')
+        let due_date = new Date(req.body.due_date)
+        let today = new Date()
+
+        console.log(req.body)
+
+        if(req.body.name.length < 1 || req.body.description.length < 1){
+            console.log('kena 1')
+            res.status(500).json({
+                message : 'Invalid Name / Description'
+            })
+        }else if(due_date < today){
+            console.log('kena 2')
+            res.status(500).json({
+                message : 'Invalid Date'
+            })
+        }else{
+            console.log('masuk ke else')
+            Todo.create({
+                name : req.body.name,
+                description : req.body.description,
+                author : req.userId, //dapet dari middleware
+                due_date : due_date
+            })
+            .then((todo)=>{
+                Group.findOneAndUpdate({
+                    _id : req.params.id
+                },{
+                    $push : {
+                        todo_list : todo._id
+                    }
+                })
+                .then((updated)=>{
+                    // res.status(200).json(updated)
+                    
+                    res.status(201).json({
+                        message : "Add Task Success",
+                        data : todo
+                    })
+                })
+                .catch((err)=>{
+                    res.status(500).json({
+                        message : 'error in finding task creator from database'
+                    })
+                })
+            })
+            .catch((err)=>{
+                res.status(500).json({
+                    message : 'Create Task Failed'
+                })
+            })
+        } 
+    }
+
     static create(req,res){
         let due_date = new Date(req.body.due_date)
         let today = new Date()

@@ -19,6 +19,7 @@ class Controller {
         Group.findOne({
             _id : req.params.id
         })
+        .populate('todo_list')
         .then((group)=>{
             res.status(200).json(group)
         })
