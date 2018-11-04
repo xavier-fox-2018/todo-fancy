@@ -45,11 +45,11 @@ function getUserData(){
             $(' #personal_task_list ').append(`
                 <div class="col-sm-12 mb-3">
                     <div class="row rounded z-depth-1 bg-white">
-                        <div class="col-sm-8">
+                        <div class="col-8">
                             <h5 class="mt-1"><strong>${taskList[i].name}  ${option2}</strong><h5>
                             <small><strong>Description : </strong>${taskList[i].description} <strong>|</strong> <strong>Due Date :</strong> ${taskList[i].due_date.slice(0,10)}</small>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-4">
                             <div class="d-flex justify-content-end mt-2 mb-2">
                                 ${option}
                                 <div class="btn text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>

@@ -1,5 +1,7 @@
+const Mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const Todo = require('../models/todo')
 
 class Middleware {
     static authenticate(req,res,next){
@@ -41,7 +43,23 @@ class Middleware {
     }
 
     static isOwner(req,res,next){
-
+        Todo.findOne({
+            _id : req.params.id
+        })
+        .then((task)=>{
+            if(task.author._id.toString() === req.userId){
+                next()
+            }else{
+                res.status(500).json({
+                    message : `You can't modify other user task`
+                })
+            }
+        })
+        .catch((err)=>{
+            res.status(500).json({
+                message : `Middleware error, can't find specified task`
+            })
+        })
     }
 
     static isMember(req,res,next){
