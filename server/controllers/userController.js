@@ -3,6 +3,7 @@ const helper = require('../helper/helper.js');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Task = require('../models/task.js');
+const isAuthorized = require('../middlewares/isAuthorized.js');
 
 require('dotenv').config()
 
@@ -70,7 +71,7 @@ class userController {
 
   static createTask(req, res) {
     try {
-      const decoded = jwt.verify(req.body.token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);
           Task
             .create({
               taskName : req.body.taskName,
@@ -98,6 +99,7 @@ class userController {
         .find({
           userId : decoded.id
         })
+        .sort({taskDate: 'asc'})
         .then((data) => {
           const task = data.map(data => {
             const taskContent = {};
@@ -118,7 +120,7 @@ class userController {
   }
 
   static deleteTask(req, res) {
-    const decoded = jwt.verify(req.body.token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);
         Task
           .findOne({
             _id : req.params.id
@@ -162,6 +164,30 @@ class userController {
           reject(err)
         })
     }) 
+  }
+
+  static updateTask(req, res) {
+    try {
+          Task
+            .findById(req.body.taskId)
+            .then(data => {
+              data.taskName = req.body.name;
+              data.taskDescription = req.body.desc;
+              data.taskStatus = req.body.status;
+              data.taskDate = new Date(req.body.date);
+              return data.save();
+            })
+            .then((result) => {
+              res.status(200).json({
+                msg: 'data update success'
+              })
+            })
+            .catch(err => {
+              res.status(500).json(err)
+            })
+    } catch(err) {
+        res.status(500).json(err)
+    }
   }
 
 }
