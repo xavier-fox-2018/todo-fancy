@@ -14,9 +14,6 @@ const invitationSchema = new Schema ({
         type : Schema.Types.ObjectId,
         ref : 'User'
     },
-    message : {
-        type : String
-    },
     status : {
         type : Boolean,
         default : false

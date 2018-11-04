@@ -76,14 +76,10 @@ class Controller {
     }
 
     static invite(req,res){
-        if(req.body.message.length < 1){
-            req.body.message = `Let's join my group!`
-        }
 
         Invitation.create({
             sender : req.userId,
-            receiver : req.body.invite,
-            message : req.body.message,
+            receiver : req.body.invited,
             group : req.body.group
         })
         .then((created)=>{
@@ -138,6 +134,20 @@ class Controller {
                 })
             })
 
+        })
+    }
+
+    static myinvitation(req,res){
+        Invitation.find({
+            receiver : req.userId
+        })
+        .then((list)=>{
+            res.status(200).json(list)
+        })
+        .catch((err)=>{
+            res.status(500).json({
+                message : 'Error getting group invitation list'
+            })
         })
     }
 

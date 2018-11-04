@@ -65,6 +65,27 @@ class Middleware {
     static isMember(req,res,next){
         
     }
+
+    static findUser(req,res,next){
+        User.findOne({
+            email : req.body.invited
+        })
+        .then((user)=>{
+            if(user){
+                req.body.invited = user._id
+                next() 
+            }else{
+                res.status(500).json({
+                    message : 'Specified Email Not Found'
+                })
+            }
+        })
+        .catch((err)=>{
+            res.status(500).json({
+                message : `Middleware error`
+            })
+        })
+    }
 }
 
 module.exports = Middleware

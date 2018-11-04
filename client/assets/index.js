@@ -6,6 +6,7 @@ $( document ).ready(function(){
     checkToken()
     getUserData()
     getGroupsData()
+    getInboxData()
 })
 
 function checkToken(){
@@ -13,6 +14,22 @@ function checkToken(){
     if(!token){
         window.location = 'login.html'
     }
+}
+
+function getInboxData(){
+    $.ajax({
+        method : 'GET',
+        url : `${config.port}/groups/myinvitation`,
+        headers : {
+            token : localStorage.getItem('token')
+        }
+    })
+    .done(response=>{
+        $('#invitation_list').text(JSON.stringify(response))
+    })
+    .fail(err=>{
+        toastr["error"](`${err.responseJSON.message}`)
+    })
 }
 
 function logOut(){
@@ -41,20 +58,17 @@ function getUserData(){
                 option = `<div class="btn text-dark winter-neva-gradient rounded ml-2" style="cursor:pointer" onclick="completeTask('${taskList[i]._id}')"><i class="fa fa-check" aria-hidden="true"></i></div>`
             }
 
-
             $(' #personal_task_list ').append(`
                 <div class="col-sm-12 mb-3">
                     <div class="row rounded z-depth-1 bg-white">
-                        <div class="col-8">
+                        <div class="col-sm-6 col-md-8">
                             <h5 class="mt-1"><strong>${taskList[i].name}  ${option2}</strong><h5>
                             <small><strong>Description : </strong>${taskList[i].description} <strong>|</strong> <strong>Due Date :</strong> ${taskList[i].due_date.slice(0,10)}</small>
                         </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-end mt-2 mb-2">
-                                ${option}
-                                <div class="btn text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>
-                                <div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="deleteTask('${taskList[i]._id}')"><i class="fas fa-trash-alt"></i></div>
-                            </div>
+                        <div class="col-sm-6 col-md-4" align="right">
+                            ${option}
+                            <div class="btn text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>
+                            <div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="deleteTask('${taskList[i]._id}')"><i class="fas fa-trash-alt"></i></div>
                         </div>
                     </div>
                 </div>
@@ -75,20 +89,16 @@ function getGroupsData(){
         }
     })
     .done(response=>{
+        $('#group_list').empty()
         for(let i = 0 ; i < response.length ; i ++){
 
             $('#group_list').append(`
             <div class="col-sm-3">
                 <div class="card mb-4 default-color" style="cursor:pointer;" onclick="getGroup('${response[i]._id}')">
 
-                    <!-- Card content -->
                     <div class="card-body">
-
-                    <!-- Title -->
                     <h6 class="card-title text-center text-white">${response[i].name}</h6>
-
                     </div>
-                    <!-- Card content -->
 
                 </div>
             </div>
@@ -106,6 +116,15 @@ function getGroup(id){
         url : `${config.port}/groups/${id}`
     })
     .done(response=>{
+        $( '#invite_menu' ).empty()
+        $( '#invite_menu' ).append(`
+        <div class="search-control">
+            <input type="search" id="input_invite_email" name="q" placeholder="Input email..." aria-label="Search through site content">
+            <button class="btn btn-primary" onclick="sendInvitation('${response._id}')">Send Invitation to join <strong>${response.name}</strong> </button>
+        </div>
+        `)
+        $(' #selected_group_task_list ').empty()
+        $(' #selected_group_task_list ').text(JSON.stringify(response))
         console.log(response)
     })
     .fail(err=>{
@@ -229,6 +248,47 @@ function uncompleteTask(id){
     .done(response=>{
         toastr["success"](`${response.message}`)
         getUserData()
+    })
+    .fail(err=>{
+        toastr["error"](`${err.responseJSON.message}`)
+    })
+}
+
+function createGroup(){
+    $.ajax({
+        method : 'POST',
+        url : `${config.port}/groups`,
+        headers : {
+            token : localStorage.getItem('token')
+        },
+        data : {
+            name : $(' #add_group_name ').val()
+        }
+    })
+    .done(response=>{
+        toastr["success"](`${response.message}`)
+        getGroupsData()
+    })
+    .fail(err=>{
+        toastr["error"](`${err.responseJSON.message}`)
+    })
+}
+
+function sendInvitation(id){
+    $.ajax({
+        method : 'POST',
+        url : `${config.port}/groups/invite`,
+        headers : {
+            token : localStorage.getItem('token')
+        },
+        data : {
+            invited : $('#input_invite_email').val(),
+            group : id
+        }
+    })
+    .done(response=>{
+        toastr["success"](`${response.message}`)
+        getGroupsData()
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)
