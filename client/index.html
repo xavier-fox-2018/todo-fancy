@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo</title>
+    <!--BootStrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./main.css">
+    <link rel="stylesheet" type="text/css" href="./main.css">
+    <!--JQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
+        </script>
+    <!--Google-->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="1032017412855-ql6tievj34f1p5mpa4thb45l9vqigvu9.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white">
+        <a class="navbar-brand">ToDo</a>
+        <ul class="navbar-nav ml-auto">
+            <button id="signUp_btn" style="margin:5px">Sign Up</button>
+            <button id="signIn_btn" style="margin:5px">Sign In</button>
+            <div class="g-signin2" data-onsuccess="onSignIn" data-redirecturi="index.html"></div>
+        </ul>
+    </nav>
+
+    <!--Banner-->
+    <div style="text-align:center">
+        <img src="./assets/banner.jpg" class="img-fluid" alt="Banner" style="opacity:0.4">
+        <h1 class="centered">Welcome to ToDo</h1>
+        <h2 class="centered-bottom">Please Register/Sign in using the Button on the top Right</h2>
+
+        <!--Success Div-->
+        <div class="alert alert-success" style="display:none; padding: 5px">
+            <!--Message will show when an event successfully occur-->
+        </div>
+
+        <!--Error Div-->
+        <div class="alert alert-danger" style="display:none; padding: 5px">
+            <!--Error will show when an error occur-->
+        </div>
+
+    </div>
+    <!--SignUp-->
+    <div id="signUp_content" style="display:none; height: 400px; text-align: center">
+        <h1>Signup</h1>
+        Email: <br>
+        <input type="email" id="emailUp"> <br><br>
+        Password: <br>
+        <input type="password" id="passwordUp">
+        <br><br>
+        <input id="signup" type="submit" value="SignUp">
+    </div>
+
+    <!--SignIn-->
+    <div id="signIn_content" style="display:none;height: 400px; text-align: center">
+        <h1>Signin</h1>
+        Email:<br>
+        <input type="email" id="emailIn"><br><br>
+        Password:<br>
+        <input type="password" id="passwordIn">
+        <br><br>
+        <input id="signin" type="submit" value="SignIn">
+    </div>
+
+    <script>
+        //Google Sign in
+        function onSignIn(googleUser) {
+            let google_token = googleUser.getAuthResponse().id_token;
+            $.ajax({
+                method: "POST",
+                url: 'http://localhost:3000/todo/google_signin',
+                data: { google_token: google_token }
+            })
+                .done(function (response) {
+                    localStorage.setItem('token', response.token)
+                    location.href = "todo.html"
+                })
+                .fail(function (error) {
+                    showError(error)
+                })
+        };
+        //signup button
+        $("#signUp_btn").click(function () {
+            $("#signIn_content").hide()
+            $("#signUp_content").show()
+            $('html, body').animate({
+                scrollTop: $("#signUp_content").offset().top
+            }, 1000);
+        })
+
+        //signup content
+        $("#signup").click(function () {
+            let email = $("#emailUp").val()
+            let password = $("#passwordUp").val()
+            $.ajax({
+                method: "POST",
+                url: `http://localhost:3000/todo/signup`,
+                data: {
+                    email: email,
+                    password: password
+                }
+            })
+                .done(function (response) {
+                    showSuccess(response)
+                    $("#signUp_content").hide()
+                    $("#signIn_content").show() 
+                })
+                .fail(function (error) {
+                    showError(error)
+                })
+        })
+        //signin button
+        $("#signIn_btn").click(function () {
+            $("#signUp_content").hide()
+            $("#signIn_content").show()
+            $('html, body').animate({
+                scrollTop: $("#signIn_content").offset().top
+            }, 1000);
+        })
+
+        //signin content
+        $("#signin").click(function () {
+            let email = $("#emailIn").val()
+            let password = $("#passwordIn").val()
+            $.ajax({
+                method: "POST",
+                url: `http://localhost:3000/todo/signin`,
+                data: {
+                    email: email,
+                    password: password
+                }
+            })
+                .done(function (response) {
+                    localStorage.setItem('token', response.token)
+                    location.href = "todo.html"
+                })
+                .fail(function (error) {
+                    showError(error)
+                })
+        })
+        function showError(error) {
+            $(".alert-success").hide()
+            $(".alert-danger").text(error.responseJSON.message)
+            $(".alert-danger").show()
+            console.log(error)
+        }
+        function showSuccess(response) {
+            $(".alert-danger").hide()
+            $(".alert-success").html(response.message + '<br>' + 'Please Sign in to Continue')
+            $(".alert-success").show()
+        }
+    </script>
+
+    <!--BootStrap JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

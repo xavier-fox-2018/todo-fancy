@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo</title>
+    <!--BootStrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./main.css">
+    <!--JQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
+        </script>
+    <!--Google-->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="1032017412855-ql6tievj34f1p5mpa4thb45l9vqigvu9.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
+<body style="display:none">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white">
+        <a class="navbar-brand" style="font-weight:800">ToDo</a>
+        Welcome Back: &nbsp; <a id="loggedUser"></a>
+        <ul class="navbar-nav ml-auto">
+            <div class="g-signin2" data-onsuccess="onSignIn" data-redirecturi="index.html" style="display:none"></div>
+            <button id="signOut" onclick="signOut()">Sign Out</button>
+        </ul>
+    </nav>
+
+    <!--Success Div-->
+    <div class="alert alert-success" style="display:none; padding: 5px">
+        <!--Message will show when an event successfully occur-->
+    </div>
+
+    <!--Error Div-->
+    <div class="alert alert-danger" style="display:none; padding: 5px">
+        <!--Error will show when an error occur-->
+    </div>
+
+    <div id="title">
+        <h1 style="margin:10px">To Do List</h1>
+        <button onclick="add()">Add Task</button>
+        <br><br>
+    </div>
+
+    <!--Body Content Div-->
+    <div id="content">
+        <table id="table_task" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th id="name" class="category" onclick="sort(id)">Task Name</th>
+                    <th id="description" class="category" onclick="sort(id)">Description</th>
+                    <th id="status" class="category" onclick="sort(id)">Status</th>
+                    <th id="created_date" class="category" onclick="sort(id)">Created Date</th>
+                    <th id="due_date" class="category" onclick="sort(id)">Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-striped">
+                <!--Added via script when document is loaded-->
+            </tbody>
+        </table>
+    </div>
+
+    <!--Add: CRUD-->
+    <div id="addModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <!--Error Div-->
+            <div id="add_error" class="alert alert-danger" style="display:none; padding: 5px">
+                <!--Error will show when an error occur-->
+            </div>
+            <h1>Add Task</h1>
+            Name:<br>
+            <input class="add-input" type="text" id="nameAdd" placeholder="Task Name" required><br><br>
+            Description: <br>
+            <textarea class="add-input" rows="10" id="descriptionAdd" placeholder="Task Description" required></textarea><br><br>
+            Due Date:<br>
+            <input class="add-input" type="date" id="due_dateAdd" required><br>
+            <!--To store user ID which will be used in server-->
+            <input style="display:none" type="text" id="user" value="" placeholder="ID will be filled automatically when submitted"
+                readonly>
+            <br>
+            <input id="add" type="submit" value="Add ToDo">
+        </div>
+    </div>
+
+    <!--Edit: CRUD-->
+    <div id="editModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <!--Error Div-->
+            <div id="edit_error" class="alert alert-danger" style="display:none; padding: 5px">
+                <!--Error will show when an error occur-->
+            </div>
+            <h1>Edit Task</h1>
+            Name:<br>
+            <input class="edit-input" type="text" id="name_edit" required><br><br>
+            Description: <br>
+            <textarea class="edit-input" rows="10" id="description_edit" required></textarea><br><br>
+            <!--To store task ID which will be used in server-->
+            <input class="edit-input" style="display:none" type="text" id="id_edit" placeholder="Task Id" readonly>
+            Status:<br>
+            <input style="width:20px" type="checkbox" id="status_edit" required><br>
+            <br>
+            <input id="edit" type="submit" value="Edit Task">
+        </div>
+    </div>
+
+    <script>
+        //Load all task when loaded
+        $(document).ready(function () {
+            let token = localStorage.getItem("token")
+            //if there is token AKA user signed in
+            if (token) {
+                $('body').show();
+                $.ajax({
+                    method: "POST",
+                    url: `http://localhost:3000/todo/decode`,
+                    data: {
+                        token: token,
+                    }
+                })
+                    .done(function (response) {
+                        tableContent(response, '')
+                    })
+                    .fail(function (error) {
+                        $("#error").text(error.responseJSON.message)
+                        $("#error").show()
+                    })
+                //if there is no token AKA user NOT signed in
+            } else {
+                window.location = 'index.html'
+            }
+        })
+
+        // Show add Modal
+        function add(id, name, description) {
+            let modal = document.getElementById('addModal')
+            let span = document.getElementsByClassName("close")[0];
+            //show modal
+            modal.style.display = "block"
+            //close modal when 'x' button is clicked
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            //close modal when outside area is clicked
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        //CRUD - ADD
+        $("#add").click(function () {
+            let token = localStorage.getItem("token")
+            $.ajax({
+                method: "POST",
+                url: `http://localhost:3000/todo/decode`,
+                data: {
+                    token: token,
+                }
+            })
+                .done(function (response) {
+                    document.getElementById("user").value = response.data.id
+                    //POST it to server
+                    $.ajax({
+                        method: "POST",
+                        url: `http://localhost:3000/todo/add`,
+                        data: {
+                            name: $("#nameAdd").val(),
+                            description: $("#descriptionAdd").val(),
+                            due_date: $("#due_dateAdd").val(),
+                            user: $("#user").val()
+                        }
+                    })
+                        .done(function (data) {
+                            location.reload()
+                        })
+                        .fail(function (error) {
+                            $("#add_error").text(error.responseJSON.message)
+                            $("#add_error").show()
+                            $('html, #addModal').animate({
+                                scrollTop: $("#addModal").offset().top
+                            }, 1000);
+                        })
+
+                })
+                .fail(function (error) {
+                    $("#add_error").text("'Please sign in first to receive the token'")
+                    $("#add_error").show()
+                    $('html, #addModal').animate({
+                        scrollTop: $("#addModal").offset().top
+                    }, 1000);
+                })
+        })
+
+        // Show edit Modal
+        function edit(id, name, description) {
+            let modal = document.getElementById('editModal')
+            let span = document.getElementsByClassName("close")[1];
+            document.getElementById("id_edit").value = id
+            document.getElementById("name_edit").value = name
+            document.getElementById("description_edit").value = description
+            //show modal
+            modal.style.display = "block"
+            //close modal when 'x' button is clicked
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            //close modal when outside area is clicked
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+        //edit database
+        $("#edit").click(function () {
+            $.ajax({
+                method: "PUT",
+                url: `http://localhost:3000/todo/edit`,
+                data: {
+                    id: $("#id_edit").val(),
+                    name: $("#name_edit").val(),
+                    description: $("#description_edit").val(),
+                    status: document.getElementById("status_edit").checked
+                }
+            })
+                .done(function (response) {
+                    document.getElementById('editModal').style.display = "none"
+                    location.reload()
+                })
+                .fail(function (error) {
+                    $("#edit_error").text(error.responseJSON.message)
+                    $("#edit_error").show()
+                    $('html, #editModal').animate({
+                        scrollTop: $("#editModal").offset().top
+                    }, 1000);
+                })
+        })
+        //delete task
+        function remove(id) {
+            $.ajax({
+                method: "DELETE",
+                url: `http://localhost:3000/todo/delete`,
+                data: {
+                    id: id
+                }
+            })
+                .done(function (response) {
+                    location.reload()
+                })
+                .fail(function (error) {
+                    $("#error").text(error.responseJSON.message)
+                    $("#error").show()
+                })
+        }
+        //Sign out
+        function signOut() {
+            let auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                localStorage.removeItem('token');
+                location.href = "index.html"
+            });
+        }
+        function sort(id) {
+            let token = localStorage.getItem("token")
+            //if there is token AKA user signed in
+            if (token) {
+                $('body').show();
+                $.ajax({
+                    method: "POST",
+                    url: `http://localhost:3000/todo/decode`,
+                    data: {
+                        token: token,
+                    }
+                })
+                    .done(function (response) {
+                        tableContent(response, id)
+                    })
+                    .fail(function (error) {
+                        $("#error").text(error.responseJSON.message)
+                        $("#error").show()
+                    })
+                //if there is no token AKA user NOT signed in
+            } else {
+                window.location = 'index.html'
+            }
+        }
+        //re usable functions
+        //1. Show table conetn
+        function tableContent(response, id) {
+            //get data based on user
+            let loggedUser = response.data.email.split("@")
+            $("#loggedUser").text(loggedUser[0])
+            $.ajax({
+                method: "POST",
+                url: `http://localhost:3000/todo/list/${id}`,
+                data: response.data.id
+            })
+                .done(response => {
+                    $("#table_task tbody").text("")
+                    $.each(response.tasks, function (data, content) {
+                        //make table row red if the task has already expired
+                        if (new Date() > new Date(content.due_date) && content.status === 'Pending') {
+                            $("#table_task tbody").append(`
+                                        <tr class = table-danger>
+                                        <td>${content.name}</td>
+                                        <td>${content.description}</td>
+                                        <td>${content.status}</td>
+                                        <td>${content.created_date}</td>
+                                        <td>${content.due_date}</td>
+                                        <td>
+                                            <button onclick="edit('${content._id}', '${content.name}', '${content.description}')">Edit</button>
+                                            <button onclick="remove('${content._id}')">Delete</button>
+                                        </td>
+                                    </tr>`)
+                            //make table row green if task is "Done"
+                        } else if (content.status === 'Done') {
+                            $("#table_task tbody").append(`
+                                        <tr class = table-success>
+                                        <td>${content.name}</td>
+                                        <td>${content.description}</td>
+                                        <td>${content.status}</td>
+                                        <td>${content.created_date}</td>
+                                        <td>${content.due_date}</td>
+                                        <td>
+                                            <button onclick="edit('${content._id}', '${content.name}', '${content.description}')">Edit</button>
+                                            <button onclick="remove('${content._id}')">Delete</button>
+                                        </td>
+                                    </tr>`)
+                        } else {
+                            $("#table_task tbody").append(`
+                                        <tr class = task_list>
+                                        <td>${content.name}</td>
+                                        <td>${content.description}</td>
+                                        <td>${content.status}</td>
+                                        <td>${content.created_date}</td>
+                                        <td>${content.due_date}</td>
+                                        <td>
+                                            <button onclick="edit('${content._id}', '${content.name}', '${content.description}')">Edit</button>
+                                            <button onclick="remove('${content._id}')">Delete</button>
+                                        </td>
+                                    </tr>`)
+                        }
+                    })
+                })
+                .fail(function (error) {
+                    $("#error").text(error.responseJSON.message)
+                    $("#error").show()
+                })
+        }
+    </script>
+
+    <!--BootStrap JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
