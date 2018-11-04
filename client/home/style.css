@@ -1,0 +1,16 @@
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.bg {
+    /* The image used */
+    background-image: url('http://orig00.deviantart.net/acb6/f/2013/303/7/6/gif___running_through_the_rain_by_turst67-d6scius.gif');
+    background-size: cover;
+    min-height: 666px
+}
+
+#mainTasks{
+    background-color: #c5d0e2;
+    opacity: 0.8;
+}

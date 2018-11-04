@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-signin-client_id" content="745161162459-ui6uqk75gc38kat79u8t2p1u1pp04r36.apps.googleusercontent.com">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <title>Todo fancy</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+    </style>
+</head>
+
+<body background="../assets/">
+    <div class="bg">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+
+                    <li class="nav-item active" id="Tasks">
+                        <a class="nav-link" href="" >Tasks
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item"id="complete-task">
+                        <a class="nav-link " href="" >Completed</a>
+                    </li>
+
+                    <li class="nav-item" id="incomplete-task">
+                        <a class="nav-link " href="" >Incompleted</a>
+                    </li>
+                </ul>
+                <img style="width: 30px" class="navbar-brand" id="userPhoto" src="" alt="">
+                <a class="navbar-brand" id="userName" href="#"></a>
+                <a class="nav-link" id="logOut" href="">Logout</a>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <h1 style="text-align: center;">TODO'S</h1>
+            <div class="row">
+                <div class="col-md-8">
+
+                </div>
+                <div class="col-md-2">
+                    <button data-toggle="modal" id="createBtn" data-target="#basicModal" href="" class="btn btn-primary namePlayer" role="button"
+                        style="position: relative; left:105px ;">create new task</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class=" col-md-8" id="mainTasks">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <h1 style="text-align: center;">You dont have todo yet</h1>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">testing</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="createTask">
+                        <label for="name">task name</label>
+                        <input type="text" name="name" id="formname">
+                        <br>
+                        <label for="description">description</label>
+                        <input type="text" name="description" id="formdescription">
+                        <br>
+                        <label for="status">status</label>
+                        <select name="status" id="formstatus">
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                        <br>
+                        <label for="dueDate">due date</label>
+                        <input type="date" name="dueDate" id="formduedate">
+                        <br>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="submitTask" type="submit" data-dismiss="modal">submit</button>
+                    <button id="updateTask" data-dismiss="modal" style="display: none">update</button>
+                    <button type="button" id="closebtn" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- end of modal -->
+
+
+
+
+
+
+
+    <div class="form__field g-signin2" style="display: none" data-onsuccess="onSignIn" style="width: 320px;">
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+        <script>
+            function login() {
+                window.location.href = '../login1'
+            }
+
+            // FIRST RENDER DATA
+            if (localStorage.getItem('token') == undefined) {
+                login()
+            } else {
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/user-data",
+                    data: { token: localStorage.getItem('token') }
+                })
+                    .done(data => {
+                        var userData = data
+                        let template = ''
+                        $('#userName').text(data.name)
+                        $('#userPhoto').attr('src', data.photo)
+                        $.each(data.todo, function (index, value) {
+                            if (value.isComplete == true) {
+                                template += `<div class="row">
+                            <div class="col-md-4">
+                                <h1><del>${value.name}</del></h1>
+                            </div>
+                            <div class="col-md-4">
+                                <h1>${value.status}</h1>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="../assets/edit.png" style="cursor: pointer;" id="${value.name}" class="taskUpdate " alt="edit" data-toggle="modal" data-target="#basicModal">
+                                <img src="../assets/trash.png" style="cursor: pointer;" id="${value.name}" class= "taskDelete " alt="edit">
+                                <img src="../assets/checked.png" style="cursor: pointer;" id="${value.name}" class= "taskComplete " alt="edit">
+                            </div>
+                        </div>`} else {
+                                template += `<div class="row">
+                            <div class="col-md-4">
+                                <h1>${value.name}</h1>
+                            </div>
+                            <div class="col-md-4">
+                                <h1>${value.status}</h1>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="../assets/edit.png" style="cursor: pointer;" id="${value.name}" class="taskUpdate " alt="edit" data-toggle="modal" data-target="#basicModal">
+                                <img src="../assets/trash.png" style="cursor: pointer;" id="${value.name}" class= "taskDelete " alt="edit">
+                                <img src="../assets/checked.png" style="cursor: pointer;" id="${value.name}" class= "taskComplete " alt="edit">
+                            </div>
+                        </div>`
+                            }
+                        })
+                        $('#mainTasks').html(template)
+
+                        // DELETE TASK
+                        $('.taskDelete').click(function () {
+                            let value = $(this).attr('id')
+                            $.ajax({
+                                method: "DELETE",
+                                url: "http://localhost:3000/users/delete-task",
+                                data: {
+                                    token: localStorage.getItem('token'),
+                                    value: value
+                                }
+                            })
+                                .done(data => {
+                                    console.log(data)
+                                    window.location.href = '/home'
+                                })
+                                .fail(err => {
+                                    console.log(err)
+                                })
+                        })
+
+                        // UPDATE TASK
+                        $('.taskUpdate').click(function (event) {
+                            event.preventDefault()
+                            let taskWillUpdate = $(this).attr('id')
+                            let filtered = userData.todo.filter(function (value, index, arr) {
+                                return value.name == taskWillUpdate
+                            })
+                            // console.log(filtered)
+                            $('#formname').val(filtered[0].name)
+                            $('#formdescription').val(filtered[0].descrpition)
+                            $('#formstatus').val(filtered[0].status)
+                            $('#formduedate').val(filtered[0].dueDate)
+                            $('#myModalLabel').text('Update Task')
+                            $('#submitTask').hide()
+                            $('#updateTask').show()
+
+                            $('#updateTask').click(function (event) {
+                                event.preventDefault()
+                                let inputTask = {
+                                    token: localStorage.getItem('token'),
+                                    willUpdated: taskWillUpdate,
+                                    name: $('#formname').val(),
+                                    description: $('#formdescription').val(),
+                                    status: $('#formstatus').val(),
+                                    dueDate: $('#formduedate').val()
+                                }
+                                $.ajax({
+                                    method: "POST",
+                                    url: "http://localhost:3000/users/update-task",
+                                    data: inputTask
+                                })
+                                    .done(data => {
+                                        window.location.href = '/home'
+                                    })
+                                    .fail(err => {
+                                        console.log(err)
+                                    })
+                            })
+                        })
+
+                        //COMPLETE TASK
+                        $('.taskComplete').click(function () {
+                            let taskComplete = $(this).attr('id')
+                            $.ajax({
+                                method: "PUT",
+                                url: "http://localhost:3000/users/complete-task",
+                                data: {
+                                    token: localStorage.getItem('token'),
+                                    val: taskComplete
+                                }
+                            })
+                                .done(data => {
+                                    window.location.href = '/home'
+                                    console.log(data)
+                                })
+                                .fail(err => {
+                                    console.log(err)
+                                })
+                        })
+                    })
+                    .fail(err => {
+                        alert('you must login first')
+                        login()
+                    })
+
+            }
+
+            //SUBMIT NEW TASK
+            $('#createBtn').click(function () {
+                $('#myModalLabel').text('Create new task')
+                $('#submitTask').show()
+                $('#updateTask').hide()
+                $('#formname').val('')
+                $('#formdescription').val('')
+                $('#formstatus').val('')
+                $('#formduedate').val('')
+            })
+            $('#submitTask').click(function (event) {
+                event.preventDefault()
+                let inputTask = {
+                    token: localStorage.getItem('token'),
+                    name: $('#formname').val(),
+                    description: $('#formdescription').val(),
+                    status: $('#formstatus').val(),
+                    dueDate: $('#formduedate').val()
+                }
+
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/create-task",
+                    data: inputTask
+                })
+                    .done(data => {
+                        window.location.href = '/home'
+                        console.log(data)
+                    })
+                    .fail(err => {
+                        console.log(err)
+                    })
+            })
+
+            //LOGOUT
+            $('#logOut').click(function () {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                });
+                window.location.href = '../login1'
+                localStorage.removeItem('token')
+            })
+
+            //list complete task
+            $('#complete-task').click(function (event) {
+                event.preventDefault()
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/list-complete",
+                    data: {
+                        token: localStorage.getItem('token')
+                    }
+                })
+                    .done(data => {
+                        let template = ''
+                        $.each(data.todo, function (index, value) {
+                            template += `<div class="row">
+                            <div class="col-md-4">
+                                <h1>${value.name}</h1>
+                            </div>
+                            <div class="col-md-4">
+                                <h1>${value.status}</h1>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="../assets/edit.png" style="cursor: pointer;" id="${value.name}" class="taskUpdate " alt="edit" data-toggle="modal" data-target="#basicModal">
+                                <img src="../assets/trash.png" style="cursor: pointer;" id="${value.name}" class= "taskDelete " alt="edit">
+                                <img src="../assets/checked.png" style="cursor: pointer;" id="${value.name}" class= "taskComplete " alt="edit">
+                            </div>
+                        </div>`
+                        })
+                        $('#mainTasks').html(template)
+                        $('#complete-task').addClass('active')
+                        $('#incomplete-task').removeClass('active')
+                        $('#Tasks').removeClass('active')
+                    })
+                    .fail(err => {
+                        console.log(err)
+                    })
+            })
+
+             $('#incomplete-task').click(function (event) {
+                event.preventDefault()
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/list-incomplete",
+                    data: {
+                        token: localStorage.getItem('token')
+                    }
+                })
+                    .done(data => {
+                        let template = ''
+                        $.each(data.todo, function (index, value) {
+                            template += `<div class="row">
+                            <div class="col-md-4">
+                                <h1>${value.name}</h1>
+                            </div>
+                            <div class="col-md-4">
+                                <h1>${value.status}</h1>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="../assets/edit.png" style="cursor: pointer;" id="${value.name}" class="taskUpdate " alt="edit" data-toggle="modal" data-target="#basicModal">
+                                <img src="../assets/trash.png" style="cursor: pointer;" id="${value.name}" class= "taskDelete " alt="edit">
+                                <img src="../assets/checked.png" style="cursor: pointer;" id="${value.name}" class= "taskComplete " alt="edit">
+                            </div>
+                        </div>`
+                        })
+                        $('#mainTasks').html(template)
+                        $('#incomplete-task').addClass('active')
+                        $('#complete-task').removeClass('active')
+                        $('#Tasks').removeClass('active')
+                    })
+                    .fail(err => {
+                        console.log(err)
+                    })
+            })
+
+
+        </script>
+</body>
+
+</html>
