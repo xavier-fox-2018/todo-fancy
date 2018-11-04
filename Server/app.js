@@ -5,9 +5,9 @@ require('dotenv').config()
 const app = express()
 const indexRouter   = require('./routers/index')
 const userRouter = require('./routers/user')
+const todoRouter = require('./routers/todo')
 
-mongoose.connect(process.env.DB_MONGO, { useNewUrlParser: true });
-// mongoose.connect(URL_MONGO_MLAB , { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/todo_fancy', { useNewUrlParser: true });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -21,6 +21,7 @@ app.use(express.json())
 
 app.use('/', indexRouter)
 app.use('/user', userRouter)
+app.use('/todo', todoRouter)
 
 const port = process.env.PORT || 3000
 app.listen(port, function(){

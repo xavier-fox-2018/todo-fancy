@@ -1,5 +1,7 @@
 const User = require('../models/user')
 const bcryptPassword = require('../helper/bcryptPass')
+const gSignin = require('../helper/gSignIn')
+const Account = require('../models/user')
 
 module.exports = {
     insert: (req,res) => {
@@ -114,5 +116,6 @@ module.exports = {
                 message: err.message
             })
         })
-    }
+    },
+    gSignin,
 }

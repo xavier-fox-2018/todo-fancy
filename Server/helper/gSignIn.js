@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client("878020450263-f2e58og55rps08k2pfmbt3f8clak0909.apps.googleusercontent.com");
-const accountUser = require('../models/accounts')
+const client = new OAuth2Client("534193051040-q1tah2abccu2dtq50nop9oq58pp5t5ih.apps.googleusercontent.com");
+const accountUser = require('../models/user')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
@@ -10,7 +10,7 @@ const gSignin = function (req,res) {
     console.log(req.body);
     console.log("masuk");
     let token = req.body.gToken // ini dari req.body {token: valueToken}
-    let clientId = "878020450263-f2e58og55rps08k2pfmbt3f8clak0909.apps.googleusercontent.com"
+    let clientId = "534193051040-q1tah2abccu2dtq50nop9oq58pp5t5ih.apps.googleusercontent.com"
     client.verifyIdToken({
         idToken : token,
         audience: clientId
