@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- google login -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="1066877826242-jhkojtrq07kvjg0f77acfdebck52rn4s.apps.googleusercontent.com">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!-- semantic ui -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+    <link rel="stylesheet" href="css/home.css">
+    <title>Welcome :)</title>
+</head>
+
+<body>
+    <div class="ui grid">
+        <div class="ui one wide column"></div>
+        <div class="ui seven wide column" style="border:1px solid grey; margin-top:100px; min-height: 800px; background-color: rgba(240, 248, 255, 0.411)">
+
+            <div class="ui top attached tabular menu">
+                <a class="item active header" data-tab="first">Individu</a>
+                <a class="item header " data-tab="second">Group</a>
+            </div>
+
+            <div class="ui bottom attached tab segment active" data-tab="first">
+                <div class="ui fluid large button" onclick="modalAddTask()"><i class="ui plus icon"></i> Add Task</div>
+                <div id="listTask">
+                    <!-- isi dari list task disini -->
+                </div>
+            </div>
+
+            <div class="ui bottom attached tab segment " data-tab="second">
+                <div class="ui fluid large button" style="margin-bottom:10px" onclick="getCreategroup()">
+                    <i class="ui plus icon"></i>
+                    Create Group
+                </div>
+                <div id="groups" class="ui styled accordion">
+                    <!-- isi conten group -->
+                </div>
+            </div>
+
+        </div>
+
+        <div class="ui eight wide column">
+            <div class="ui grid">
+                <div class="ui two wide column right floated" >
+                    <!-- <a href="#" onclick="signOut()">logout</a> -->
+                    <button class="ui button" onclick="signOut()" style=" margin:30px -30px;">Logout</button>
+                </div>
+            </div>
+
+            <div class="ui centered grid">
+                <div class="ui eight wide column center aligned" style="margin-top: 150px; margin-bottom: -100px">
+                    <div class="ui">
+                        <p style="font-size: 80px; color: white" id="time" style="margin:-100px; padding:0px;"></p>
+                    </div>
+                    <div class="ui">
+                        <p style="font-size: 20px; color: white" id="date" style="margin:-100px; padding:0px;"></p>
+                    </div>
+                    <div class="ui">
+                        <h1 style="font-size: 50px; color: white" id="greeting"></h1>
+                        <h5 style="font-size: 30px; color: white" id="userNameLogin"></h5>
+                    </div>
+                </div>
+                <div id="quote" class="ui" style="margin:250px 0px 0px 0px; padding: 20px"">
+                    <p id="quoteQuote" style="color: white; font-size: 19px;" ></p>
+                    <p id="quoteAuthor" style="color: white; font-size: 15px; margin:5px 0px 0px 0px;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- modal add / edit task -->
+    <div id="formAddTask" class="ui small modal create">
+        <div class="header" id="modalTitle">
+            <!-- Title -->
+        </div>
+        <div class="ui form" style="padding: 20px;">
+            <div class="one field">
+                <div class="field">
+                    <label>Title</label>
+                    <div class="ui input left icon">
+                        <i class="pencil icon"></i>
+                        <input type="text" id="addTitle" placeholder="Title">
+                    </div>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Priority</label>
+                    <div class="ui input left icon">
+                        <i class="star icon"></i>
+                        <select class="ui fluid dropdown" id="addPriority">
+                            <option value=0>Default</option>
+                            <option value=1>Priority</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Due date</label>
+                    <div class="ui calendar">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="date" id="addDueDate" placeholder="Date">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="one field">
+                <div class="field">
+                    <label>Location</label>
+                    <div class="ui input left icon">
+                        <i class="location arrow icon"></i>
+                        <input type="text" id="addLocation" placeholder="Input location if needed">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label> Description</label>
+                <div class="ui textarea">
+                    <textarea id="addDescription" cols="30" rows="5" placeholder="Description"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="actions" id="buttonModal">
+            <!-- button -->
+        </div>
+    </div>
+
+    <!-- modal detail -->
+    <div class="ui small modal" id="detailTask">
+        <div class="header">
+            <i class="tasks icon"></i>
+            <span id="detailTitle" style="font-size:28px"></span>
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="ui three fields">
+                    <div class="ui field">
+                        <div>Priority : <span id="detailPriority"></span></div>
+                    </div>
+                    <div class="ui field">
+                        <div>Due Date : <span id="detailDueDate"></span></div>
+                    </div>
+                    <div class="ui field">
+                        <div>Creater : <span id="detailOwner"></span></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="ui three fields">
+                    <div class="ui field">
+                        <div>Status : <span id="detailStatus"></span></div>
+                    </div>
+                    <div class="ui field" id="detailCompletedDate">
+                        <!-- klo udh complete tampil completedDate dsini -->
+                    </div>
+                    <div class="ui field" id="detailCompletedBy">
+                        <!-- klo udh complete tampil completedBy dsini -->
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="ui message">
+                <h3>description :</h3>
+                <p id="detailDescription"></p>
+            </div>
+            <div class="ui one field">
+                Location : <span id="detailLocation"></span>
+            </div>
+            <div class="ui one field" id="beforeMap">
+
+            </div>
+        </div>
+        <div id="btnDetail" class="actions">
+
+        </div>
+    </div>
+
+    <!-- modal create Group -->
+    <div class="ui small modal" id="modalcreategroup">
+        <div class="header">
+            <i class="tasks icon"></i>
+            <span id="detailGroupTitle" style="font-size:20px">Create New Group</span>
+        </div>
+        <div class="ui form" style="padding: 20px;">
+            <div class="one field">
+                <div class="field">
+                    <label>Group Name</label>
+                    <div class="ui input left icon">
+                        <i class="pencil icon"></i>
+                        <input type="text" id="createGroupName" placeholder="input group name">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions" id="btnModalCreategroup">
+            <!-- <div class="ui deny button">Cancel</div> -->
+
+        </div>
+    </div>
+
+    <!-- modal Member Group -->
+    <div class="ui small modal" id="modalinvitegroup">
+        <div class="header">
+            <i class="address book icon"></i>
+            <span id="detailgroupTitle" style="font-size:20px"></span>
+        </div>
+        <div class="ui form" style="padding: 20px;">
+            <div class="two fields">
+                <div class="field">
+                    <label>Email</label>
+                    <div class="ui input left icon">
+                        <i class="pencil icon"></i>
+                        <input type="text" id="searchUsername" placeholder="input email">
+                    </div>
+                </div>
+                <div class="field">
+                    <label> <br></label>
+                    <div id="btnsearchuser"></div>
+                    <!-- <div class="ui button" onclick="searchUser(idGroup)">
+                                <i class="checkmark icon"></i>
+                                Search User
+                            </div>  -->
+                </div>
+            </div>
+            <!-- hasil search user -->
+            <div id="searchResult"></div>
+            <!--  -->
+            <hr>
+            <div class="three field">
+                <div class="field">
+                    <label>Members :</label>
+                    <div id="listMember">
+                        <p>list member</p>
+                    </div>
+
+                </div>
+            </div>
+            <hr>
+
+            <div class="actions">
+                <div class="ui red basic cancel inverted button">
+                    <i class="remove icon"></i>
+                    No
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="./js/home.js"></script>
+    <!-- google map -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTWqyIZBhNPlOevzbLwjS_DKztVhR_Qp0&callback=initMap"></script>
+
+</body>
+
+</html>

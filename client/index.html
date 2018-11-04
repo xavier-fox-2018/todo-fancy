@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!-- semantic ui -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <!-- google login -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="1066877826242-jhkojtrq07kvjg0f77acfdebck52rn4s.apps.googleusercontent.com">
+
+    <link rel="stylesheet" href="css/index.css">
+
+    <title>Todo Fancy</title>
+</head>
+
+<body>
+    <div class="ui three column centered grid" style="margin-top:200px; ">
+
+        <div class="column">
+            <h1 class="ui black image header" style="text-align: center;">
+                <!-- <img src="assets/images/logo.png" class="image"> -->
+                <div class="content" style="font:black;">
+                    Todo Fancy
+                </div>
+            </h1>
+            <form class="ui small form">
+
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input id="loginEmail" type="text" name="email" placeholder="E-mail address">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input id="loginPassword" type="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="ui fluid large teal submit button" onclick="login()">Login</div>
+                    <div class="g-signin2" data-onsuccess="onSignIn">Login</div>
+                </div>
+
+                <div class="ui error message"></div>
+
+            </form>
+
+            <div class="ui message">
+                New to us? <a href="#" onclick="showFormRegis()">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- form register -->
+    <div id="formRegister">
+        <div class="ui grid">
+            <div class="ui four wide column raised segment" style="margin: 50px auto 0px">
+                <div class="ui large form">
+                    <div class="field">
+                        <h5>Register</h5>
+                    </div>
+                    <div class="field">
+                        <div class="ui input icon">
+                            <i class="ui name icon"></i>
+                            <input type="text" placeholder="name" id="regisName">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui input icon">
+                            <i class="ui user icon"></i>
+                            <input type="email" placeholder="Email" id="regisEmail">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui input icon">
+                            <i class="ui lock icon"></i>
+                            <input type="password" placeholder="password" id="regisPassword">
+                        </div>
+                    </div>
+                    <div class="ui extra content">
+                        <div class="ui grid">
+                            <div class="ui ten wide column">
+                            </div>
+                            <div class="ui three wide column">
+
+                            </div>
+                            <div class="ui three wide column">
+                                <button class="ui blue right floated button" onclick="register()">Register</button>
+                            </div>
+                        </div>
+                        <p id="notifRegis" style="color: red; font-weight: bold;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
