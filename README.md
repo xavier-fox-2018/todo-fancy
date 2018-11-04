@@ -286,7 +286,7 @@
             }
         ],
         "_id": "String ID",
-        "name": 'String",
+        "name": "String",
         "email": "String",
         "OAuth": "Boolean",
         "__v": 0
