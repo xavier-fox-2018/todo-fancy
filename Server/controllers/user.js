@@ -3,11 +3,12 @@ const bcryptPassword = require('../helper/bcryptPass')
 
 module.exports = {
     insert: (req,res) => {
-        const newCust = new User ({
+        const newUser = new User ({
             email: req.body.email,
             password: req.body.password
         })
-        newCust.save()
+        bcryptPassword(newUser)
+        newUser.save()
         .then((user) => {
             res.status(200).json({
                 user: user,
