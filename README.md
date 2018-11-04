@@ -106,7 +106,7 @@ Helpers.createUser(USER_GOOGLE_TOKEN)
 
 3. **Create, Update, Delete Task** <br>
 *success* : will reload home page with updated task<br>
-*fail* : nothing happen :blush:
+*fail* : appear error message on console :blush:
 
 3. **Read Task** <br>
 *success* : will render on home, completed, or incompleted page<br>
