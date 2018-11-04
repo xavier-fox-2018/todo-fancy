@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>To-Do Be-do Be-do</title>
+  <meta name="google-signin-client_id" content="43340400785-g34b4gvre9nn2e24kq4ogn2074p5fda4.apps.googleusercontent.com">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <!-- calender -->
+  <!-- <link rel="stylesheet" href="/bower_components/semantic-ui-calendar/dist/calendar.min.css" />
+  <script type="text/javascript" src="/bower_components/semantic-ui-calendar/dist/calendar.min.js"></script> -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+  .head {
+    text-align:center; color: white;
+  }
+  span.head:hover {
+    cursor: pointer;
+    transform: scale(1.5, 1.5);
+    color: whitesmoke;
+  }
+  .item {
+    font-size: 16px;
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  }
+  </style>
+  
+</head>
+<body style="background: linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.3)), url('https://picsum.photos/1920/1080/?random&blur'); background-size: cover; padding-top: 50px" >
+ <!-- <div id="main-page"></div> -->
+  <div class="ui column grid container main-content" id="main-content">
+    <div class="ui animated fade button" tabindex="0" onclick="logout()">
+      <div class="visible content"><i class="ui logout icon"></i></div>
+      <div class="hidden content">
+        logout
+      </div>
+    </div>       
+    <div class="ui animated fade button" tabindex="0" onclick="goToChart()">
+      <div class="visible content"><i class="ui chart pie icon"></i></div>
+      <div class="hidden content">
+        Chart
+      </div>
+    </div>         
+  </div>
+  <div class="ui one column centered grid main-content">
+    <div class="column head-title">
+    </div>
+  </div>
+  <div class="ui two column centered grid group-buttons"></div>
+  <div class="ui three column centered grid main-content">
+    <div class="row">
+        <span class="head add-todo" style="font-size: 25px" onclick="showCreateModal()"><i class="ui plus icon"></i>Add new To-Do</span>
+    </div>
+    <div class="ui positive message"></div>
+    <div class="ui negative message"></div>
+    <div class="row">
+        <span class="head group-todo" style="font-size: 20px" onclick="showGroupModal()"><i class="ui users icon"></i>Group To-Do</span>
+    </div>
+  </div>
+  <div class="ui two column grid container main-content">
+    <div class="row">
+      <div class="ui top attached tabular menu">
+        <a class="item active" data-tab="first" >Personal</a>
+        <a class="item" data-tab="second">Family & Friends</a>
+        <a class="item " data-tab="third">Work</a>
+      </div>
+      <div class="ui bottom attached tab segment active" data-tab="first" >
+        <div class="ui inverted segment" id="tab-personal">
+        </div>
+      </div>
+      <div class="ui bottom attached tab segment" data-tab="second">
+        <div class="ui inverted segment" id="tab-family">
+        </div>
+      </div>
+      <div class="ui bottom attached tab segment" data-tab="third" >
+        <div class="ui inverted segment" id="tab-work">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-content">
+    <button onclick="backToMain()">Back</button>
+    <div id="chart_div"></div>
+  </div>
+<!-- Modal Create new TODO -->
+  <div class="ui fullscreen modal create"> 
+  </div>
+<!-- / Modal Create new TODO -->
+  <div id="modal"></div>
+  <div id="group-modal" class="ui modal group"></div>
+<script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+<script>
+window.onLoadCallback = function(){
+  gapi.auth2.init({
+      client_id: 'filler_text_for_client_id.apps.googleusercontent.com'
+    });
+}
+</script>  
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVDHVfFDZ96XmETbdQ0t1Mnq7Epug9GsQ&callback=showMaps"></script>
+<script src="./scripts/main.js"></script>
+<script>
+  $('.menu .item').tab();
+  $('.ui.accordion').accordion();
+  $('.add-todo').click(function(){
+    $(".modal.create").modal('show')
+  })
+  $('#mycalendar').calendar();
+
+  function onLoad() {
+    gapi.load('auth2', function() {
+      gapi.auth2.init()
+    })
+  }
+</script>
+</body>
+</html>
