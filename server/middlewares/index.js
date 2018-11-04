@@ -2,6 +2,7 @@ const Mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Todo = require('../models/todo')
+const Group = require('../models/group')
 
 class Middleware {
     static authenticate(req,res,next){
@@ -61,8 +62,40 @@ class Middleware {
         })
     }
 
+    //TO REFACTOR
     static isMember(req,res,next){
         
+
+        const id = new Mongoose.Types.ObjectId(req.userId)
+
+        Group.find({'members' : {$in:id}})
+        .then(data =>{
+            // if(data[0].id === req.id.toString()){
+            //     next()
+            // }
+            let member = false
+
+            for(let i = 0 ; i < data.length ; i ++){
+                if(data[i]._id.toString()===req.params.id){
+                    member = true
+                }
+            }
+
+            if(member === true){
+                next()
+            }else{
+                res.status(500).json({
+                    message : 'You are not member of the group'
+                })
+            }
+
+        })
+        .catch((err)=>{
+            res.status(500).json({
+                error : err,
+                message : 'Middleware error'
+            })
+        })
     }
 
     static findUser(req,res,next){

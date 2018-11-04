@@ -115,7 +115,7 @@ function getGroupsData(){
 
             $('#group_list').append(`
             <div class="col-sm-3">
-                <div class="card mb-4 default-color" style="cursor:pointer;" onclick="getGroup('${response[i]._id}')">
+                <div class="card mt-3 mb-3 default-color" style="cursor:pointer;" onclick="getGroup('${response[i]._id}')">
 
                     <div class="card-body">
                     <h6 class="card-title text-center text-white">${response[i].name}</h6>
@@ -136,20 +136,23 @@ function getGroup(id){
 
     $.ajax({
         method : 'GET',
-        url : `${config.port}/groups/${id}`
+        url : `${config.port}/groups/${id}`,
+        headers : {
+            token : localStorage.getItem('token')
+        }
     })
     .done(response=>{
         $( '#add_group_task_button' ).val(`${response._id}`)
 
         $( '#addgrouptaskbutton' ).empty()
         $( '#addgrouptaskbutton' ).append(`
-        <a href="" class="btn aqua-gradient btn-rounded mb-4" data-toggle="modal" data-target="#add_group_task">Add Task</a>
+        <a href="" class="btn aqua-gradient btn-rounded mb-3" data-toggle="modal" data-target="#add_group_task">Add Task</a>
         `)
         
 
         $( '#invite_menu' ).empty()
         $( '#invite_menu' ).append(`
-        <div class="search-control">
+        <div class="search-control mt-3 mb-3">
             <input type="search" id="input_invite_email" name="q" placeholder="Input email..." aria-label="Search through site content">
             <button class="btn btn-primary" onclick="sendInvitation('${response._id}')">Send Invitation to join <strong>${response.name}</strong> </button>
         </div>
@@ -172,7 +175,6 @@ function getGroup(id){
 
             let ownerMenu = ''
             if(taskList[i].author._id === localStorage.getItem('userId')){
-                console.log('punya saya nih',taskList[i].name)
                 ownerMenu = `
                     ${option}
                     <div class="btn text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>
