@@ -141,6 +141,8 @@ class Controller {
         Invitation.find({
             receiver : req.userId
         })
+        .populate('group')
+        .populate('sender')
         .then((list)=>{
             res.status(200).json(list)
         })

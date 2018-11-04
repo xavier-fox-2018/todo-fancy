@@ -25,7 +25,27 @@ function getInboxData(){
         }
     })
     .done(response=>{
-        $('#invitation_list').text(JSON.stringify(response))
+        $('#invitation_list').empty()
+
+        for(let i = 0 ; i < response.length ; i ++){
+            $('#invitation_list').append(`
+            <div class="col-sm-12 col-md-6 col-lg-3 mt-3">
+                <div class="card text-center">
+                    <div class="card-body">
+    
+                        <!-- Title -->
+                        <h4 class="card-title"><a>${response[i].group.name}</a></h4>
+                        <!-- Text -->
+                        <p class="card-text">You've been invited by <strong>${response[i].sender.name}</strong> to join <strong>${response[i].group.name}</strong> </p>
+                        <!-- Button -->
+                        <a href="#" class="btn btn-primary" onclick="acceptInvitation('${response[i]._id}')">Accept</a>
+    
+                    </div>
+    
+                </div>
+            </div>
+            `)
+        }
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)
@@ -289,6 +309,24 @@ function sendInvitation(id){
     .done(response=>{
         toastr["success"](`${response.message}`)
         getGroupsData()
+    })
+    .fail(err=>{
+        toastr["error"](`${err.responseJSON.message}`)
+    })
+}
+
+function acceptInvitation(id){
+    $.ajax({
+        method : 'POST',
+        url : `${config.port}/groups/accept/${id}`,
+        headers : {
+            token : localStorage.getItem('token')
+        }
+    })
+    .done(response=>{
+        toastr["success"](`${response.message}`)
+        getGroupsData()
+        getInboxData()
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)
