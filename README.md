@@ -36,10 +36,15 @@ Route | HTTP | Description
 * **Data Params**
 
   * **Routes: /users/googleSignIn**
+
   <br />
   `data : { 'gToken' : id_token }`
   <br /><br />
+
+
   * **Routes: /users/**
+ 
+ 
   <br />
   `data : {
         username : "USERNAME_HERE" ,
@@ -49,7 +54,11 @@ Route | HTTP | Description
   <br />
   Data types : username : String, email : String, password : String
   <br /><br />
+
+
   * **Routes: /users/login**
+
+
   <br />
   `data : {
         email : "EMAIL_HERE ,
@@ -58,7 +67,11 @@ Route | HTTP | Description
   <br />
   Data types :  email : String, password : String
   <br /><br />
+
+
   * **Routes: /users/addTask**
+
+
   <br />
   `data : {
             'taskName' : "TASK_TITLE" ,
@@ -69,7 +82,11 @@ Route | HTTP | Description
   <br />
   Data types : taskName : String, description : String, status : String, dueDate : Date
   <br /><br />
-  * **Routes: /users/task/update**   
+
+
+  * **Routes: /users/task/update**  
+  
+   
   `data : {
           taskId : "TASK_ID",
           name : "TASK_TITLE",
