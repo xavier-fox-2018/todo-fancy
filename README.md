@@ -37,7 +37,7 @@ Route | HTTP | Description
 
   * **Routes: /users/googleSignIn**
 
-  <br />
+
   `data : { 'gToken' : id_token }`
   <br /><br />
 
@@ -62,7 +62,7 @@ Route | HTTP | Description
 
   `data : {
         email : "EMAIL_HERE ,
-        password : "PAsSWORD_HERE
+        password : "PASSWORD_HERE
       }`
   <br />
   Data types :  email : String, password : String
