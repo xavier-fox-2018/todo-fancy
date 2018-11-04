@@ -8,3 +8,8 @@ function checkToken(){
         window.location = 'login.html'
     }
 }
+
+function logOut(){
+    localStorage.removeItem('token')
+    checkToken()
+}

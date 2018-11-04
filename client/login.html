@@ -6,65 +6,50 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 
     <!-- Material Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.7/css/mdb.min.css" />
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/mdb.css" />
 
     <title>Fancy Todo</title>
 </head>
 
-<body >
+<body class="cloudy-knoxville-gradient">
     <nav class="navbar navbar-dark default-color">
         <a class="navbar-brand" href="#">Fancy Todo</a>
     </nav>
 
-    <!-- <div class="container mt-5"> -->
-        <div class="d-flex flex-row-reverse bd-highlight mt-5 mb-5 ml-5 mr-5">
-            <!-- Default form login -->
-            <div class="text-center border border-light p-5 bg-white z-depth-3">
-
-                <p class="h4 mb-4">Sign in</p>
-
-                <!-- Email -->
-                <input id="input_email" type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
-
-                <!-- Password -->
-                <input id="input_password" type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
-
-                <!-- Sign in button -->
-                <button class="btn btn-default btn-block my-4" onclick="login()">Sign in</button>
-
-                <!-- Register -->
-                <p>Not a member?
-                    <a href="">Register</a>
-                </p>
-
-                <!-- Social login -->
-                <p>or sign in with:</p>
-
-                <a type="button" class="light-blue-text mx-2">
-                    <i class="fa fa-facebook"></i>
-                </a>
-                <a type="button" class="light-blue-text mx-2">
-                    <i class="fa fa-twitter"></i>
-                </a>
-                <a type="button" class="light-blue-text mx-2">
-                    <i class="fa fa-linkedin"></i>
-                </a>
-                <a type="button" class="light-blue-text mx-2">
-                    <i class="fa fa-github"></i>
-                </a>
-
-            </div>
-            <!-- Default form login -->
+    <div id="main_menu" class="d-flex flex-row-reverse bd-highlight mt-5 mb-5 ml-5 mr-5">
+        <!-- Register Form -->
+        <div id="register_form">
+            <!-- Injected From Append -->
         </div>
-    <!-- </div> -->
+        <!-- Default form login -->
+        <div id="login_form" class="text-center border border-light p-5 bg-white z-depth-3 animated slideInRight slow">
+            <p class="h4 mb-4">Sign in</p>
+            <input id="input_email" type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+            <input id="input_password" type="password" id="defaultLoginFormPassword" class="form-control mb-4"
+                placeholder="Password">
+            <button class="btn btn-default btn-block my-4" onclick="login()">Sign in</button>
+            <p>Not a member?
+                <a href="#" onclick="showRegisterMenu()">Register</a>
+            </p>
+        </div>
+        <!-- Default form login -->
+    
+    </div><!-- flexbox -->
+    
+
+
+
 
     <!-- Optional JavaScript -->
 
@@ -80,6 +65,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.7/js/mdb.min.js"></script>
 
     <script src="./assets/login.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </body>
 
 </html>
