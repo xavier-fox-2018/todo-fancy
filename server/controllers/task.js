@@ -27,7 +27,6 @@ module.exports = {
     });
   },
   create: function(req, res) {
-    // console.log('create body---', req.body)
     Task.create(req.body)
     .then((result) => {
       res.status(201).json({
@@ -42,20 +41,31 @@ module.exports = {
     });
   },
   update: function(req, res) {
-    // console.log('update body---', req.body)
     Task.findByIdAndUpdate(req.params.id, req.body)
     .then((result) => {
-      res.status(200).json(result)
+      res.status(201).json({
+        message:'Success updated ToDo',
+        status: 'success'
+      })
     }).catch((err) => {
-      res.status(500).json(err)
+      res.status(500).json({
+        message: err.message,
+        status: 'fail'
+      })
     });
   },
   delete: function(req, res) {
     Task.findByIdAndDelete(req.params.id)
     .then((result) => {
-      res.status(200).json(result)
+      res.status(200).json({
+        message:'Success deleted ToDo',
+        status: 'success'
+      })
     }).catch((err) => {
-      res.status(500).json(err)
+      res.status(500).json({
+        message: err.message,
+        status: 'fail'
+      })
     });
   },
   patch: function(req, res) {

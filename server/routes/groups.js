@@ -5,9 +5,9 @@ const groupAuth = require('../middlewares/groupAuth')
 const Controller = require('../controllers/group')
 
 /* GET home page. */
-router.get('/', auth, Controller.findAll);
-router.get('/:id', auth, Controller.findById);
-router.post('/', auth, Controller.create)
-router.put('/:id', auth, Controller.update)
+router.get('/', auth, groupAuth, Controller.findAll);
+router.get('/:id', auth, groupAuth, Controller.findById);
+router.post('/', auth, groupAuth, Controller.create)
+router.put('/:id', auth, groupAuth, Controller.update)
 
 module.exports = router;
