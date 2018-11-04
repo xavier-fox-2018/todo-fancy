@@ -148,6 +148,7 @@
   ```
 
 - POST : `/users/oauth` 
+  - req.body.token should contain google auth token
 
   ```js
   //ON SUCCESS OUTPUT: status 200
