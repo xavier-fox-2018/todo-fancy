@@ -131,12 +131,20 @@ function getGroupsData(){
 }
 
 function getGroup(id){
+    $('#selected_group_id').val(`${id}`)
+
     $.ajax({
         method : 'GET',
         url : `${config.port}/groups/${id}`
     })
     .done(response=>{
         $( '#add_group_task_button' ).val(`${response._id}`)
+
+        $( '#addgrouptaskbutton' ).empty()
+        $( '#addgrouptaskbutton' ).append(`
+        <a href="" class="btn aqua-gradient btn-rounded mb-4" data-toggle="modal" data-target="#add_group_task">Add Task</a>
+        `)
+        
 
         $( '#invite_menu' ).empty()
         $( '#invite_menu' ).append(`
@@ -145,10 +153,10 @@ function getGroup(id){
             <button class="btn btn-primary" onclick="sendInvitation('${response._id}')">Send Invitation to join <strong>${response.name}</strong> </button>
         </div>
         `)
-        $(' #selected_group_task_list ').empty()
-        
-        let taskList = response.todo_list.reverse()
 
+        
+        $(' #selected_group_task_list ').empty()
+        let taskList = response.todo_list.reverse()
         for(let i = 0 ; i < taskList.length ; i ++){
             let status = taskList[i].status
             let option = `<div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="uncompleteTask('${taskList[i]._id}')"><i class="fa fa-times" aria-hidden="true"></i></div>`
@@ -163,7 +171,7 @@ function getGroup(id){
                     <div class="row rounded z-depth-1 bg-white">
                         <div class="col-sm-6 col-md-8">
                             <h5 class="mt-1"><strong>${taskList[i].name}  ${option2}</strong><h5>
-                            <small><strong>Description : </strong>${taskList[i].description} <strong>|</strong> <strong>Due Date :</strong> ${taskList[i].due_date.slice(0,10)}</small>
+                            <small><strong>Description : </strong>${taskList[i].description} <strong>|</strong> <strong>Due Date :</strong> ${taskList[i].due_date.slice(0,10)}</small> | <small><strong>By :</strong> ${taskList[i].author.name}</small>
                         </div>
                         <div class="col-sm-6 col-md-4" align="right">
                             ${option}
@@ -226,14 +234,15 @@ function addGroupTask(){
     })
     .done(response=>{
         toastr["success"](`${response.message}`)
-        getGroupsData()
+        let group = $('#selected_group_id').val()
+        if(group !== ''){
+            getGroup(group)
+        }
         $(' #add_group_task_name ').val('')
         $( '#add_group_task_description' ).val('')
         $( '#add_group_task_due_date' ).val('')
-        console.log(response)
     })
     .fail(err=>{
-        console.log(err)
         toastr["error"](`${err.responseJSON.message}`)
     })
 }
@@ -275,6 +284,10 @@ function updateTask(){
     .done(response=>{
         toastr["success"](`${response.message}`)
         getUserData()
+        let group = $('#selected_group_id').val()
+        if(group !== ''){
+            getGroup(group)
+        }
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)
@@ -293,6 +306,10 @@ function deleteTask(id){
     .done(response=>{
         toastr["success"](`${response.message}`)
         getUserData()
+        let group = $('#selected_group_id').val()
+        if(group !== ''){
+            getGroup(group)
+        }
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)
@@ -310,6 +327,10 @@ function completeTask(id){
     .done(response=>{
         toastr["success"](`${response.message}`)
         getUserData()
+        let group = $('#selected_group_id').val()
+        if(group !== ''){
+            getGroup(group)
+        }
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)
@@ -327,6 +348,10 @@ function uncompleteTask(id){
     .done(response=>{
         toastr["success"](`${response.message}`)
         getUserData()
+        let group = $('#selected_group_id').val()
+        if(group !== ''){
+            getGroup(group)
+        }
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)
@@ -368,6 +393,7 @@ function sendInvitation(id){
     .done(response=>{
         toastr["success"](`${response.message}`)
         getGroupsData()
+        $('#input_invite_email').val('')
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)

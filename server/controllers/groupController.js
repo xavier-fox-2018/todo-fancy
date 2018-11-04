@@ -19,7 +19,12 @@ class Controller {
         Group.findOne({
             _id : req.params.id
         })
-        .populate('todo_list')
+        .populate({
+            path: "todo_list",
+            populate: {
+                path: "author"
+            }
+        })
         .then((group)=>{
             res.status(200).json(group)
         })

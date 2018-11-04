@@ -4,24 +4,20 @@ const Group = require('../models/group')
 
 class Controller {
     static groupCreate(req,res){
-        console.log('masuk controller')
         let due_date = new Date(req.body.due_date)
         let today = new Date()
 
         console.log(req.body)
 
         if(req.body.name.length < 1 || req.body.description.length < 1){
-            console.log('kena 1')
             res.status(500).json({
                 message : 'Invalid Name / Description'
             })
         }else if(due_date < today){
-            console.log('kena 2')
             res.status(500).json({
                 message : 'Invalid Date'
             })
         }else{
-            console.log('masuk ke else')
             Todo.create({
                 name : req.body.name,
                 description : req.body.description,
@@ -195,7 +191,7 @@ class Controller {
         })
         .then((resp)=>{
             res.status(200).json({
-                message : 'Task Completed'
+                message : `${resp.name} Completed`
             })
         })
         .catch((err)=>{
@@ -214,7 +210,7 @@ class Controller {
         })
         .then((resp)=>{
             res.status(200).json({
-                message : 'Task Uncompleted'
+                message : `${resp.name} Uncompleted`
             })
         })
         .catch((err)=>{
