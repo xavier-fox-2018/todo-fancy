@@ -7,8 +7,6 @@ class Controller {
         let due_date = new Date(req.body.due_date)
         let today = new Date()
 
-        console.log(req.body)
-
         if(req.body.name.length < 1 || req.body.description.length < 1){
             res.status(500).json({
                 message : 'Invalid Name / Description'
