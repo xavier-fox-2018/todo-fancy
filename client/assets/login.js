@@ -28,11 +28,9 @@ function login(){
     .done(response=>{
         localStorage.setItem('token',response.token)
         checkToken()
-        console.log(response)
     })
     .fail(err=>{
-        let message = err.responseJSON.message
-        toastr["warning"](`${message}`)
+        toastr["warning"](`${err.responseJSON.message}`)
     })
 }
 
@@ -97,9 +95,6 @@ function register(){
         
     })
     .fail(err=>{
-        let message = err.responseJSON.message
-        toastr["error"](`${message}`)
+        toastr["error"](`${err.responseJSON.message}`)
     })
-
-    console.log(name,email,password)
 }

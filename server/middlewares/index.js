@@ -19,6 +19,27 @@ class Middleware {
         }
     }
 
+    static emailUnique(req,res,next){
+        User.findOne({
+            email : req.body.email
+        })
+        .then((result)=>{
+            if(result){
+                res.status(500).json({
+                    message : 'Email Address Already in Use'
+                })
+            }else{
+                next()
+            }
+        })
+        .catch((err)=>{
+            res.status(500).json({
+                error : err,
+                message : 'Internal Server Error'
+            })
+        })
+    }
+
     static isOwner(req,res,next){
 
     }

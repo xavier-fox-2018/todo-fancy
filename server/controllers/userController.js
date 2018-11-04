@@ -37,7 +37,7 @@ class Controller {
             .then((result)=>{
                 res.status(201).json({
                     data : result,
-                    message : 'Register Success' 
+                    message : 'Registration Success! you can use your email and password to log in' 
                 })
             })
             .catch((err)=>{
@@ -50,6 +50,12 @@ class Controller {
     }
 
     static login(req,res){
+        if(req.body.email.length < 1 || req.body.password.length < 1){
+            res.status(500).json({
+                message : 'Invalid Email / Password'
+            })
+        }
+
         User.findOne({
             email : req.body.email
         })
