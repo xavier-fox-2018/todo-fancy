@@ -58,6 +58,30 @@ class userController {
       })
   }
 
+  static loginGoogle (req, res) {
+    User
+      .findOne({
+        email: req.decoded.email,
+        isGoogle: true
+      })
+      .then((data) => {                                                
+          if(!data){
+              res.status(400).json({ msg: "user not found" })
+          } else {        
+              userController.generateToken(data.email, data._id)
+                .then((token) => {
+                  res.status(200).json({ token: token })
+                })
+                .catch((err) => {
+                  res.status(500).json(err)
+                })                        
+          }
+      })
+      .catch((err) => {
+          res.status(500).json({ msg: err })
+      })
+  }
+
   static generateToken (email, id) {
     return new Promise ((resolve, reject) => {
       const user = {
@@ -190,6 +214,31 @@ class userController {
     }
   }
 
+  static registerWithGoogle(req, res, next) {
+      User.findOne({
+          email: req.decoded.email
+      })
+      .then((result) => {
+          if(!result){
+              User.create({
+                  email: req.decoded.email,
+                  username: req.decoded.username,
+                  isGoogle: true,
+                  password: helper.hashPassword(process.env.PASS)
+              })
+              .then((result) => {
+                next()
+              })
+              .catch((err) => {
+                  res.status(500).json({err: err})
+              });
+          } else {
+              next()
+          }
+      }).catch((err) => {
+          res.status(500).json({err: err})
+      });
+  }
 }
 
 module.exports = userController;
