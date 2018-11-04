@@ -8,6 +8,11 @@ Route | HTTP | Description
 /users/googleSignIn | POST | sign in with google account
 /users| POST | user registration
 /users/login | GET  | user login
+/users/task | GET | Get user task
+/users/food | GET | Get user food recommendation
+/users/food/search/:name' | GET | Search food recommendation by name params
+/users/task/:status | GET | Filter task by status
+/users/task/search/:title | GET | Filter task by title
 /users/addTask  | POST  | Add task for user
 /users/delete/:id | DELETE | Delete a task that owns by user
 /users/task/update  | PUT  | Update a task that owns by user
@@ -22,7 +27,10 @@ Route | HTTP | Description
 
    **Required:**
  
-   `id=[integer]`
+   `id=[integer]` <br />
+   `name=[string]` <br />
+   `status=[string]` <br />
+   `title=[string]` <br />
 
 
 * **Data Params**
@@ -83,6 +91,9 @@ Route | HTTP | Description
 
   * **Code:** 200 <br />
     **Content:** `{ [{list_of_task}] }`
+  
+  * **Code:** 200 <br />
+    **Content:** `{ [{list_of_food_recommendation}] }`
 
   * **Code:** 200 <br />
     **Content:** `{ msg : 'success delete task' }`
@@ -97,7 +108,6 @@ Route | HTTP | Description
  
 * **Error Response:**
 
- 'invalid email / password'
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:** `{ msg : 'unauthorized access' }`
 

@@ -3,7 +3,7 @@ var router = express.Router();
 var userController = require('../controllers/userController')
 var isAuthorized = require('../middlewares/isAuthorized.js')
 var googleValidation = require('../middlewares/googleValidation.js')
-
+//
 router.post('/googleSignIn', googleValidation, userController.registerWithGoogle, userController.loginGoogle)
 router.post('/', userController.createUser);
 router.post('/login', userController.loginUser)
