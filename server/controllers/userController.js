@@ -45,7 +45,7 @@ class userController {
               res.status(500).json(err)
           })
         } else {
-          res.status(500).json({
+          res.status(400).json({
             msg : 'invalid email / password'
           })
         }
@@ -159,13 +159,12 @@ class userController {
                   res.status(200).json({
                     msg : 'success delete task'
                   })
-                  console.log('delteeeee');
                 })
                 .catch((err) => {
                   res.status(500).json(err)
                 })
             } else {
-              res.status(500).json({
+              res.status(401).json({
                 msg : 'Unauthorized access'
               })
             }

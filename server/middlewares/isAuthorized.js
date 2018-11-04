@@ -9,13 +9,15 @@ function isAuthorized(req, res, next) {
         if (decoded.email === data.email) {
           next()
         } else {
-          res.status(500).json({
+          res.status(401).json({
             msg : 'Unauthorized access'
           })
         }
       })
       .catch(err => {
-        res.status(500).json(err)
+        res.status(402).json({
+          msg : 'email invalid'
+        })
       })   
 }
 
