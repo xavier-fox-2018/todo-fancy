@@ -6,6 +6,25 @@ $( document ).ready(function() {
     checkToken()
 });
 
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    
+    $.ajax({
+        method : "POST",
+        url : 'http://localhost:3000/users/gsignin',
+        data : {gtoken : id_token}
+    })
+    .done((response)=>{
+        console.log(response)
+        localStorage.setItem('token',response.token)
+        localStorage.setItem('userId',response.userId)
+        checkToken()
+    })
+    .fail(err=>{
+        console.log(err)
+    })
+}
+
 function checkToken(){
     let token = localStorage.getItem('token')
     if(token){

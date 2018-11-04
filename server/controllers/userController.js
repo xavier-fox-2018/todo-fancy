@@ -1,6 +1,8 @@
 const User = require('../models/user')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -45,6 +47,60 @@ class Controller {
                     error : err,
                     message : 'Internal Server Error, Register Failed'
                 })
+            })
+        });
+    }
+
+    static gsignin(req,res){
+        console.log('req body',req.body)
+        console.log('masuk ke controller gsignin')
+        console.log('====')
+        console.log(process.env.CLIENT_ID)
+        console.log('===')
+
+        client.verifyIdToken({
+            idToken: req.body.gtoken,
+            audience: process.env.CLIENT_ID
+            
+        },function(err,result){
+            console.log('result',result)
+            let pEmail = result.payload.email
+            let pName = result.payload.name
+
+            User.findOne({
+                email : pEmail
+            },function(err,result){
+                
+                if(result === null){
+                    User.create({
+                        name : pName,
+                        email : pEmail,
+                        oAuth : true,
+                        password : null
+                    },function(err,response){
+                        if(err){
+                            res.status(500)({
+                                message : 'Internal Server Error'
+                            })
+                        }else{
+                            const token = jwt.sign({_id: response._id, name : response.name , email : response.email},process.env.secret_key)
+                            res.status(200).json({
+                                token : token,
+                                userId : response._id
+                            })
+                        }
+                    })
+                }else if(err){
+                    res.status(500).json({
+                        message : 'Internal Server Error'
+                    })
+                }else{
+                    const token = jwt.sign({_id: result._id, name : result.name , email : result.email},process.env.secret_key)
+                    res.status(200).json({
+                        token : token,
+                        userId : result._id
+                    })
+                }
             })
         });
     }

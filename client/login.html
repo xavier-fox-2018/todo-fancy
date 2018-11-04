@@ -8,6 +8,10 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
 
+    <!-- google login -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="735846607763-ls9vsl5muul1drts1b5j5bjqgoleerkq.apps.googleusercontent.com">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
         crossorigin="anonymous">
@@ -41,6 +45,9 @@
             <button class="btn btn-default btn-block my-4" onclick="login()">Sign in</button>
             <p>Not a member?
                 <a href="#" onclick="showRegisterMenu()">Register</a>
+            </p>
+            <p>Or sign in with :
+                <center><div class="g-signin2" data-onsuccess="onSignIn"></div></center>
             </p>
         </div>
         <!-- Default form login -->
