@@ -30,28 +30,30 @@ function getUserData(){
     })
     .done(userData=>{
         $(' #personal_task_list ').empty()
-        let taskList = userData.todo_list
+        let taskList = userData.todo_list.reverse()
 
         for(let i = 0 ; i < taskList.length ; i ++){
             let status = taskList[i].status
-            let option = `<div class="btn z-depth-1 text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="uncompleteTask('${taskList[i]._id}')"><i class="fa fa-times" aria-hidden="true"></i></div>`
+            let option = `<div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="uncompleteTask('${taskList[i]._id}')"><i class="fa fa-times" aria-hidden="true"></i></div>`
+            let option2 = `<i class="fas fa-check"></i>`
             if(status === false){
-                option = `<div class="btn z-depth-1 text-dark winter-neva-gradient rounded ml-2" style="cursor:pointer" onclick="completeTask('${taskList[i]._id}')"><i class="fa fa-check" aria-hidden="true"></i></div>`
+                option2 = ''
+                option = `<div class="btn text-dark winter-neva-gradient rounded ml-2" style="cursor:pointer" onclick="completeTask('${taskList[i]._id}')"><i class="fa fa-check" aria-hidden="true"></i></div>`
             }
 
 
             $(' #personal_task_list ').append(`
                 <div class="col-sm-12 mb-3">
-                    <div class="row rounded bg-white z-depth-1">
+                    <div class="row rounded z-depth-1 bg-white">
                         <div class="col-sm-8">
-                            <h5 class="mt-1"><strong>${taskList[i].name}  </strong><h5>
+                            <h5 class="mt-1"><strong>${taskList[i].name}  ${option2}</strong><h5>
                             <small><strong>Description : </strong>${taskList[i].description} <strong>|</strong> <strong>Due Date :</strong> ${taskList[i].due_date.slice(0,10)}</small>
                         </div>
                         <div class="col-sm-4">
                             <div class="d-flex justify-content-end mt-2 mb-2">
                                 ${option}
-                                <div class="btn z-depth-1 text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>
-                                <div class="btn z-depth-1 text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="deleteTask('${taskList[i]._id}')"><i class="fas fa-trash-alt"></i></div>
+                                <div class="btn text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>
+                                <div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="deleteTask('${taskList[i]._id}')"><i class="fas fa-trash-alt"></i></div>
                             </div>
                         </div>
                     </div>

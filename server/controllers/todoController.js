@@ -3,54 +3,52 @@ const User = require('../models/user')
 
 class Controller {
     static create(req,res){
+        let due_date = new Date(req.body.due_date)
+        let today = new Date()
         if(req.body.name.length < 1 || req.body.description.length < 1){
             res.status(500).json({
                 message : 'Invalid Name / Description'
             })
-        }
-
-        let due_date = new Date(req.body.due_date)
-        let today = new Date()
-        if(due_date < today){
+        }else if(due_date < today){
             res.status(500).json({
                 message : 'Invalid Date'
             })
-        }
-
-        Todo.create({
-            name : req.body.name,
-            description : req.body.description,
-            author : req.userId, //dapet dari middleware
-            due_date : due_date
-        })
-        .then((todo)=>{
-            User.findOneAndUpdate({
-                _id : req.userId
-            },{
-                $push : {
-                    todo_list : todo._id
-                }
+        }else{
+            Todo.create({
+                name : req.body.name,
+                description : req.body.description,
+                author : req.userId, //dapet dari middleware
+                due_date : due_date
             })
-            .populate('todo_list')
-            .then((updated)=>{
-                // res.status(200).json(updated)
-                
-                res.status(201).json({
-                    message : "Add Task Success",
-                    data : todo
+            .then((todo)=>{
+                User.findOneAndUpdate({
+                    _id : req.userId
+                },{
+                    $push : {
+                        todo_list : todo._id
+                    }
+                })
+                .populate('todo_list')
+                .then((updated)=>{
+                    // res.status(200).json(updated)
+                    
+                    res.status(201).json({
+                        message : "Add Task Success",
+                        data : todo
+                    })
+                })
+                .catch((err)=>{
+                    res.status(500).json({
+                        message : 'error in finding task creator from database'
+                    })
                 })
             })
             .catch((err)=>{
                 res.status(500).json({
-                    message : 'error in finding task creator from database'
+                    message : 'Create Task Failed'
                 })
             })
-        })
-        .catch((err)=>{
-            res.status(500).json({
-                message : 'Create Task Failed'
-            })
-        })
+        }
     }
 
     static read(req,res){
