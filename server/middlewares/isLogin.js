@@ -14,11 +14,11 @@ function isLogin(req, res, next) {
                         const err = {
                             message: "Validation Error: User's exclusive feature"
                         };
-                        res.status(500).json(err.message);
+                        res.status(500).json(err);
                     }
                 })
                 .catch(function(err) {
-                    res.status(500).json(err.message);
+                    res.status(500).json(err);
                 })
         } catch (err) {
             res.status(500).json({

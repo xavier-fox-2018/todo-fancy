@@ -32,6 +32,38 @@ class TaskController {
             });
     }
 
+    static createForGroup(req, res) {
+        Task.create({
+            title: req.body.title,
+            description: req.body.description, 
+            dueDate: req.body.dueDate,
+            priority: req.body.priority,
+            user: req.user._id,
+            group: req.body.group
+        })
+            .then(function(task) {
+                User.findByIdAndUpdate(req.user._id, {
+                    $push: {
+                        taskList: task._id
+                    }
+                })
+                    .then(function(result) {
+                        const response = {
+                            task: task,
+                            message: `Successfully created task ${task.title}`
+                        }
+                        res.status(201).json(response);
+                        
+                    })
+                    .catch(function(err) {
+                        res.status(500).json(err);
+                    });
+            })
+            .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
     static getAll(req, res) {
         Task.find({user: req.user._id})
             .then(function(tasks) {
@@ -124,6 +156,16 @@ class TaskController {
                 res.status(200).json({
                     message: `Task is marked as undone`
                 });
+            })
+            .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
+    static getTasksinGroup(req, res) {
+        Task.find({group: req.params.groupId})
+            .then(function(tasks) {
+                res.status(200).json(tasks);
             })
             .catch(function(err) {
                 res.status(500).json(err);

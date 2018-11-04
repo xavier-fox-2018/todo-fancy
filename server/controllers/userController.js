@@ -1,4 +1,5 @@
 const User = require('../models/userModel.js');
+const Group = require('../models/groupModel.js');
 const jwt = require('jsonwebtoken');
 const encryptPassword = require('../helpers/encryptPassword.js');
 const axios = require('axios');
@@ -111,6 +112,123 @@ class UserController {
                 res.status(200).json(user);
             })
             .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
+    static getAllUsers(req, res) {
+        User.find()
+            .then(function(users) {
+                res.status(200).json(users);
+            })
+            .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
+    static searchUsers(req, res) {
+        User.find({username: new RegExp(req.params.keyword, 'i')})
+            .then(function(users) {
+                if (users.length > 0) {
+                    res.status(200).json(users);
+                } else {
+                    res.status(404).json({
+                        message: `Users not found`
+                    });
+                }
+            })
+            .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
+    static createGroup(req, res) {
+        Group.create({
+            name: req.body.name,
+            userList: req.user._id
+        })
+            .then(function(group) {
+                User.findByIdAndUpdate(req.user._id, {
+                    $push: {
+                        groupList: group._id
+                    }
+                })
+                    .then(function(result) {
+                        res.status(201).json({
+                            group: group,
+                            message: `Successfully created group ${group.name}`
+                        });
+                    })
+                    .catch(function(err) {
+                        res.status(500).json(err);
+                    });
+            })
+            .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
+    static getUsersinGroup(req, res) {
+        Group.findById(req.params.groupId).populate('userList')
+            .then(function(group) {
+                res.status(200).json(group);
+            })
+            .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
+    static sendInvitation(req, res) {
+        User.findOneAndUpdate({username: req.body.username}, {
+            $push: {
+                invitationList: req.body.group
+            }
+        })
+            .then(function(result) {
+                res.status(200).json({
+                    message: `Successfully sent an invitation to ${req.body.username}`
+                });
+            })
+            .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
+    static acceptInvitation(req, res) {
+        Group.findByIdAndUpdate(req.body.group, {
+            $push: {
+                userList: req.user._id
+            }
+        })
+            .then(function(resultGroup) {
+                User.findByIdAndUpdate(req.user._id,  {
+                    $push: {
+                        groupList: req.body.group
+                    }
+                })
+                    .then(function(resultUser) {
+                        User.findByIdAndUpdate(req.user._id, {
+                            $pull: {
+                                invitationList: req.body.group
+                            }
+                        })
+                            .then(function(resultInvitation) {
+                                res.status(200).json({
+                                    message: `Successfully join the group`
+                                });
+                            })
+                            .catch(function(err) {
+                                console.log('User FindByIdAndUpdate Pull Error: ', err);
+                                res.status(500).json(err);
+                            });
+                    })
+                    .catch(function(err) {
+                        console.log('User FindByIdAndUpdate Push Error: ', err);
+                        res.status(500).json(err);
+                    });
+            })
+            .catch(function(err) {
+                console.log('Group FindByIdAndUpdate Error: ', err)
                 res.status(500).json(err);
             });
     }

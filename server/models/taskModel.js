@@ -24,8 +24,12 @@ const taskSchema = new Schema({
         min: [1, 'Min priority number is 1']
     }, 
     user: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
     }
 }, {
     timestamps: true

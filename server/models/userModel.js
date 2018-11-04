@@ -25,6 +25,14 @@ const userSchema = new Schema({
     taskList: [{
         type: Schema.Types.ObjectId,
         ref: 'Task'
+    }],
+    groupList: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    }],
+    invitationList: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
     }]
 }, {
     timestamps: true
