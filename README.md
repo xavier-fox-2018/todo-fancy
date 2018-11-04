@@ -45,7 +45,7 @@ Route | HTTP | Description
   * **Routes: /users/**
  
  
-  <br />
+
   `data : {
         username : "USERNAME_HERE" ,
         email : "EMAIL_HERE ,
@@ -59,7 +59,7 @@ Route | HTTP | Description
   * **Routes: /users/login**
 
 
-  <br />
+
   `data : {
         email : "EMAIL_HERE ,
         password : "PAsSWORD_HERE
@@ -72,7 +72,7 @@ Route | HTTP | Description
   * **Routes: /users/addTask**
 
 
-  <br />
+
   `data : {
             'taskName' : "TASK_TITLE" ,
             'description' : "DESCRIPTION_HERE" ,
@@ -85,8 +85,8 @@ Route | HTTP | Description
 
 
   * **Routes: /users/task/update**  
-  
-   
+
+
   `data : {
           taskId : "TASK_ID",
           name : "TASK_TITLE",
