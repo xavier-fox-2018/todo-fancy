@@ -3,9 +3,8 @@ const helper = require('../helper/helper.js');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Task = require('../models/task.js');
-const isAuthorized = require('../middlewares/isAuthorized.js');
-
-require('dotenv').config()
+const request = require('request');
+require('dotenv').config();
 
 class userController {
 
@@ -134,14 +133,91 @@ class userController {
             taskContent.status = data.taskStatus;
             return taskContent;
           })
-          console.log(task);
-          
           res.status(200).json(task)
         })
         .catch(err => {
           res.status(500).json(err)
         })
   }
+
+  static getTaskByStatus(req, res) {
+    const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);
+      Task
+        .find({
+          userId : decoded.id,
+          taskStatus : req.params.status
+        })
+        .sort({taskDate: 'asc'})
+        .then((data) => {
+          const task = data.map(data => {
+            const taskContent = {};
+            taskContent.id = data._id;
+            taskContent.name = data.taskName;
+            taskContent.description = data.taskDescription;
+            taskContent.date = String(data.taskDate).slice(4,15);
+            taskContent.status = data.taskStatus;
+            return taskContent;
+          })
+          res.status(200).json(task)
+        })
+        .catch(err => {
+          res.status(500).json(err)
+        })
+  }
+
+  static getTaskByTitle(req, res) {
+    const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);
+      Task
+        .find({
+          userId : decoded.id
+        })
+        .sort({taskDate: 'asc'})
+        .then((data) => {
+          const task = data.map(data => {
+            const taskContent = {};
+            taskContent.id = data._id;
+            taskContent.name = data.taskName;
+            taskContent.description = data.taskDescription;
+            taskContent.date = String(data.taskDate).slice(4,15);
+            taskContent.status = data.taskStatus;
+            return taskContent;
+          }).filter(task => task.name.includes(req.params.title))
+          res.status(200).json(task)
+        })
+        .catch(err => {
+          res.status(500).json(err)
+        })
+  }
+
+  static getFoodRecommendation(req, res) {
+    const options = {
+      url : 'http://www.recipepuppy.com/api/?q=rice'
+    };
+    request(options, (error, response, body) => {
+      if (error) {
+        res.status(500).json(error)
+      } else {
+        const data = JSON.parse(body);
+        res.status(200).json(data);
+      }
+    })
+  }
+
+  static searchFood(req, res) {
+    const options = {
+      url : `http://www.recipepuppy.com/api/?q=${req.params.name}`
+    };
+    request(options, (error, response, body) => {
+      if (error) {
+        res.status(500).json(error)
+      } else {
+        const data = JSON.parse(body);
+        res.status(200).json(data);
+      }
+    })
+  }
+
+  
 
   static deleteTask(req, res) {
     const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);

@@ -20,7 +20,10 @@
     <ul class="navbar-nav mr-auto">
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <button class="btn btn-danger my-2 my-sm-0 signOut" type="submit" onclick="return signOut()">Log Out</button>
+        <input class="form-control mr-sm-2" type="search" placeholder="Search task" id="search">
+      </form>
+    <form class="form-inline my-2 my-lg-0">
+      <button class="btn btn-primary my-2 my-sm-0 signOut" type="submit">Log Out</button>
     </form>
   </div>
   </nav>
@@ -97,10 +100,30 @@
                             </div>
                             <button type="submit" class="btn btn-primary" id="addTask">Submit</button>
                         </form>
+                        <h5 class="bg-primary text-white rounded text-center mt-4">Filter by Status</h3>
+                          <div class="form-group">
+                              <select class="form-control form-control-sm" id="statusFilter">
+                                  <option value="doing">just started</option>
+                                  <option value="done">finish</option>
+                              </select>
+                          </div>
                     </div>
                 </div>
-                <div class="col-lg-5" id="toDoList">
-                  <h5 class="bg-primary text-white rounded text-center">Task List</h3>
+                <div class="col-lg-5">
+                    <h5 class="bg-primary text-white rounded text-center">Task List</h3>
+                      <div id="toDoList"></div>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="bg-primary text-white rounded text-center">Meal Recommendation</h3>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroup-sizing-sm">Find</span>
+                            </div>
+                            <input type="text" class="form-control" id="searchMeal" placeholder="foods..">
+                        </div>
+                    <div id="mealList">
+
+                    </div>
                 </div>
         </div>
     </div>
