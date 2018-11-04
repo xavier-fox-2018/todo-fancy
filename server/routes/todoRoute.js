@@ -8,7 +8,7 @@ router.get('/',controller.read)
 router.put('/:id',middleware.authenticate,controller.update)
 router.delete('/:id',middleware.authenticate,controller.delete)
 
-router.put('/:id/complete',middleware.authenticate,controller.complete)
-router.put('/:id/uncomplete',middleware.authenticate,controller.uncomplete)
+router.put('/complete/:id',middleware.authenticate,controller.complete)
+router.put('/uncomplete/:id',middleware.authenticate,controller.uncomplete)
 
 module.exports = router

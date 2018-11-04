@@ -5,7 +5,8 @@ const middleware = require('../middlewares/index')
 
 // read di rubah jadi my group saja nanti
 router.get('/',controller.read)
-router.get('/mygroup',middleware.authenticate,controller.mygroup)
+router.get('/mygroups',middleware.authenticate,controller.mygroup)
+router.get('/:id',controller.readOne)
 
 router.post('/',middleware.authenticate,controller.create)
 router.post('/invite',middleware.authenticate,controller.invite)

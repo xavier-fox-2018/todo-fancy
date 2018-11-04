@@ -15,6 +15,21 @@ class Controller {
         })
     }
 
+    static readOne(req,res){
+        Group.findOne({
+            _id : req.params.id
+        })
+        .then((group)=>{
+            res.status(200).json(group)
+        })
+        .catch((err)=>{
+            res.status(500).json({
+                error : err,
+                message : 'Error in getting group data'
+            })
+        })
+    }
+
     static mygroup(req,res){
         Group.find({
             members : req.userId

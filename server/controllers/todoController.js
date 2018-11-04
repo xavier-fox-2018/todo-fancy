@@ -70,31 +70,45 @@ class Controller {
     }
 
     static update(req,res){
-        // let due_date = new Date('2011-04-11T10:20:30Z')
+        if(req.body.name.length < 1 || req.body.description.length < 1){
+            res.status(500).json({
+                message : 'Invalid Name / Description'
+            })
+        }
+
+        let due_date = new Date(req.body.due_date)
+        let today = new Date()
+        if(due_date < today){
+            res.status(500).json({
+                message : 'Invalid Date'
+            })
+        }
 
         Todo.findOneAndUpdate({
             _id : req.params.id
         },{
             name : req.body.name,
             description : req.body.description,
-            // due_date : req.body.due_date
+            due_date : due_date
         })
         .then((updated)=>{
             res.status(200).json({
-                message : 'Update Success',
+                message : 'Edit Task Success',
                 updated : updated
             })
         })
         .catch((err)=>{
             res.status(500).json({
-                message : 'Update Failed',
+                message : 'Edit Task Failed',
                 error : err
             })
         })
     }
 
     static delete(req,res){
-        Todo.findOneAndRemove(req.params.id)
+        Todo.findOneAndRemove({
+            _id : req.params.id
+        })
         .then((resp)=>{
             res.status(200).json({
                 message : `Task deleted`

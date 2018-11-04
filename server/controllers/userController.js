@@ -92,6 +92,22 @@ class Controller {
             })
         })
     }
+
+    static read(req,res){
+        User.findOne({
+            _id : req.userId //dari middleware
+        })
+        .populate('todo_list')
+        .then((profile)=>{
+            res.status(200).json(profile)
+        })
+        .catch((err)=>{
+            res.status(500).json({
+                error : err,
+                message : 'Failed to retrieve user data'
+            })
+        })
+    }
 }
 
 
