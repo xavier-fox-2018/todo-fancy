@@ -54,6 +54,7 @@ function getInboxData(){
 
 function logOut(){
     localStorage.removeItem('token')
+    localStorage.removeItem('userId')
     checkToken()
 }
 
@@ -157,6 +158,8 @@ function getGroup(id){
         
         $(' #selected_group_task_list ').empty()
         let taskList = response.todo_list.reverse()
+
+
         for(let i = 0 ; i < taskList.length ; i ++){
             let status = taskList[i].status
             let option = `<div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="uncompleteTask('${taskList[i]._id}')"><i class="fa fa-times" aria-hidden="true"></i></div>`
@@ -164,6 +167,17 @@ function getGroup(id){
             if(status === false){
                 option2 = ''
                 option = `<div class="btn text-dark winter-neva-gradient rounded ml-2" style="cursor:pointer" onclick="completeTask('${taskList[i]._id}')"><i class="fa fa-check" aria-hidden="true"></i></div>`
+            }
+
+
+            let ownerMenu = ''
+            if(taskList[i].author._id === localStorage.getItem('userId')){
+                console.log('punya saya nih',taskList[i].name)
+                ownerMenu = `
+                    ${option}
+                    <div class="btn text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>
+                    <div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="deleteTask('${taskList[i]._id}')"><i class="fas fa-trash-alt"></i></div>
+                `
             }
 
             $(' #selected_group_task_list ').append(`
@@ -174,9 +188,7 @@ function getGroup(id){
                             <small><strong>Description : </strong>${taskList[i].description} <strong>|</strong> <strong>Due Date :</strong> ${taskList[i].due_date.slice(0,10)}</small> | <small><strong>By :</strong> ${taskList[i].author.name}</small>
                         </div>
                         <div class="col-sm-6 col-md-4" align="right">
-                            ${option}
-                            <div class="btn text-dark dusty-grass-gradient rounded ml-2" style="cursor:pointer" onclick="selectTask('${taskList[i]._id}')" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></div>
-                            <div class="btn text-dark ripe-malinka-gradient rounded ml-2" style="cursor:pointer" onclick="deleteTask('${taskList[i]._id}')"><i class="fas fa-trash-alt"></i></div>
+                            ${ownerMenu}
                         </div>
                     </div>
                 </div>

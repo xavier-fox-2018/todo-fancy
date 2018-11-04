@@ -70,7 +70,8 @@ class Controller {
                     },process.env.secret_key)   
 
                     res.status(200).json({
-                        token : token
+                        token : token,
+                        userId : user._id
                     })
                 }else{
                     res.status(500).json({

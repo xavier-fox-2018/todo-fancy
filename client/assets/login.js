@@ -27,6 +27,7 @@ function login(){
     })
     .done(response=>{
         localStorage.setItem('token',response.token)
+        localStorage.setItem('userId',response.userId)
         checkToken()
     })
     .fail(err=>{
