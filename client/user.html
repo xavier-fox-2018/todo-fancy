@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-signin-client_id" content="1098726616042-vknuh9sb65226gki3u9a6u75ibq90414.apps.googleusercontent.com">
+  <title>Maso</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- ADDITIONAL FONT -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">Maso</a>
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+      <ul class="right hide-on-med-and-down">
+        <li><a class="waves-effect waves-light modal-trigger" id="signOut">Sign Out</a></li>
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <header></header>
+
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!-- ? FLOATING ACTION BUTTON -->
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-large blue modal-trigger" href="#addNewTask">
+      <i class="large material-icons">add</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating red"><i class="material-icons">delete</i></a></li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m3">
+      <!-- ? TITLE -->
+          <h4 class="center-align">Backlog</h4>
+
+      <ul class="collapsible" id="backlogCol">
+      <!-- FORMAT FOR ADDING NEW BACKLOG -->
+        <!-- <li>
+          <div class="collapsible-header">Prepare Interview</div>
+          <div class="collapsible-body">
+            <p>Prepare interview through hackerRank</p>
+            <p class="red-text">12th October 2018</p>
+            <br>
+            <a class="btn-floating waves-effect waves-light red"><i class="material-icons">edit</i></a>
+          </div>
+        </li> -->
+      </ul>
+
+    </div>
+
+    <div class="col s12 m3" >
+      <!-- ? TITLE -->
+      <h4 class="center-align">New</h4>
+
+      <ul class="collapsible" id="newCol">
+        <!-- <li>
+          <div class="collapsible-header">Prepare Interview</div>
+          <div class="collapsible-body">
+            <p>Prepare interview through hackerRank</p>
+            <p class="red-text">12th October 2018</p>
+            <br>
+            <a class="btn-floating waves-effect waves-light red"><i class="material-icons">edit</i></a>
+          </div>
+        </li> -->
+      </ul>
+    
+    </div>
+
+    <div class="col s12 m3">
+      <!-- ? TITLE -->
+      <h4 class="center-align">Progress</h4>
+    
+      <ul class="collapsible" id="progressCol">
+        <!-- <li>
+          <div class="collapsible-header">Prepare Interview</div>
+          <div class="collapsible-body">
+            <p>Prepare interview through hackerRank</p>
+            <p class="red-text">12th October 2018</p>
+            <br>
+            <a class="btn-floating waves-effect waves-light red"><i class="material-icons">edit</i></a>
+          </div>
+        </li> -->
+      </ul>
+    
+    </div>
+
+    <div class="col s12 m3">
+      <!-- ? TITLE -->
+      <h4 class="center-align">Finish</h4>
+    
+      <ul class="collapsible" id="finishCol">
+        <!-- <li>
+          <div class="collapsible-header">Prepare Interview</div>
+          <div class="collapsible-body">
+            <p>Prepare interview through hackerRank</p>
+            <p class="red-text">12th October 2018</p>
+            <br>
+            <a class="btn-floating waves-effect waves-light red"><i class="material-icons">edit</i></a>
+          </div>
+        </li> -->
+      </ul>
+    
+    </div>
+  </div>
+
+  <!-- ? MODAL -->
+  <div id="allTaskUpdate">
+
+  </div>
+  
+  <div id="addNewTask" class="modal">
+    
+    <div class="modal-content center-align">
+      <h4>Add a new task</h4>
+
+    <!-- Error when creating -->
+      <div class="row" id="errorCreateTask">
+        <div class="col s12 card red white-text">
+          <h6>Something went wrong. Try again.</h6>
+        </div>
+      </div>
+
+      <!-- Success when creating -->
+      <div class="row" id="successCreateTask">
+        <div class="col s12 card teal lighten-2 white-text">
+          <h6>Successfully created your new task.</h6>
+        </div>
+      </div>
+  
+      <!-- INPUT FOR SIGNING UP -->
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="name" type="text" class="validate" required>
+          <label for="name">Name</label>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="description" type="text" class="validate" required>
+          <label for="description">Description</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="dueDate" type="text" class="datepicker">
+          <label for="dueDate">Due Date</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <p class="range-field">
+            <input type="range" id="priority" min="0" max="100" />
+          </p>
+          <label for="priority">Priority</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <select id="status">
+            <option value="" disabled selected>Select task status</option>
+            <option value="Backlog">Backlog</option>
+            <option value="New">New</option>
+            <option value="Progress">Progress</option>
+            <option value="Finish">Finish</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="waves-effect waves-green btn-flat" id="submitCreateTask">Create</button>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="closeAddTaskModal">Close</a>
+      </div>
+    </div>
+  </div>
+
+  <main></main>
+
+
+  <!-- ? FOOTER -->
+  <footer class="page-footer red lighten-1">
+    <div class="container">
+      <div class="row">
+        <div class="col l12 s12">
+          <p class="grey-text text-lighten-4"> Hi! 🙏 I built this in an attempt of helping individuals keep track of life.
+            Make good use of it! Thank you.</p>
+          <p class="text-lighten-4 white-text"><a href="https://github.com/senecamanu" target="blank">Git</a> | <a href="https://twitter.com/senecamanu"
+              target="blank">Twit</a> | <a href="https://instagram.com/senecamanu" target="blank">Insta</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="lib/materialize.js"></script>
+  <script src="lib/jqueryUser.js"></script>
+  <script src="lib/init.js"></script>
+
+</body>
+
+</html>

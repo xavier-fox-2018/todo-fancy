@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id" content="665905836331-1niffick4l881gqo4vi8c4crumc44f6i.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <title>Maso</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- ADDITIONAL FONT -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">Maso</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a class="waves-effect waves-light modal-trigger" href="#signUp">Sign Up</a></li>
+        <li><a class="waves-effect waves-light modal-trigger" href="#signIn">Sign In</a></li>
+      </ul>
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <header></header>
+  
+  <!-- Banner -->
+  <div id="index-banner" class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container ">
+        <h1 class="header center black-text text-lighten-2">Quantify your progress. Anytime, anywhere.</h1>
+      </div>
+    </div>
+    <!-- ! This is the example for parallax image -->
+    <!-- <div class="parallax"><img src="background1.jpg" alt="Unsplashed background img 1"></div> -->
+  </div>
+
+  <!-- ? MODALS -->
+  <!-- SIGN UP -->
+  <div id="signUp" class="modal">
+    <div class="modal-content center-align">
+      <h4>Sign Up</h4>
+      <p>Create an account to access your Boards, share it with others, and more.</p>
+
+      <!-- Error when creating -->
+      <div class="row" id="errorCreateAccount">
+        <div class="col s12 card red white-text">
+          <h6>Something went wrong. Try again.</h6>
+        </div>
+      </div>
+
+      <!-- Error because email when creating -->
+      <div class="row" id="errorEmailCreateAccount">
+        <div class="col s12 card red white-text">
+          <h6>Email has been used. Log in instead?</h6>
+        </div>
+      </div>
+
+      <!-- Success when creating -->
+      <div class="row" id="successCreateAccount">
+        <div class="col s12 card teal lighten-2 white-text">
+          <h6>Successfully created your account. Please check your email. 🎉</h6>
+        </div>
+      </div>
+
+      <!-- INPUT FOR SIGNING UP -->
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="first_name" type="text" class="validate" required>
+          <label for="first_name">First Name</label>
+        </div>
+
+        <div class="input-field col s6">
+          <input id="last_name" type="text" class="validate" required>
+          <label for="last_name">Last Name</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="email" type="email" class="validate" required>
+          <label for="email">Email</label>
+          <span class="helper-text" data-error="This is not a valid email" data-success="">We will not share your email.</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="password" type="password" class="validate" required>
+          <label for="password">Password</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="waves-effect waves-green btn-flat" id="submitCreateAccount">Submit</button>
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+
+  <!-- Sign In -->
+  <div id="signIn" class="modal">
+    <div class="modal-content center-align">
+      <h4>Welcome Back.</h4>
+      <p>Sign in to access your personalized Boards.</p>
+
+      <!-- Error when signing in -->
+      <div class="row" id="errorSignIn">
+        <div class="col s12 card red white-text">
+          <h6>Something went wrong. Try again.</h6>
+        </div>
+      </div>
+
+      <div class="row center-align">
+        <div class="g-signin2" data-onsuccess="onSignIn" id="signIn">
+        </div>
+      </div>
+      
+
+      <!-- INPUT FOR SIGNING IN -->
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="emailSignIn" type="email" class="validate" required>
+          <label for="emailSignIn">Email</label>
+          <span class="helper-text" data-error="This is not a valid email" data-success="">Enter your email address</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="passwordSignIn" type="password" class="validate" required>
+          <label for="passwordSignIn">Password</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="waves-effect waves-green btn-flat" id="submitSignIn">Submit</button>
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+
+  <main></main>
+  
+
+  <!-- ? FOOTER -->
+  <footer class="page-footer red lighten-1">
+    <div class="container">
+      <div class="row">
+        <div class="col l12 s12">
+          <p class="grey-text text-lighten-4"> Hi! 🙏 I built this in an attempt of helping individuals keep track of life.
+            Make good use of it! Thank you.</p>
+          <p class="text-lighten-4 white-text"><a href="https://github.com/senecamanu" target="blank">Git</a> | <a href="https://twitter.com/senecamanu" target="blank">Twit</a> | <a href="https://instagram.com/senecamanu" target="blank">Insta</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="lib/materialize.js"></script>
+  <script src="lib/jqueryHome.js"></script>
+  <script src="lib/init.js"></script>
+
+  </body>
+</html>
