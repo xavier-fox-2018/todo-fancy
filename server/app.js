@@ -10,6 +10,7 @@ var todosRouter = require('./routes/todos')
 var cors = require('cors')
 
 var app = express();
+const PORT = process.env.PORT || 3000
 app.use(cors())
 
 // view engine setup
@@ -41,5 +42,8 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`)
+})
 
 module.exports = app;
