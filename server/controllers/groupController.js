@@ -159,9 +159,21 @@ class Controller {
         })
     }
 
-    // khusus admin group nantinya bisa mengeluarkan member
-    static remove(req,res){
-
+    static refuse(req,res){
+        Invitation.findOneAndRemove({
+            _id : req.params.id
+        })
+        .then((resp)=>{
+            res.status(200).json({
+                message : `Invitation Refused`,
+            })
+        })
+        .catch((err)=>{
+            res.status(500).json({
+                error : err,
+                message : 'Refuse Invitation Error'
+            })
+        })
     }
 
 }

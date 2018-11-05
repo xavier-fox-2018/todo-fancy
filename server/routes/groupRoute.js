@@ -11,7 +11,6 @@ router.get('/:id',middleware.authenticate,middleware.isMember,controller.readOne
 router.post('/',middleware.authenticate,controller.create)
 router.post('/invite',middleware.authenticate,middleware.findUser,controller.invite)
 router.post('/accept/:id',middleware.authenticate,controller.accept)
-
-
+router.post('/refuse/:id',middleware.authenticate,controller.refuse)
 
 module.exports = router

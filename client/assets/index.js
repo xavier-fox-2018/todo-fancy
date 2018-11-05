@@ -40,6 +40,7 @@ function getInboxData(){
                         <p class="card-text">You've been invited by <strong>${response[i].sender.name}</strong> to join <strong>${response[i].group.name}</strong> </p>
                         <!-- Button -->
                         <a href="#" class="btn btn-primary" onclick="acceptInvitation('${response[i]._id}')">Accept</a>
+                        <a href="#" class="btn btn-danger" onclick="refuseInvitation('${response[i]._id}')">Refuse</a>
     
                     </div>
     
@@ -429,6 +430,24 @@ function acceptInvitation(id){
     $.ajax({
         method : 'POST',
         url : `${config.port}/groups/accept/${id}`,
+        headers : {
+            token : localStorage.getItem('token')
+        }
+    })
+    .done(response=>{
+        toastr["success"](`${response.message}`)
+        getGroupsData()
+        getInboxData()
+    })
+    .fail(err=>{
+        toastr["error"](`${err.responseJSON.message}`)
+    })
+}
+
+function refuseInvitation(id){
+    $.ajax({
+        method : 'POST',
+        url : `${config.port}/groups/refuse/${id}`,
         headers : {
             token : localStorage.getItem('token')
         }
