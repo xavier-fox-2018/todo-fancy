@@ -11,6 +11,7 @@ class Middleware {
         if(token){
             const decoded = jwt.verify(token, process.env.secret_key);
 
+            // console.log('decoded in middleware',decoded)
             req.userId = decoded.id
             next()
 

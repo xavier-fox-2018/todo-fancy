@@ -6,6 +6,7 @@ class Controller {
     static groupCreate(req,res){
         let due_date = new Date(req.body.due_date)
         let today = new Date()
+        today.setHours(0,0,0,0)
 
         if(req.body.name.length < 1 || req.body.description.length < 1){
             res.status(500).json({
@@ -55,6 +56,8 @@ class Controller {
     static create(req,res){
         let due_date = new Date(req.body.due_date)
         let today = new Date()
+        today.setHours(0,0,0,0)
+
         if(req.body.name.length < 1 || req.body.description.length < 1){
             res.status(500).json({
                 message : 'Invalid Name / Description'

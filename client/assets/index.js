@@ -234,6 +234,7 @@ function addTask(){
         getUserData()
         $(' #add_task_name ').val('')
         $( '#add_task_description' ).val('')
+        $( '#add_task_due_date' ).val('')
     })
     .fail(err=>{
         toastr["error"](`${err.responseJSON.message}`)

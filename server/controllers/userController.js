@@ -64,7 +64,6 @@ class Controller {
             User.findOne({
                 email : pEmail
             },function(err,result){
-                
                 if(result === null){
                     User.create({
                         name : pName,
@@ -77,7 +76,7 @@ class Controller {
                                 message : 'Internal Server Error'
                             })
                         }else{
-                            const token = jwt.sign({_id: response._id, name : response.name , email : response.email},process.env.secret_key)
+                            const token = jwt.sign({id: response._id, name : response.name , email : response.email},process.env.secret_key)
                             res.status(200).json({
                                 token : token,
                                 userId : response._id
@@ -89,7 +88,7 @@ class Controller {
                         message : 'Internal Server Error'
                     })
                 }else{
-                    const token = jwt.sign({_id: result._id, name : result.name , email : result.email},process.env.secret_key)
+                    const token = jwt.sign({id: result._id, name : result.name , email : result.email},process.env.secret_key)
                     res.status(200).json({
                         token : token,
                         userId : result._id

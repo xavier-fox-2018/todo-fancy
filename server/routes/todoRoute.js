@@ -2,7 +2,7 @@ const router = require('express').Router()
 const controller = require('../controllers/todoController')
 const middleware = require('../middlewares/index')
 
-router.post('/group/:id',middleware.authenticate,middleware.isMember,controller.groupCreate)
+router.post('/group/:id',middleware.authenticate,controller.groupCreate)
 router.post('/',middleware.authenticate,controller.create)
 router.get('/:id',controller.readOne)
 router.get('/',controller.read)
