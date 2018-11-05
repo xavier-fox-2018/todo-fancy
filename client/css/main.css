@@ -1,0 +1,103 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: black;
+  color:rgb(167, 161, 161);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#left {
+  width:40%;
+  background-color: aliceblue;
+  display: inline-flex;
+}
+#right {
+  width:50%;
+  background-color: rgb(57, 109, 109);
+  display: inline-flex;
+
+}
+/* Add padding to containers */
+.container {
+  padding: 16px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit button */
+.registerbtn {
+  background-color: rgb(76, 139, 175);
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.registerbtn:hover {
+  opacity: 1;
+}
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+}
+.red {
+  background-color:red;
+}
+.yellow {
+  background-color:yellow;
+}
+.green {
+  background-color:green;
+}
+.btn {
+  background-color: rgb(253, 123, 123);
+  border: none;
+  color: white;
+  padding: 18px 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: rgb(247, 52, 52);
+}

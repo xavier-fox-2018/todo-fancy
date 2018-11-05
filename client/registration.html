@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="./css/main.css" rel="stylesheet" type="text/css">
+
+<!-- load jquery script from google cdn -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<form id="registration">
+  <div class="container">
+    <h1>Register</h1>
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+
+    <label for="name"><b>name</b></label>
+    <input type="text" placeholder="Enter Full name" id="name" required>
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" id="email" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" id="password" required>
+
+    <label for="password-repeat"><b>Repeat Password</b></label>
+    <input type="password" placeholder="Repeat Password" id="password-repeat" required>
+    <hr>
+
+    <button type="submit" class="registerbtn" >Register</button>
+  </div>
+  
+  <div class="container signin">
+    <p>Already have an account? <a href="signIn.html">Sign in</a>.</p>
+  </div>
+  <p id="msg"></p>
+</form>
+  <script>
+    $("document").ready( () => {
+      $("#registration").submit( () => {
+        const formData ={
+        "name" : $("#name").val(),
+        "email" : $("#email").val(),
+        "password": $("#password").val(),
+        "repeat": $("#password-repeat").val()
+        }
+        if(formData.password !== formData.repeat) {
+          $("#msg").html('passwords do not match');
+        }
+        else{
+          $.post("http://localhost:3000/register", formData)
+          .then( res => {
+            localStorage.setItem ("token", res.token)
+            localStorage.setItem ("auth", res.auth)
+            $("#msg").html('success! Redirecting you to main page...');
+            setTimeout( function () {
+              window.location.replace("http://localhost:8080/main.html")},
+              1000)
+          })
+          .catch( err => {
+            $("#msg").html(err.responseJSON.msg);
+          })
+        }
+        return false;
+      })
+  })
+
+  </script>
+
+</body>
+</html>
