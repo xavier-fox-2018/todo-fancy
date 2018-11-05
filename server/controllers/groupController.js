@@ -44,7 +44,10 @@ class Controller {
             res.status(200).json(resp)
         })
         .catch((err)=>{
-            res.status(500).json(err)
+            res.status(500).json({
+                err : error,
+                message : 'Failed To Get User Group Data'
+            })
         })
     }
 
@@ -90,7 +93,7 @@ class Controller {
         })
         .then((created)=>{
             res.status(200).json({
-                message : 'Invite success',
+                message : 'Invitation Sent',
                 created : created
             })
         })

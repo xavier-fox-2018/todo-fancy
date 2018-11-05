@@ -63,12 +63,12 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{ error : "Log in" , message : "Login Error" }`
 
-  OR (if body password does not match password stored in database)
+    OR (if body password does not match password stored in database)
 
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:** `{ message : "Invalid Password" }`
 
-  OR (if body email and password length is less than 4)
+    OR (if body email and password length is less than 4)
 
   * **Code:** 422 UNPROCESSABLE ENTRY <br />
     **Content:** `{ message : "Invalid Email / Password" }`
@@ -89,7 +89,10 @@
    **Required:**
  
    `id=[string]`
-   
+
+*  **Headers**
+    `access token`
+
 * **Data Params**
 
   {name : 'name' , description : 'description' , due_date : '2018-11-11'}
@@ -116,6 +119,8 @@
 
   | `POST` |
   
+*  **Headers**
+    `access token`
 
 * **Data Params**
 
@@ -197,6 +202,9 @@
  
    `id=[string]`
 
+*  **Headers**
+    `access-token`
+
 * **Data Params**
 
   `{ _id : 1234567890 , name : "name" , description : "description" , due_date : 2018-12-12 , status : false }`
@@ -228,6 +236,9 @@
  
    `id=[string]`
 
+*  **Headers**
+    `access-token`
+
 * **Success Response:**
 
   * **Code:** 200 <br />
@@ -254,6 +265,9 @@
    **Required:**
  
    `id=[string]`
+
+*  **Headers**
+    `access-token`
 
 * **Success Response:**
 
@@ -282,6 +296,9 @@
  
    `id=[string]`
 
+*  **Headers**
+    `access-token`
+
 * **Success Response:**
 
   * **Code:** 200 <br />
@@ -291,6 +308,187 @@
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{ message : "Uncomplete task failed (error)" }`
+
+**READ USER GROUP**
+----
+
+* **URL**
+
+  /groups/mygroup
+
+* **Method:**
+
+  | `GET` |
+
+* **headers:**
+ 
+   `access-token`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `[{ groups data }]`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Failed To Get User Group Data" }`
+
+**READ GROUP INVITATION**
+----
+
+* **URL**
+
+  /groups/myinvitation
+
+* **Method:**
+
+  | `GET` |
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[integer]`
+
+*   **headers:**
+ 
+    `access-token`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `[{ invitation data }]`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Error getting group invitation list" }`
+
+**CREATE GROUP**
+----
+
+* **URL**
+
+  /groups
+
+*  **headers:**
+ 
+    `access-token`
+
+* **Method:**
+
+  | `POST` |
+
+* **Data Params**
+
+  `{ name : "group name" , group : "group id" }`
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:** `{ created : { name : "group name" , sender : "sender id" , receiver : "receiver id" , group : "group id" , status : false } , message : "create group success" }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "create group failed" }`
+
+**SEND GROUP INVITATION**
+----
+
+* **URL**
+
+  /groups/invite
+
+* **Method:**
+
+  | `POST` |
+  
+*  **Headers**
+
+   `access-token`
+
+* **Data Params**
+
+  `{ invited : "invited email"}`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ message : "Invitation Sent" }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 <br />
+    **Content:** `{ message : "Invitation Error" }`
+
+**ACCEPT GROUP INVITATION**
+----
+
+* **URL**
+
+  /groups/accept/:id
+
+* **Method:**
+  | `POST` |
+  
+*  **Headers**
+
+   `access-token`
+
+*  **Url Parameter**
+
+   **Required:**
+ 
+   `id=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ messsage : "You are now member of 'group name' " }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 <br />
+    **Content:** `{ message : "Error in adding member to 'group name' " }`
+
+**REFUSE GROUP INVITATION**
+----
+
+* **URL**
+
+  /groups/refuse/:id
+
+* **Method:**
+
+  | `POST` |
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[string]`
+
+*   **Headers**
+    `access-token`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ message : 'group invitation refused' }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 <br />
+    **Content:** `{ message : "Refuse Invitation Error" }`
+
+
+
+
+
+
+
 
 
 
