@@ -17,14 +17,14 @@ class Controller {
 
         // cek panjang input name dan password
         if(checkname < 4 || checkpassword < 4){
-            res.status(400).json({
+            res.status(422).json({
                 message : 'Minimum name & password length is 4'
             })
         }
 
         // cek format email
         if(checkemail !== true){
-            res.status(400).json({
+            res.status(422).json({
                 message : 'Invalid email format'
             })
         }
@@ -101,7 +101,7 @@ class Controller {
 
     static login(req,res){
         if(req.body.email.length < 1 || req.body.password.length < 1){
-            res.status(500).json({
+            res.status(422).json({
                 message : 'Invalid Email / Password'
             })
         }
@@ -124,7 +124,7 @@ class Controller {
                         userId : user._id
                     })
                 }else{
-                    res.status(500).json({
+                    res.status(401).json({
                         message : 'Invalid Password'
                     })
                 }
@@ -132,14 +132,14 @@ class Controller {
             .catch((err)=>{
                 res.status(500).json({
                     error : err,
-                    message : 'Internal Server Error'
+                    message : 'Login Failed'
                 })
             })
         })
         .catch((err)=>{
             res.status(500).json({
                 error : err,
-                message : `Invalid Email`
+                message : `Login Error`
             })
         })
     }

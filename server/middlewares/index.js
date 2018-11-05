@@ -15,7 +15,7 @@ class Middleware {
             next()
 
         }else{
-            res.status(400).json({
+            res.status(401).json({
                 message : 'token not found'
             })
         }
@@ -50,7 +50,7 @@ class Middleware {
             if(task.author._id.toString() === req.userId){
                 next()
             }else{
-                res.status(500).json({
+                res.status(401).json({
                     message : `You can't modify other user task`
                 })
             }
