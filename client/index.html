@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Google sign -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="734390765280-4bf89rstta5m37o65l3q5a51gcdq5bkn.apps.googleusercontent.com">
+
+    <!--Jquery-->
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
+    </script>
+
+    <!-- Bootsrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</head>
+<body> 
+        <nav class=" navbar navbar-expand-lg  navbar-light bg-dark ">
+            <div class="container">
+                    <a class="navbar-brand mr-auto text-white" href="#">Todo App</a>
+                    <a href="#" class="navbar-brand" style="display:none" id="user-profile">
+                        <img src="" alt="">
+                    </a>
+        
+                    <ul class="list-unstyled">
+                        <li class="list-inline">  <div class="btn g-signin2 my-2" data-onsuccess="onSignIn" id="google-signin-button"></div> </li>
+                        <li class="list-inline"> <a href="#" onclick="signOut();" style="display:none" id="google-sign-out-button">Sign out</a> </li>
+                    </ul>
+            </div>  
+        </nav>
+
+        <div class="jumbotron text-center" id="jumbotron">
+            <div class="container">
+                <h1> Welcome</h1>
+                <p> Let's Manage Your Activity with Todo List</p>
+            </div>
+        </div>
+        <div id="error" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none">
+                <span id="message-error"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        <div id = "todo" style="display:none">
+
+            <div class="container" id="form-add-todo">
+                    <div id="error-create" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none">
+                        <span id="message-error-create"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <form >
+                    <div class="alert alert-primary">What's New?</div>
+                    <div class="form-group">
+                        <label> Name : </label>
+                        <input type="text" class="form-control" placeholder="name" id ="name-form-add-todo"/>
+                    </div>
+                    <div class="form-group">
+                        <label> Description : </label>
+                        <textarea class="form-control" placeholder="description" id="description-form-add-todo"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label> Due Date : </label>
+                       <input type="date" class="form-control" id="due_status-form-add-todo">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="button" id = "btn-create-todo"> Add Todo</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="container">
+                <div class="alert alert-primary"id="todo-list">Todo List</div>
+                <p id="empty-todo" class="bg-default"></p>
+                
+                <ul class="list-group" id="todo-list">
+                    
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="modal " id="mytodo">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        What's Happen?
+                    </div>
+        
+                    <div class="modal-body">
+                            <div id="error-update" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none">
+                                    <span id="message-error-update"></span>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+            
+                            <form >
+                                    <input type="hidden" id="todo-id">
+                                    <div class="form-group">
+                                        <label> Name : </label>
+                                        <input type="text" class="form-control" placeholder="name" id ="name-modal-update-todo"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label> Description : </label>
+                                        <textarea class="form-control" placeholder="description" id="description-modal-update-todo"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label> Due Date : </label>
+                                       <input type="date" class="form-control" id="due_status-modal-update-todo">
+                                    </div>
+                                </form>
+                    </div>
+                    <div class="footer">
+                        <button class="btn btn-warning" type="button" id="btn-update-todo"> Update</button>
+                        <button class="btn btn-primary" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+    
+    <script src="./javascript.js"></script>
+    <script src="./errorHandler.js"></script>
+  
+    
+    
+    
+</body>
+</html>
