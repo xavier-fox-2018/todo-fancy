@@ -23,7 +23,6 @@ class TaskController {
             UserId: req.params.UserId
         })
             .then(function(resolve) {
-                console.log(resolve)
                 res.status(201).json(resolve)
             })
             .catch(function(reject) {
