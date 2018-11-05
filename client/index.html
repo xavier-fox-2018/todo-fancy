@@ -14,10 +14,10 @@
   crossorigin="anonymous"></script>
   <title>Document</title>
   <link rel="stylesheet" href="style.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-  <p>Heyyyyy</p>
          
   <div id="loginPage" class="container">
     <!-- <p id="choba"></p> -->
@@ -79,6 +79,21 @@
     </div>
   </div>
     
+  <div id="mainPage">
+
+    <div id="sideBarNav">
+      <ul class="sidebar">
+        <li class="sidebar-brand" style="font-size: 30px;"><a >Todo</a></li>
+        <li><a >Add Todo</a></li>
+        <li><a >My List</a></li>
+        <li><a >My Incompleted List</a></li>
+        <li><a >My Completed List</a></li>
+        <li><a >My Groups</a></li>
+        <li><a >Logout</a></li>
+      </ul>
+    </div>
+
+  </div>
 
   <script>
 
@@ -88,6 +103,8 @@
       
     //   $('#loginPage').hide()
     // }
+
+    $('#mainPage').hide()
 
 
     const inP = $('.input-field');
@@ -198,6 +215,7 @@
           console.log('Logged in Successfully', result)
           localStorage.setItem('token', result.token)
           $('#loginPage').hide()
+          $('#mainPage').show()
 
         })
         .fail(err => {
