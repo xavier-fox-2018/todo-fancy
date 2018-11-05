@@ -40,6 +40,8 @@ function doneTodo(_id){
 }
 
 function showTodo(todo){
+  
+
     let bg = null
                     if( todo.status ) {
                         bg = 'bg-success'
@@ -70,6 +72,32 @@ function showTodo(todo){
 
                     $("#todo-list").append(todoHtml)
 }
+
+function reaload (){
+    $("#todo-list").empty()
+    $.ajax({
+        method : 'GET',
+        url : 'http://localhost:3000/todo',
+        headers : {
+            jtoken : localStorage.getItem('token')
+        }
+    })
+    .done( user => {
+        let todoes = user.todoes
+        if( todoes.length === 0 ){
+            $("#empty-todo").text('your todo is empty')
+        }else{
+            user.todoes.forEach(todo => {
+                showTodo(todo)
+            })
+        }
+       
+       $("#todo").show()
+    })
+    .fail( error => {
+        showerror(error)
+    })
+}
 function onSignIn(googleUser) {
     var gtoken = googleUser.getAuthResponse().id_token;
     
@@ -85,28 +113,7 @@ function onSignIn(googleUser) {
         $("#google-signin-button").hide()
         $("#google-sign-out-button").show()
         
-        $.ajax({
-            method : 'GET',
-            url : 'http://localhost:3000/todo',
-            headers : {
-                jtoken : localStorage.getItem('token')
-            }
-        })
-        .done( user => {
-            let todoes = user.todoes
-            if( todoes.length === 0 ){
-                $("#empty-todo").text('your todo is empty')
-            }else{
-                user.todoes.forEach(todo => {
-                    showTodo(todo)
-                })
-            }
-           
-           $("#todo").show()
-        })
-        .fail( error => {
-            showerror(error)
-        })
+        reaload()
     })
     .catch( error => {
       showerror(error, 'error')
@@ -182,14 +189,19 @@ $("#btn-update-todo").click(function(){
         }
     })
     .done( response => {
+        //$("#btn-update-todo").attr('data-dismiss','modal')
         console.log('succes update')
-        $(`li#${response._id}`).children("h3").text(response.name)
-        $(`li#${response._id}`).children("p").text(response.description)
-        $(`li#${response._id}`).children("input").val(response.due_status)
-        $(`li#${response._id}`).children(".list-inline").children(".btn btn-warning").data('name',response.name)
-        $(`li#${response._id}`).children(".list-inline").children(".btn btn-warning").data('due_status',response.due_status)
-        $(`li#${response._id}`).children(".list-inline").children(".btn btn-warning").data('description',response.description)
-        $("#mytodo").hide()
+        //$(`li#${response._id}`).children("h3").text(response.name)
+        //$(`li#${response._id}`).children("p").text(response.description)
+        //$(`li#${response._id}`).children("input").val(response.due_status)
+        //$(`li#${response._id}`).children(".list-inline").children(".btn btn-warning").data('name',response.name)
+        //$(`li#${response._id}`).children(".list-inline").children(".btn btn-warning").data('due_status',response.due_status)
+        //$(`li#${response._id}`).children(".list-inline").children(".btn btn-warning").data('description',response.description)
+        reaload()
+        $("#mytodo").modal('toggle')
+        //console.log($(`li#${response._id}`).children(".list-inline").children(".btn btn-warning").attr().each(i))
+       
+       
 
     })
     .fail( error => {
