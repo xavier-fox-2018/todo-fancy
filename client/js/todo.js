@@ -1,7 +1,14 @@
 $(document).ready(() => {
     tokenReady()  
     getData()
+    onLoad()
 })
+
+function onLoad() {
+    gapi.load('auth2', function() {
+      gapi.auth2.init();
+    });
+  }
 
 function getStatus(data) {
     if (data === true) {
@@ -69,14 +76,18 @@ function signOut() {
     auth2.signOut().then(function () {
       console.log('User signed out.');
       localStorage.removeItem('token')
+    //   console.log('hahah')
       tokenReady()
     });
 }
+
+
 
 function tokenReady() {
     let token = localStorage.getItem('token')
     if (!token) {
         location.replace('index.html')
+        $('#logoutsss').hide()
     }
 }
 
@@ -100,13 +111,13 @@ function createTodo() {
         }
     })
     .done((response) => {
-        console.log(response)
+        // console.log(response)
         $('#alert').addClass('alert alert-success')
         $('#alert').text(response.message)
         getData()
     })
     .fail((err) => {
-        console.log(err)
+        // console.log(err)
         $('#alert').addClass('alert alert-danger')
         $('#alert').text(err.responseJSON.message)
     })
@@ -147,7 +158,8 @@ function complete(id) {
     })
     .fail((err) => {
         $('#alert').addClass('alert alert-danger')
-        $('#alert').text(err.responseJSON.message)
+        $('#alert').text(err)
+        console.log(err.responseJSON.err)
         getData()
     })
 }

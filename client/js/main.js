@@ -64,6 +64,7 @@ $('#log-btn').click(function(){
     .done(function(response){
         localStorage.setItem('token', response.token)
         location.replace('/todo.html')
+        tokenReady()
     })
     .fail(function(err){
         console.log(err)
@@ -80,8 +81,9 @@ function onSignIn(googleUser) {
         }
     })
     .done((response) => {
-        localStorage.setItem('token', response.token)
-        console.log(response)
+        localStorage.setItem('token', response.token)   
+        location.replace('/todo.html')     
+        tokenReady()       
     })
     .fail((err) => {
         console.log(err)
@@ -94,14 +96,16 @@ function signOut() {
     auth2.signOut().then(function () {
       console.log('User signed out.');
       localStorage.removeItem('token')
+    //   console.log('hahah')
       tokenReady()
     });
 }
 
 function tokenReady() {
     let token = localStorage.getItem('token')
-    if (!token) {
-       
-        $('.logout').hide()
+    if (!token) {       
+        $('#logoutsss').hide()
+    } else {
+        $('#logoutsss').show()
     }
 }
