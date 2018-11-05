@@ -13,6 +13,9 @@ const todoSchema = new Schema({
     status: {
         type: Boolean
     },
+    due_date: {
+        type: Date
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'

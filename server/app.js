@@ -9,7 +9,8 @@ const express = require('express'),
 
 mongoose.connect(dbURI, {useNewUrlParser: true})
 
-const userRouter = require('./routes/user')
+const userRouter = require('./routes/user'),
+      todoRouter = require('./routes/todo')
 
 app
     .use(express.urlencoded({ extended: false}))
@@ -18,6 +19,7 @@ app
     .use(cors())
 
     .use('/', userRouter)
+    .use('/todo', todoRouter)
 
     .listen(port, () => {
         console.log(`I'm running on port ${port}!`);
