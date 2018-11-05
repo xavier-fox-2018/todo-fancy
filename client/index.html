@@ -1,206 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+         
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="18229040173-c8cnia2v4jseslvf2j3j7m6vj8v2vbvk.apps.googleusercontent.com">
 
-    <script src="https://apis.google.com/js/platform.js" async defer></script>    
-    <meta name="google-signin-client_id" content="979670119297-hp7u69ln771ajeh094nv6p2cu4bblvv4.apps.googleusercontent.com">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>Document</title>
-    <script
-    src="https://code.jquery.com/jquery-3.3.1.js"
-    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
-            <a class="navbar-brand">HacktivGit</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+  <p>Heyyyyy</p>
+         
+  <div id="loginPage" class="container">
+    <!-- <p id="choba"></p> -->
+    <div class="formBox level-login">
+      <div class="box boxShaddow"></div>
             
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Disabled</a>
-                    </li>
-                </ul>
-
-                <div id="gsignin" class="g-signin2" data-onsuccess="onSignIn"></div>
-                <a id="gsignout" href="#" onclick="signOut();">Sign out</a>
-
+      <div class="box loginBox">
+        <h2>LOGIN</h2>
+        <form class="form">
+          <div class="f_row">
+            <label>Email</label>
+            <input type="text" class="input-field" id="emailLogin" required>
+            <u></u>
+          </div>
+            <div class="f_row last">
+              <label>Password</label>
+              <input type="password" class="input-field" id="passwordLogin" required>
+              <u></u>
             </div>
-        </nav>
+            <button class="btn" onclick="login($(emailLogin).val(), $(passwordLogin).val())"><span>LOGIN</span><u></u>
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 415.582 415.582" xml:space="preserve">
+                <path d="M411.47,96.426l-46.319-46.32c-5.482-5.482-14.371-5.482-19.853,0L152.348,243.058l-82.066-82.064
+                    c-5.48-5.482-14.37-5.482-19.851,0l-46.319,46.32c-5.482,5.481-5.482,14.37,0,19.852l138.311,138.31
+                    c2.741,2.742,6.334,4.112,9.926,4.112c3.593,0,7.186-1.37,9.926-4.112L411.47,116.277c2.633-2.632,4.111-6.203,4.111-9.925
+                    C415.582,102.628,414.103,99.059,411.47,96.426z"/>
+              </svg>
+            </button>
+        </form>
+      </div>
+             
+      <div class="box registerBox">
+        <span class="reg_bg"></span>
+        <h2>Register</h2>
+        <form class="form">
+          <div class="f_row">
+            <label>Username</label>
+            <input type="text" class="input-field" id="nameRegister" required>
+            <u></u>
+          </div>
+          <div class="f_row">
+            <label>Email</label>
+            <input type="text" class="input-field" id="emailRegister" required>
+            <u></u>
+          </div>
+          <div class="f_row last">
+            <label>Password</label>
+            <input type="password" class="input-field" id="passwordRegister" required>
+            <u></u>
+          </div>
+          <button class="btn-large" onclick="register($(nameRegister).val(), $(emailRegister).val(), $(passwordRegister).val())">REGISTER</button>
+        </form>
+      </div>
+      <a href="#" class="regTag icon-add">
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 357 357" style="enable-background:new 0 0 357 357;" xml:space="preserve">
+          <path d="M357,204H204v153h-51V204H0v-51h153V0h51v153h153V204z"/>
+        </svg>
+      </a>
+      
+    </div>
+  </div>
+    
 
-        <div class="main-box">
-            <div class="row">
-                <div class="col-lg-2 justify-content-center" >
-                    <div class="card">
-                        <div class="card-header text-center">
-                            <h4>Users</h4>
-                        </div>
-                        <div class="card-body">
-                            <button class="btn btn-light try" type="button" id="user">IndiraDayo</button>
-                            <button class="btn btn-light try" type="button" id="user">pputra</button>
-                            <button class="btn btn-light try" type="button" id="user">esadeli</button>
-                            <button class="btn btn-light try" type="button" id="user">aliyanamu</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header justify-content-between">
-                                <input id="mySearch" class="form-control mr-sm-2" type="search" placeholder="search repo" aria-label="Search">
-                                    
-                            </div>
-                        <div class="card-body justify-content-between" id="repolist">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">  
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Detail</h4>
-                        </div>
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore animi dignissimos, perferendis deserunt neque qui modi dolores ullam quia ipsam eveniet reprehenderit quae porro commodi ducimus nisi aperiam sequi corrupti?
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <script>
+
+    // const tokenExists = localStorage.getItem('token')
+    // if(token) {
+    //   console.log('ada');
+      
+    //   $('#loginPage').hide()
+    // }
 
 
-    <script>
-        $( "#gsignout" ).hide()
+    const inP = $('.input-field');
 
-        function onSignIn(googleUser) {
-            var id_token = googleUser.getAuthResponse().id_token;
-            console.log(id_token);
-
-            $.ajax({
-                method: 'POST',
-                url: 'http://localhost:3000/gsignin',
-                headers: {
-                    gtoken: id_token
-                }
-            })
-            .done(result => {
-                // alert('Data Saved:', msg)
-                console.log('kirim data nihh: ', result);
-                localStorage.setItem('token', result.token)
-
-                $( "#gsignout" ).show()
-                $( "#gsignin" ).hide()
-            })
-            .fail(err => {
-                console.log(err);
-            })
+    inP.on('blur', function () {
+        if (!this.value) {
+            $(this).parent('.f_row').removeClass('focus');
+        } else {
+            $(this).parent('.f_row').addClass('focus');
         }
+    }).on('focus', function () {
+        $(this).parent('.f_row').addClass('focus');
+        $('.btn').removeClass('active');
+        $('.f_row').removeClass('shake');
+    });
 
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('User signed out.');
-            });
 
-            $( "#gsignout" ).hide()
-            $( "#gsignin" ).show()
+    // $('.resetTag').click(function(e){
+    //     e.preventDefault();
+    //     $('.formBox').addClass('level-forget').removeClass('level-reg');
+    // });
 
-            localStorage.removeItem('token')
+    // $('.back').click(function(e){
+    //     e.preventDefault();
+    //     $('.formBox').removeClass('level-forget').addClass('level-login');
+    // });
+
+
+
+    $('.regTag').click(function(e){
+        e.preventDefault();
+        $('.formBox').removeClass('level-reg-revers');
+        $('.formBox').toggleClass('level-login').toggleClass('level-reg');
+        if(!$('.formBox').hasClass('level-reg')) {
+            $('.formBox').addClass('level-reg-revers');
         }
+    });
 
-
-
-        // $("#mySearch").on("keyup", function() {
-        //     var value = $(this).val().toLowerCase();
-        //     $("#repolist button").filter(function() {
-        //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        //     });
-        // });
-
-
-        // $(document).ready( function() {
-        function starredRepo() {
-            $.ajax({
-                method: 'GET',
-                url: 'http://localhost:3000/user/repos/starred',
-                headers: {
-                    token: localStorage.getItem('token')
-                }
-            })
-                .done(result => {
-                    console.log('masuk ajax');
-                    
-                    console.log(result);
-                    $('#repolist').empty()
-                    let data = result.data
-                    data.forEach(oneData => {
-                        $('#repolist').append(
-                            `
-                            <button class="btn btn-light try" type="button">${oneData.name}</button>
-                            
-                            `
-                        )
-                    })
-                })
-                .fail(err => {
-                    console.log(err);
-                    
-                })
+    $('.btn').each(function() {
+        $(this).on('click', function(e){
+            e.preventDefault();
+            let finp =  $(this).parent('form').find('input');
+        
+            console.log(finp.html());
+        
+            if (!finp.val() == 0) {
+                $(this).addClass('active');
             }
-            // })
+            
+            setTimeout(function () {
+                
+                inP.val('');
+                
+                $('.f_row').removeClass('shake focus');
+                $('.btn').removeClass('active');
+                
+            }, 2000);
+            
+            if(inP.val() == 0) {
+                inP.parent('.f_row').addClass('shake');
+            }
+            
+            //inP.val('');
+            //$('.f_row').removeClass('focus');
+            
+        });
+    });
 
-            // $(document).ready( function() {
-                $.ajax({
-                    method: 'GET',
-                    url: 'http://localhost:3000/user/repos/starred'
-                })
-                    .done(result => {
-                        console.log('masuk ajax');
-                        
-                        console.log(result);
-                        $('#repolist').empty()
-                        let data = result.data
-                        data.forEach(oneData => {
-                            $('#repolist').append(
-                                `
-                                <button class="btn btn-light try" type="button">${oneData.name}</button>
-                                
-                                `
-                            )
-                        })
-                    })
-                    .fail(err => {
-                        console.log(err);
-                        
-                    })
-            // })
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+    function register(inputName, inputEmail, inputPassword) {
+
+      console.log('ini loh data nya register', inputName, inputEmail, inputPassword);
+      
+      $.ajax({
+        method: 'POST',
+        url: `http://localhost:3000/register`,
+        data: {
+            name: inputName,
+            email: inputEmail,
+            password: inputPassword
+        }
+      })
+        .done(result => {
+          console.log('Registered Successfully');
+          
+          
+        })
+        .fail(err => {
+          console.log(err);
+            
+        })
+    }
+
+    function login(inputEmail, inputPassword) {
+
+      console.log('ini loh data nya login', inputEmail, inputPassword);
+
+      $.ajax({
+        method: 'POST',
+        url: `http://localhost:3000/login`,
+        data: {
+            email: inputEmail,
+            password: inputPassword
+        }
+      })
+        .done(result => {
+          console.log('Logged in Successfully', result)
+          localStorage.setItem('token', result.token)
+          $('#loginPage').hide()
+
+        })
+        .fail(err => {
+          console.log(err);
+            
+        })
+    }
+
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

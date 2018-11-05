@@ -2,32 +2,23 @@ require('dotenv').config()
 const express = require('express'),
       cors = require('cors'),
       mongoose = require('mongoose'),
-      db = mongoose.connection,
-      
       port = process.env.PORT || 3000,
-      app = express()
 
+      app = express(),
+      dbURI = `mongodb://${process.env.dbuser}:${process.env.dbpassword}@ds145093.mlab.com:45093/todo`
 
-mongoose.connect('mongodb://localhost:27017/hacktivGit', {useNewUrlParser:true})
+mongoose.connect(dbURI, {useNewUrlParser: true})
 
-db
-    .on('error', console.error.bind(console, 'database connection error:'))
-    .once('open', function() {
-        console.log('database connected')
-    });
-
-const gitRouter = require('./routes/git'),
-      googleSigninRouter = require('./routes/googlesignin')
+const userRouter = require('./routes/user')
 
 app
-    .use(express.urlencoded({ extended:false }))
+    .use(express.urlencoded({ extended: false}))
     .use(express.json())
+
     .use(cors())
 
-    .use('/user/repos', gitRouter)
-    .use('/gsignin', googleSigninRouter)
+    .use('/', userRouter)
 
     .listen(port, () => {
-        console.log(`I'm listening to port ${port}`)   
+        console.log(`I'm running on port ${port}!`);
     })
-
