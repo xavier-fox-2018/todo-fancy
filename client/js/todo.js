@@ -46,10 +46,11 @@ function getData() {
     .done((response) =>{
         if (response.length >0) $('#placeholder').remove()
         $('.datas').remove()
+        let i = 1;
         response.forEach(data => {
             $('#tableContent').append(`
             <tr class ="datas">
-                <th scope="row">1</th>
+                <th scope="row">${i}</th>
                     <td>${data.title}</td>
                     <td>${data.description}</td>
                     <td>${getDate(data.dueDate)}</td>
@@ -64,6 +65,7 @@ function getData() {
                 <td></td>
             </tr>
         `)
+        i++;
         });       
     })
     .fail((err) => {
