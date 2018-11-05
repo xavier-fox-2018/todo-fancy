@@ -6,7 +6,7 @@ const middleware = require('../middlewares/index')
 router.get('/mygroups',middleware.authenticate,controller.mygroup)
 router.get('/myinvitation',middleware.authenticate,controller.myinvitation)
 
-router.get('/:id',middleware.authenticate,controller.readOne)
+router.get('/:id',middleware.authenticate,middleware.isMember,controller.readOne)
 
 router.post('/',middleware.authenticate,controller.create)
 router.post('/invite',middleware.authenticate,middleware.findUser,controller.invite)
