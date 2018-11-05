@@ -54,8 +54,6 @@
   {'email' : 'email@mail.com' , 'password' : 'password'}
 
 * **Success Response:**
-  
-  
 
   * **Code:** 200 <br />
     **Content:** `{ token : "asdfasdf1243423asdfasdf" , userId : "asdfasdfasdfasdf123123414" }`
@@ -74,6 +72,38 @@
 
   * **Code:** 422 UNPROCESSABLE ENTRY <br />
     **Content:** `{ message : "Invalid Email / Password" }`
+
+**CREATE GROUP TASK**
+----
+
+* **URL**
+
+  /todos/group/:id
+
+* **Method:**
+
+  | `POST` |
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[string]`
+   
+* **Data Params**
+
+  {name : 'name' , description : 'description' , due_date : '2018-11-11'}
+
+* **Success Response:**
+  
+
+  * **Code:** 200 <br />
+    **Content:** `{ message : "Add Task Success" , {name : 'name' , description : 'description' , due_date : '2018-11-11'} }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Create Task Failed" }`
 
 **CREATE TASK**
 ----
@@ -102,7 +132,6 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{ message : "Create Task Failed" }`
 
-
 **READ TASKS**
 ----
 
@@ -111,8 +140,6 @@
   /todos
 
 * **Method:**
-  
-  <_The request type_>
 
   | `GET` |
 
