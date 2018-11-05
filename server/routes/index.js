@@ -15,7 +15,7 @@ const cors = require('cors')
 // Middleware 
 
 routes.use('/main', verifyToken)
-routes.use("/main", Task.getAll)
+routes.get("/main", Task.getAll)
 routes.post("/main/getOne", Task.getOne)
 routes.post("/main/create", Task.create)
 routes.post("/main/edit", Task.update)

@@ -13,8 +13,8 @@
     <h1> Welcome to Your To-Do-App </h1>
     <div>
       <a href=#></a>
-      
       <button id="signOut"> Sign Out</button>
+      <button id="createButton"><i class="fa fa-pencil"></i></button>
     </div>
   </header>
   <main>
@@ -107,6 +107,15 @@
         $('#newTask')[0].reset();
         $("#right").empty();
         for ( let task=0; task<data.length; task++) {
+          let formatDate = new Date(data[task].due);
+              let month = formatDate.getMonth()+1;
+              let dt = formatDate.getDate();
+              if (dt < 10) {
+                dt = '0' + dt;
+              }
+              if (month < 10) {
+                month = '0' + month;
+              }
           let result ="";
           result +=`<div class="task" id="${data[task]._id}">
                     <div class="details">
@@ -118,7 +127,7 @@
                         <button class="btn"><i class="fa fa-calendar-check-o"></i></button>
                         <button class="btn"><i class="fa fa-share-square-o"></i></button>
                       </div>
-                      <h2 class="due"> ${data[task].due} </h2>
+                      <h2 class="due"> due ${dt +" - "+ month} </h2>
                       <h3 class="name"> ${data[task].taskName}</h3>
                       <h4 class="description"> ${data[task].description} </h4>
                     </div>
@@ -144,33 +153,37 @@
           })
           .catch( err => $("#msg").html(err.responseJSON))
         })
-        $(".edit").click( function (event) {
-          let id = $(this).parentsUntil($("#right"))[2].id;
-          $.ajax({
-            url: 'http://localhost:3000/main/getOne',
-            method: 'post',
-            headers: {
-            authorization: localStorage.getItem('token')
-            },
-            data: {"id":id}
-          })
-          .then( task => {
-            let date = new Date(task.due);
-            let year = date.getFullYear();
-            let month = date.getMonth()+1;
-            let dt = date.getDate();
+        $(".edit").click( 
+          function (event) {
+            let id = $(this).parentsUntil($("#right"))[2].id;
+            $.ajax({
+              url : 'http://localhost:3000/main/getOne',
+              method : 'post',
+              headers : {
+              authorization : localStorage.getItem('token')
+              },
+              data: 
+              {
+                "id" : id
+              }
+            })
+            .then( task => {
+              let date = new Date(task.due);
+              let year = date.getFullYear();
+              let month = date.getMonth()+1;
+              let dt = date.getDate();
 
-            if (dt < 10) {
-              dt = '0' + dt;
-            }
-            if (month < 10) {
-              month = '0' + month;
-            }
-            $("input[name='name']").val(task.taskName)
-            $("input[name='description']").val(task.description)
-            $("input[name='due']").val(year +'-'+ month + '-'+ dt)
-            $(`option[value='${task.priority}']`).attr('selected','selected')
-            $.ajax({})
+              if (dt < 10) {
+                dt = '0' + dt;
+              }
+              if (month < 10) {
+                month = '0' + month;
+              }
+              $("input[name='name']").val(task.taskName)
+              $("input[name='description']").val(task.description)
+              $("input[name='due']").val(year +'-'+ month + '-'+ dt)
+              $(`option[value='${task.priority}']`).attr('selected','selected')
+              $.ajax({})
         
         $("#submitUpdate").click ( function () {
           let editTask = {

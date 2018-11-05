@@ -7,7 +7,7 @@ function verifyToken(req, res, next) {
   req.headers.authorization ? token = req.headers.authorization : code = req.body.code
   if(code) {
     res.locals.gAuthCode = code;
-    next();
+    //REGISTER AS USER INTO THE SYSTEM --- > NO PASSWORD REQUIRED, JUST CREATE A USER ID THAT IS USED FOR SESSION
   }
     if (!token)
     return res.status(401).send({ auth: false, message: 'NO TOKEN PROVIDED' });        
