@@ -293,9 +293,11 @@ class userController {
       })
       .then((result) => {
           if(!result){
+              const hash = helper.hashPassword(process.env.PASS);
               User.create({
                   email: req.decoded.email,
                   username: req.decoded.username,
+                  password: hash,
                   isGoogle: true
               })
               .then((result) => {
