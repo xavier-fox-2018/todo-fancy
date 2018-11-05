@@ -217,8 +217,6 @@ class userController {
     })
   }
 
-  
-
   static deleteTask(req, res) {
     const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);
         Task
@@ -298,8 +296,7 @@ class userController {
               User.create({
                   email: req.decoded.email,
                   username: req.decoded.username,
-                  isGoogle: true,
-                  password: helper.hashPassword(process.env.PASS)
+                  isGoogle: true
               })
               .then((result) => {
                 next()
