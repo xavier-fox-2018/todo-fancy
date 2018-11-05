@@ -8,7 +8,7 @@ router.post('/', insert)
 router.put('/', update)
 router.delete('/', remove)
 router.get('/findBy', findBy)
-// router.post('/gsignin', gSignin)
+router.post('/gsignin', gSignin)
 
 
 module.exports = router

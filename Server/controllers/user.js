@@ -97,7 +97,7 @@ module.exports = {
         }})
         .then((user) => {
             if (bcrypt.compareSync(req.body.password, user.password) === true ) {
-                const token = jwt.sign({user}, process.env.JWT_SECRET)
+                const token = jwt.sign({user}, "IniRahasiaKitaYa")
                 res.status(201).json({
                     user: user,
                     token: token

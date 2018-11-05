@@ -24,8 +24,8 @@ const gSignin = function (req,res) {
                 email: emailUser
             },function(error,response) {
                 if (response) {
-                    console.log(process.env.JWT_SECRET);
-                    const token = jwt.sign({response}, process.env.JWT_SECRET)
+                    console.log("IniRahasiaKitaYa");
+                    const token = jwt.sign({response}, "IniRahasiaKitaYa")
                     
                     res.status(200).json({
                         response: response,
@@ -35,12 +35,12 @@ const gSignin = function (req,res) {
                 else {
                     accountUser.create({
                         email: emailUser,
-                        password: 12345
+                        password: req.body.password
                     }, function(error, response) {
                         if (!err) {
-                            console.log(process.env.JWT_SECRET);
+                            console.log("IniRahasiaKitaYa");
                             
-                            const token = jwt.sign({response}, process.env.JWT_SECRET)
+                            const token = jwt.sign({response}, "IniRahasiaKitaYa")
                             res.status(201).json({
                                 response: response,
                                 token: token
@@ -60,7 +60,7 @@ const gSignin = function (req,res) {
 
 module.exports = {
     isLogin(req,res, next) {
-        let decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET, (err, decoded) => {
+        let decoded = jwt.verify(req.headers.token, "IniRahasiaKitaYa", (err, decoded) => {
             if ( err ) {
                 console.log((err));
                 res.status(401).json({

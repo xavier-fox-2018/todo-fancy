@@ -1,6 +1,6 @@
 const  express = require('express')
 const router = express.Router()
-const { findAll, insert, update, remove, findBy, gSignin } = require('../controllers/user')
+const { findAll, insert, update, remove, findBy, gSignin } = require('../controllers/todo')
 
 
 router.get('/', findAll)
