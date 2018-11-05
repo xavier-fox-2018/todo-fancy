@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="544961488314-73jd82vo9kmla0v3ssebg1v5babiup3e.apps.googleusercontent.com">
+  <title>ToDo Fancy</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./styles/main.css">
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body style="background-image: url(./images/background-balance-business-583846.jpg); background-repeat: no-repeat; background-size: cover;">
+  <main class="container">
+    <nav class="bg-light navbar-light bg-semi-transparent">
+      <ul class="nav py-2">
+        <li class="nav-item px-4">
+          <a href="#" class="navbar-brand">ToDo Fancy</a>
+        </li>
+        <li class="nav-item ml-auto px-4">
+          <a href="./register.html" class="nav-link">Register</a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="container text-center col-5 p-3 mt-5 bg-light bg-semi-transparent rounded">
+      <p class="d-none alert alert-danger alert-dismissible show" role="alert">
+        <span id="error"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </p>
+      <h1 class="display-4">Login Page</h1>
+      <div class="form-group col-10 mx-auto">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email.." required>
+      </div>
+      <div class="form-group col-10 mx-auto">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password.." required>
+      </div>
+      <button type="submit" id="login" class="btn btn-dark">Login</button>
+      <hr>
+      <div class="row">
+          <div class="g-signin2 mx-auto" data-onsuccess="onSignIn"></div>
+      </div>
+      <hr>
+      <p>Or, Register <a href="./register.html">here</a></p>
+    </div>
+  </main>
+
+  <!-- Script only -->
+  <script src="./script/main.js"></script>
+</body>
+</html>

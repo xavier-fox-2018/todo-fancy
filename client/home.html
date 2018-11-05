@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="544961488314-73jd82vo9kmla0v3ssebg1v5babiup3e.apps.googleusercontent.com">
+  <title>ToDo Fancy</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./styles/main.css">
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body style="background-image: url(./images/background-balance-business-583846.jpg); background-repeat: no-repeat; background-size: cover;">
+  <!-- Modallll! -->
+  <div class="modal fade" id="addTodo" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">Add New Task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="cancel">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" class="form-control">
+          </div>
+          <div class="form-group">
+              <label for="description">Description</label>
+              <textarea name="description" id="description" rows="10" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dueDate">Due Date</label>
+                <input type="date" name="dueDate" id="dueDate" class="form-control">
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="createTask">Add</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="updateTodo" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+  
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Update This Task</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="cancel">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" name="name" id="updateName" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="updateDescription" rows="10" class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                  <label for="dueDate">Due Date</label>
+                  <input type="date" name="dueDate" id="updateDueDate" class="form-control">
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">Cancel</button>
+            <button type="button" class="btn btn-primary" id="updateTask">Update</button>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+
+  <!-- Main page!! -->
+  <main class="container">
+    <nav class="bg-light navbar-light bg-semi-transparent">
+      <ul class="nav py-2">
+        <li class="nav-item px-4">
+          <a href="#" class="navbar-brand">ToDo Fancy</a>
+        </li>
+        <li class="nav-item ml-auto">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTodo">Add New Task</button>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" id="signOut">Sign Out</a>
+        </li>
+      </ul>
+    </nav>
+    
+    <h1 id="welcome" class="display-2 text-center text-white mt-5 bg-semi-transparent-primary rounded col-10 mx-auto"></h1>
+    <div class="container text-center p-3 mt-5 bg-light bg-semi-transparent rounded">
+      <h2 class="mb-3">Below here is your Task</h2>
+      <div class="container-fluid" id="listTodo">
+        
+      </div>
+    </div>
+  </main>
+  <footer class="container bg-dark mt-5">
+    <div class="row p-3"><p class="mx-auto text-white">footer</p></div>
+  </footer>
+  <!-- Script only -->
+  <script src="./script/home.js"></script>
+</body>
+</html>
