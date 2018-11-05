@@ -14,7 +14,7 @@ function isLogin(req, res, next) {
                         const err = {
                             message: "Validation Error: User's exclusive feature"
                         };
-                        res.status(500).json(err);
+                        res.status(401).json(err);
                     }
                 })
                 .catch(function(err) {
@@ -26,7 +26,7 @@ function isLogin(req, res, next) {
             });
         }
     } else {
-        res.status(500).json({
+        res.status(400).json({
             message: 'Token not found'
         });
     }
