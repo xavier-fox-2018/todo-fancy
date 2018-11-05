@@ -107,7 +107,7 @@ function getGroups() {
 
     $.ajax({
         type: "get",
-        url: "http://localhost:3000/groups",
+        url: "https://todofancy.adishare.online/groups",
         headers: {
             token : localStorage.getItem('token')
         },
@@ -131,7 +131,7 @@ function getTodos() {
     $('.items').find('*').not('h2').remove();
     $.ajax({
         type: "get",
-        url: "http://localhost:3000/todos",
+        url: "https://todofancy.adishare.online/todos",
         headers: {
             token: localStorage.getItem('token')
         }
@@ -178,7 +178,7 @@ function changeTaskStatus(todoId) {
 
     $.ajax({
         type: "put",
-        url: `http://localhost:3000/todos/${todoId}/status`,
+        url: `https://todofancy.adishare.online/todos/${todoId}/status`,
         headers: {
             token : localStorage.getItem('token')
         },
@@ -201,7 +201,7 @@ function deleteTask(todoId) {
 
     $.ajax({
             type: "delete",
-            url: `http://localhost:3000/todos/${todoId}`,
+            url: `https://todofancy.adishare.online/todos/${todoId}`,
             dataType: "json",
             headers: {
                 token : localStorage.getItem('token')
@@ -257,7 +257,7 @@ function saveTodo(todoId) {
     
     $.ajax({
             type: "PUT",
-            url: `http://localhost:3000/todos/${todoId}`,
+            url: `https://todofancy.adishare.online/todos/${todoId}`,
             headers: {
                 token: localStorage.getItem('token')
             },
@@ -285,7 +285,7 @@ function addTodoToGroup(groupId,todoId) {
 
     $.ajax({
         type: "get",
-        url: `http://localhost:3000/groups/addTodo/${groupId}/${todoId}`,
+        url: `https://todofancy.adishare.online/groups/addTodo/${groupId}/${todoId}`,
         headers: {
             token : localStorage.getItem('token')
         },
@@ -317,7 +317,7 @@ $(document).ready(function () {
         e.preventDefault()
         $.ajax({
                 type: "POST",
-                url: "http://localhost:3000/todos",
+                url: "https://todofancy.adishare.online/todos",
                 headers: {
                     token: localStorage.getItem('token')
                 },
@@ -363,7 +363,7 @@ $(document).ready(function () {
         let clickedTodoId = $(e.currentTarget).attr('for');
         $.ajax({
             type: "get",
-            url: `http://localhost:3000/todos/${clickedTodoId}`,
+            url: `https://todofancy.adishare.online/todos/${clickedTodoId}`,
             success: function (response) {
                 detail.setTitle(response.title).setContent(
                     `<div class="taksDetailWrapper">

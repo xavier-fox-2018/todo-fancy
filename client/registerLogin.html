@@ -57,7 +57,7 @@
         var id_token = googleUser.getAuthResponse().id_token;
         $.ajax({
                 type: "post",
-                url: "http://localhost:3000/gsignin",
+                url: "https://todofancy.adishare.online/gsignin",
                 data: {
                     googleToken: id_token
                 },
@@ -70,7 +70,7 @@
                 $("#content").show()
                 localStorage.setItem('token', result.token)
                 setTimeout(() => {
-                    window.location.href = "http://localhost:8080/"
+                    window.location.href = "/"
 
                 }, 1000);
 
@@ -86,7 +86,7 @@
             e.preventDefault()
             $.ajax({
                     type: "POST",
-                    url: "http://localhost:3000/register",
+                    url: "https://todofancy.adishare.online/register",
                     data: {
                         name: $('#registerName').val(),
                         email: $('#registerEmail').val(),
@@ -97,7 +97,7 @@
                     localStorage.setItem('token', result.token)
                     dialog.setContent(result.message).open()
                     setTimeout(() => {
-                        window.location.href = "http://localhost:8080/"
+                        window.location.href = "/"
                     }, 1000);
 
                 })
@@ -110,7 +110,7 @@
             e.preventDefault()
             $.ajax({
                     type: "POST",
-                    url: "http://localhost:3000/login",
+                    url: "https://todofancy.adishare.online/login",
                     data: {
                         email: $('#loginEmail').val(),
                         password: $('#loginPassword').val()
@@ -122,7 +122,7 @@
                     $("#content").show()
                     localStorage.setItem('token', result.token)
                     setTimeout(() => {
-                        window.location.href = "http://localhost:8080/"
+                        window.location.href = "/"
 
                     }, 1000);
 

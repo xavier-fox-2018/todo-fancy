@@ -18,7 +18,7 @@ function getGroups() {
 
     $.ajax({
             type: "get",
-            url: "http://localhost:3000/groups",
+            url: "https://todofancy.adishare.online/groups",
             headers: {
                 token: localStorage.getItem('token')
             },
@@ -56,7 +56,7 @@ function addMember(groupId,userId) {
     
     $.ajax({
         type: "get",
-        url: `http://localhost:3000/groups/addMember/${groupId}/${userId}`,
+        url: `https://todofancy.adishare.online/groups/addMember/${groupId}/${userId}`,
         dataType: "json"
     })
     .done(response => {
@@ -75,7 +75,7 @@ function inviteMember(groupId,groupName) {
 
     $.ajax({
         type: "get",
-        url: `http://localhost:3000/groups/nonMembers/${groupId}`,
+        url: `https://todofancy.adishare.online/groups/nonMembers/${groupId}`,
         dataType: "json",
     })
     .done(users => {
@@ -110,7 +110,7 @@ function addGroup() {
 
         $.ajax({
                 type: "POST",
-                url: "http://localhost:3000/groups",
+                url: "https://todofancy.adishare.online/groups",
                 headers: {
                     token: localStorage.getItem('token')
                 },

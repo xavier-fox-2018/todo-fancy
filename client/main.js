@@ -16,7 +16,7 @@ $(document).ready(function () {
     if (token) {
         $.ajax({
                 type: "get",
-                url: "http://localhost:3000/users/verify",
+                url: "https://todofancy.adishare.online/verify",
                 headers: {
                     token
                 }
