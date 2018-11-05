@@ -32,10 +32,10 @@ function cekLogin(){
         })
         .fail((err) => {
             console.log(err);
-            localStorage.setItem('tokenTodo', res.token)
-            localStorage.setItem('id', res.idUser)
-            localStorage.setItem('name', res.name)
-            localStorage.setItem('email', res.email)
+            localStorage.removeItem('tokenTodo')
+            localStorage.removeItem('id')
+            localStorage.removeItem('name')
+            localStorage.removeItem('email')
             window.location = '/home.html'
         });
     }

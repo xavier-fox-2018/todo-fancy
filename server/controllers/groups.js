@@ -3,8 +3,6 @@ const Todo = require('../models/todos')
 
 module.exports = {
     create: function(req, res){
-        console.log(req.body);
-        
         Group.create({
             name: req.body.name,
             owner: req.decoded.id,
@@ -76,8 +74,6 @@ module.exports = {
         });
     },
     addUser: function(req, res){
-        console.log('masuk adduser');
-        
         Group.updateOne({
             _id: req.body.groupId,
         }, { $push: {

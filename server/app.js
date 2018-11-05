@@ -2,8 +2,8 @@ var express = require('express');
 var mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
-// mongoose.connect(process.env.DB_ONLINE, { useNewUrlParser: true })
-mongoose.connect('mongodb://localhost:27017/todofancy', { useNewUrlParser: true });
+mongoose.connect(process.env.DB_ONLINE, { useNewUrlParser: true })
+// mongoose.connect('mongodb://localhost:27017/todofancy', { useNewUrlParser: true });
 
 const db = mongoose.connection
 mongoose.set('useCreateIndex', true)
@@ -29,5 +29,6 @@ app.use('/users', usersRouter);
 app.use('/todos', todosRouter);
 app.use('/groups', groupsRouter);
 app.use('/quotes', quotesRouter);
+
 
 module.exports = app;

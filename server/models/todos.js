@@ -16,7 +16,6 @@ const todoSchema = new Schema({
     },
     dueDate: {
         type: Date,
-        default: new Date(),
         required: true
     },
     status: {

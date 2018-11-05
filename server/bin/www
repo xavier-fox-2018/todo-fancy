@@ -24,8 +24,10 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
+let {reportDaily} = require('../helpers/cron')
 
 server.listen(port, () => {
+  reportDaily()
   console.log(`app ToDo running on port: ${port} 🚶🏻‍`);
   
 });

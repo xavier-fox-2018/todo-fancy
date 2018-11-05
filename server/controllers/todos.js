@@ -3,6 +3,9 @@ const Group = require('../models/groups')
 
 module.exports = {
     addTask: function(req, res){
+        console.log(req.body.dueDate);
+        console.log(typeof req.body.dueDate );
+        
         Todo.create({
             title: req.body.title,
             description: req.body.description,
@@ -12,7 +15,7 @@ module.exports = {
             owner: req.decoded.id
         })
         .then((result) => {
-            res.status(201).json({ msg: 'Add Task Sucess', data: result })
+            res.status(201).json({ msg: 'Add Task Success', data: result })
         })
         .catch((err) => {
             res.status(500).json( err )
@@ -40,7 +43,7 @@ module.exports = {
             _id: req.params.id
         })
         .then((result) => {
-            console.log(result);
+            // console.log(result);
             if(result.isGroup){
                 Group.findOneAndUpdate({
                     tasks: req.params.id
