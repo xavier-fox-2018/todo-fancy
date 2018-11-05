@@ -40,7 +40,7 @@ class Controller {
                 })
                 .catch((err)=>{
                     res.status(500).json({
-                        message : 'error in finding task creator from database'
+                        message : 'Error in adding task to specified group'
                     })
                 })
             })
@@ -89,7 +89,7 @@ class Controller {
                 })
                 .catch((err)=>{
                     res.status(500).json({
-                        message : 'error in finding task creator from database'
+                        message : 'Error in finding task creator'
                     })
                 })
             })
@@ -110,7 +110,7 @@ class Controller {
         })
         .catch((err)=>{
             res.status(500).json({
-                message : 'Internal Server Error'
+                message : 'Failed to get all task list from database'
             })
         })
     }
@@ -124,7 +124,7 @@ class Controller {
         })
         .catch((err)=>{
             res.status(500).json({
-                message : 'Error in searching specified Task'
+                message : 'Error in finding specified Task'
             })
         })
     }

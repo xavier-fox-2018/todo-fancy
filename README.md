@@ -35,6 +35,7 @@
   * **Code:** 422 UNPROCESSABLE ENTRY <br />
     **Content:** `{ message : 'Invalid email format'}`
 
+
 **LOGIN**
 ----
 
@@ -73,3 +74,198 @@
 
   * **Code:** 422 UNPROCESSABLE ENTRY <br />
     **Content:** `{ message : "Invalid Email / Password" }`
+
+**CREATE TASK**
+----
+
+* **URL**
+
+  /todos
+
+* **Method:**
+
+  | `POST` |
+  
+
+* **Data Params**
+
+  {name : 'name' , description : 'description' , due_date : '2018-11-11'}
+
+* **Success Response:**
+  
+
+  * **Code:** 200 <br />
+    **Content:** `{ message : "Add Task Success" , {name : 'name' , description : 'description' , due_date : '2018-11-11'} }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Create Task Failed" }`
+
+
+**READ TASKS**
+----
+
+* **URL**
+
+  /todos
+
+* **Method:**
+  
+  <_The request type_>
+
+  | `GET` |
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `[{ task }]`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Failed to get all task list from database" }`
+
+**READ TASK**
+----
+
+* **URL**
+
+  /todos/:id
+
+* **Method:**
+
+  |  `GET` |
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ _id : 1234567890 , name : "name" , description : "description" , due_date : 2018-12-12 , status : false }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Error in finding specified Task" }`
+
+**UPDATE TASK**
+----
+
+* **URL**
+
+  /todos/:id
+
+* **Method:**
+
+  | `PUT` |
+  
+*  **URL Params** 
+
+   **Required:**
+ 
+   `id=[string]`
+
+* **Data Params**
+
+  `{ _id : 1234567890 , name : "name" , description : "description" , due_date : 2018-12-12 , status : false }`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ _id : 1234567890 , name : " updated name" , description : "updated description" , due_date : "updated 2018-12-12" , status : false }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Edit Task Failed" , error : "error"}`
+
+**DELETE TASK**
+----
+
+* **URL**
+
+  /todos/:id
+
+* **Method:**
+
+  | `DELETE` |
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ message : 'Task deleted' }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Failed to delete task" }`
+
+**COMPLETE TASK**
+----
+
+* **URL**
+
+  /todos/complete/:id
+
+* **Method:**
+
+  | `PUT` |
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ message : "Task Completed" }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "failed to complete task (error)" }`
+
+**UNCOMPLETE TASK**
+----
+
+* **URL**
+
+  /todos/uncomplete/:id
+
+* **Method:**
+
+  | `PUT` |
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ message : "Task uncompleted" }`
+ 
+* **Error Response:**
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ message : "Uncomplete task failed (error)" }`
+
+
+
+
+
