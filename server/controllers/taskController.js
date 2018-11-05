@@ -50,7 +50,7 @@ class TaskController {
                     .then(function(result) {
                         const response = {
                             task: task,
-                            message: `Successfully created task ${task.title}`
+                            message: `Successfully created task ${task.title} for your group`
                         }
                         res.status(201).json(response);
                         

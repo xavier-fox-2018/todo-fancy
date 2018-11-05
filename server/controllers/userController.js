@@ -107,7 +107,10 @@ class UserController {
     }
 
     static getProfile(req, res) {
-        User.findById(req.user._id).populate('taskList')
+        User.findById(req.user._id).populate('taskList invitationList').populate({
+            path: 'groupList',
+            populate: {path: 'userList', select: '_id username email invitationList'}
+        })
             .then(function(user) {
                 res.status(200).json(user);
             })
@@ -126,15 +129,27 @@ class UserController {
             });
     }
 
-    static searchUsers(req, res) {
-        User.find({username: new RegExp(req.params.keyword, 'i')})
+    static getAllUsersToInvite(req, res) {
+        // Find users who doesn't have an invitation from this group or currently is not in this group
+        User.find({
+            invitationList: {
+                $ne: req.params.groupId
+            }, 
+            groupList: {
+                $ne: req.params.groupId
+            }
+        })
             .then(function(users) {
-                if (users.length > 0) {
-                    res.status(200).json(users);
-                } else {
-                    res.status(404).json({
-                        message: `Users not found`
+                if (req.query.username) {
+                    const filteredUsers = users.filter(function(user) {
+                        const testCase = new RegExp(req.query.username, 'i');
+                        const regexTest = testCase.test(user.username);
+                        return regexTest;
                     });
+    
+                    res.status(200).json(filteredUsers);
+                } else {
+                    res.status(200).json(users);
                 }
             })
             .catch(function(err) {
@@ -187,6 +202,22 @@ class UserController {
             .then(function(result) {
                 res.status(200).json({
                     message: `Successfully sent an invitation to ${req.body.username}`
+                });
+            })
+            .catch(function(err) {
+                res.status(500).json(err);
+            });
+    }
+
+    static refuseInvitation(req, res) {
+        User.findByIdAndUpdate(req.user._id, {
+            $pull: {
+                invitationList: req.body.group
+            }
+        })
+            .then(function(result) {
+                res.status(200).json({
+                    message: `Successfully refused the invitation`
                 });
             })
             .catch(function(err) {

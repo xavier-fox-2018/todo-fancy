@@ -2,6 +2,28 @@ const config = {
     host: 'http://localhost:3000'
 }
 
+function register() {
+    $.ajax({
+        method: 'POST',
+        url: `${config.host}/register`,
+        data: {
+            username: $('#register-username').val(),
+            email: $('#register-email').val(),
+            password: $('#register-password').val()
+        }
+    })
+        .done(function(result) {
+            console.log('Register Result: ', result);
+            $('#register-username').val('');
+            $('#register-email').val('');
+            $('#register-password').val('');
+        })
+        .fail(function(err) {
+            console.log('Register Error: ', err);
+            fillErrorBoard(err);
+        });
+}
+
 function login() {
     $.ajax({
         method: 'POST',
@@ -19,6 +41,8 @@ function login() {
             $('#todo-detail').empty();
             checkToken();
             getTodos();
+            getGroups();
+            getProfile();
         })
         .fail(function(err) {
             console.log("Login Error: ", err);
@@ -26,11 +50,34 @@ function login() {
         });
 }
 
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    $.ajax({
+        method: 'POST',
+        url: `${config.host}/googlelogin`,
+        data: {
+            googleToken: id_token
+        }
+    })
+        .done(function(result) {
+            console.log('Google Login Result: ', result);
+            localStorage.setItem('token', result.token);
+            checkToken();
+            getTodos();
+            getGroups();
+            getProfile();
+        })
+        .fail(function(err) {
+            console.log('Google Login Error: ', err);
+            fillErrorBoard(err);
+        });
+}
+
 function logout() {
-    // var auth2 = gapi.auth2.getAuthInstance();
-    // auth2.signOut().then(function () {
-    //   console.log('User signed out.');
-    // });
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
     localStorage.removeItem('token');
     checkToken();
 }
@@ -78,7 +125,7 @@ function fillErrorBoard(error) {
             padding: '15px',
             margin: '0 auto'
         });
-    } else { // have both errors
+    } else if (error.responseJSON.errors.dueDate && error.responseJSON.errors.title) {
         $('#error-msg').text(`${error.responseJSON.errors.title.message} & ${error.responseJSON.errors.dueDate.message}`);
         $('#error-msg').css({
             display: 'block',
@@ -108,11 +155,15 @@ function checkToken() {
     if (token) {
         $('#btn-logout').show();
         $('#form-login').hide();
+        $('#registerForm').hide();
         $('#main-content').show();
+        $('#group-content').show();
     } else {
         $('#btn-logout').hide();
         $('#form-login').show();
+        $('#registerForm').show();
         $('#main-content').hide();
+        $('#group-content').hide();
     }
 }
 
@@ -137,8 +188,8 @@ function getTodos() {
                 const escapedDescription = todos[i].description.replace(/'/g, "\\'");
 
                 $('#todo-list').append(`
-                    <div class="mb-3 border d-flex justify-content-between align-items-center" id="div-todo-${todos[i]._id}">
-                        <h4 class="h4" onclick="seeDetail('${todos[i]._id}', '${escapedTitle}', '${escapedDescription}', '${todos[i].priority}', '${todos[i].dueDate}', '${todos[i].isDone}', '${todos[i].createdAt}', '${todos[i].updatedAt}')">${todos[i].title}</h4>
+                    <div class="mb-3 d-flex justify-content-between align-items-center" id="div-todo-${todos[i]._id}">
+                        <div class="ml-3 todos" onclick="seeDetail('${todos[i]._id}', '${escapedTitle}', '${escapedDescription}', '${todos[i].priority}', '${todos[i].dueDate}', '${todos[i].isDone}', '${todos[i].createdAt}', '${todos[i].updatedAt}')">${todos[i].title}</div>
                     </div>
                 `);
 
@@ -146,6 +197,9 @@ function getTodos() {
                     $(`#div-todo-${todos[i]._id}`).append(`
                         <div class="bg-danger text-white p-2">Done <i class="fas fa-check-circle ml-1"></i></div>
                     `);
+                    $(`#div-todo-${todos[i]._id}`).css({
+                        background: '#ebb329'
+                    });
                 }
             }
         })
@@ -188,23 +242,24 @@ function seeDetail(id, title, description, priority, dueDate, isDone, createdAt,
 
     $('#todo-detail').empty();
     $('#todo-detail').append(`
-        <div class="card mt-3">
+        <div class="card mt-3 mb-3">
             <div class="card-body">
                 <div class="d-flex justify-content-end align-items-center">
                     <i class="fas fa-edit text-dark mr-3" onclick="fillEditModal('${escapedTitle}', '${paramDesc}', '${priority}', '${arrRealTimestamps[2]}')" data-toggle="modal" data-target="#editTodo" id="btn-edit-delete"></i>
                     <i class="fas fa-minus-circle text-danger" onclick="deleteTodo('${id}')" id="btn-edit-delete"></i>
                 </div>
+                <p class="card-text"> <b>Title:</b><br> ${title}</p>
                 <p class="card-text"> <b>Description:</b><br> ${description}</p>
                 <p class="card-text"> <b>Priority:</b><br> ${priority}</p>
                 <p class="card-text"> <b>Status:</b><br> ${done}</p>
                 <p class="card-text"> <b>Due Date:</b><br> ${arrRealTimestamps[2]}</p>
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center mb-5">
                     <div class="card-text"> <b>Created At:</b><br> ${arrRealTimestamps[0]}</div>
                     <div class="card-text"> <b>Last Updated At:</b><br> ${arrRealTimestamps[1]}</div>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
                     <button class="btn btn-success mr-3" id="btn-done" onclick="done()">Mark as done</button>
-                    <button class="btn btn-warning" id="btn-undone" onclick="undone()">Mark as undone</button>
+                    <button class="btn btn-warning text-white ml-3" id="btn-undone" onclick="undone()">Mark as undone</button>
                 </div>
             </div>
         </div>
@@ -352,10 +407,299 @@ function createTodo() {
         });
 }
 
+function createProjectTodo() {
+    const token = localStorage.getItem('token');
+    const groupId = localStorage.getItem('groupId');
+
+    $.ajax({
+        method: 'POST',
+        url: `${config.host}/tasks/group`,
+        headers: {
+            'access-token': token
+        },
+        data: {
+            title: $('#create-title').val(),
+            description: $('#create-description').val(),
+            priority: $('#create-priority').val(),
+            dueDate: $('#create-dueDate').val(),
+            group: groupId
+        }
+    })
+        .done(function(result) {
+            console.log("Create Project Todo Result: ", result);
+            getTodos();
+            getGroups();
+        })
+        .fail(function(err) {
+            console.log("Create Project Todo Error: ", err);
+            fillErrorBoard(err);
+        });
+}
+
+function emptyCreateGroupModal() {
+    $('#group-name').val('');
+}
+
+function createGroup() {
+    const token = localStorage.getItem('token');
+
+    $.ajax({
+        method: 'POST',
+        url: `${config.host}/users/group`,
+        headers: {
+            'access-token': token
+        },
+        data: {
+            name: $('#group-name').val()
+        }
+    })
+        .done(function(result) {
+            console.log('Create Group Result: ', result);
+            getGroups();
+        })
+        .fail(function(err) {
+            console.log('Create Group Error: ', err);
+            fillErrorBoard(err);
+        });
+}
+
+function getProfile() {
+    emptyErrorBoard();
+    const token = localStorage.getItem('token');
+
+    $.ajax({
+        method: 'GET',
+        url: `${config.host}/users/profile`,
+        headers: {
+            'access-token': token
+        }
+    })
+        .done(function(result) {
+            console.log('Get Profile Result: ', result);
+            const totalInvite = result.invitationList.length;
+            $('#invite-badge').text(totalInvite);
+
+            $('#dropdown-invite').empty();
+            for (let i = 0; i < result.invitationList.length; i++) {
+                $('#dropdown-invite').append(`
+                    <div class="d-flex justify-content-between align-items-center border mb-3 invitation-item rounded">
+                        <div class="ml-3">Invitation to join ${result.invitationList[i].name}</div>
+                        <div>
+                            <button class="btn btn-primary mr-2" id="accept-${result.invitationList[i]._id}">Accept</button>
+                            <button class="btn btn-danger mr-3" id="refuse-${result.invitationList[i]._id}">Refuse</button>
+                        </div>
+                    </div>
+                `);
+
+                $(`#accept-${result.invitationList[i]._id}`).on('click', function() {
+                    acceptInvitation(result.invitationList[i]._id);
+                });
+
+                $(`#refuse-${result.invitationList[i]._id}`).on('click', function() {
+                    refuseInvitation(result.invitationList[i]._id);
+                });
+            }
+        })
+        .fail(function(err) {
+            console.log('Get Profile Error :', err);
+            fillErrorBoard(err);
+        });
+}
+
+function acceptInvitation(groupId) {
+    const token = localStorage.getItem('token');
+
+    $.ajax({
+        method: 'PATCH',
+        url: `${config.host}/users/accept`,
+        headers: {
+            'access-token': token
+        },
+        data: {
+            group: groupId
+        }
+    })
+        .done(function(result) {
+            console.log('Refuse Invitation Result: ', result);
+            getGroups();
+            getProfile();
+        })
+        .fail(function(err) {
+            console.log('Refuse Invitation Error: ', err);
+            fillErrorBoard(err);
+        });
+}
+
+function refuseInvitation(groupId) {
+    const token = localStorage.getItem('token');
+
+    $.ajax({
+        method: 'PATCH',
+        url: `${config.host}/users/refuse`,
+        headers: {
+            'access-token': token
+        },
+        data: {
+            group: groupId
+        }
+    })
+        .done(function(result) {
+            console.log('Refuse Invitation Result: ', result);
+            getGroups();
+            getProfile();
+        })
+        .fail(function(err) {
+            console.log('Refuse Invitation Error: ', err);
+            fillErrorBoard(err);
+        });
+}
+
+function getGroups() {
+    emptyErrorBoard();
+    const token = localStorage.getItem('token');
+
+    $.ajax({
+        method: 'GET',
+        url: `${config.host}/users/profile`,
+        headers: {
+            'access-token': token
+        }
+    })
+        .done(function(user) {
+            const groups = user.groupList;
+            console.log('Group List: ', groups);
+            $('#group-list').empty();
+            $('#group-detail').empty();
+
+            for (let i = 0; i < groups.length; i++) {
+                const escapedName = groups[i].name.replace(/'/g, "\\'");
+
+                $('#group-list').append(`
+                    <div class="mb-3 border d-flex justify-content-between align-items-center">
+                        <div class="ml-3 groups" id="group-${groups[i]._id}">${groups[i].name}</div>
+                    </div>
+                `);
+
+                $(`#group-${groups[i]._id}`).on('click', function() {
+                    seeDetailGroup(groups[i]._id, escapedName, groups[i].userList);
+                });
+            }
+        })
+        .fail(function(err) {
+            console.log('Get Groups Error: ', err);
+            fillErrorBoard(err);
+        });
+}
+
+function seeDetailGroup(id, name, userList) {
+    localStorage.setItem('groupId', id);
+    $('#group-detail').empty();
+    $('#group-detail').append(`
+        <div class="card mt-3 mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <p class="card-text"> <b>Name:</b><br> ${name}</p>
+                    <button class="btn btn-primary" id="btn-invite-others" data-toggle="modal" data-target="#allUsers">Invite Others to Group</button>
+                </div>
+                <div id="div-users-${id}" class="mb-3">
+                    <b>Users (username):</b><br>
+                </div>
+                <button class="btn btn-success" id="btn-project-todo" data-toggle="modal" data-target="#createProjectTodo">Create project task</button>
+            </div>
+        </div>
+    `);
+
+    for (let i = 0; i < userList.length; i++) {
+        $(`#div-users-${id}`).append(`
+            <div class="">
+                <p class="card-text">${userList[i].username}</p>
+            </div>
+        `);
+    }
+
+    $('#btn-invite-others').on('click', function() {
+        getUninvitedUsers();
+    });
+
+    $('#div-btn-search').on('click', function() {
+        getUninvitedUsers();
+    });
+}
+
+function getUninvitedUsers() {
+    const token = localStorage.getItem('token');
+    const groupId = localStorage.getItem('groupId');
+    emptyErrorBoard();
+    $('#list-users').empty();
+
+    if ($('#search-input').val() === '') {
+        var usedUrl = `${config.host}/users/${groupId}`;
+    } else if ($('#search-input').val() !== '') {
+        const queryUsername = $('#search-input').val();
+        var usedUrl = `${config.host}/users/${groupId}?username=${queryUsername}`;
+    }
+
+    $.ajax({
+        method: 'GET',
+        url: usedUrl,
+        headers: {
+            'access-token': token
+        }
+    })
+        .done(function(users) {
+            console.log('Uninvited User List: ', users);
+            for (let i = 0; i < users.length; i++) {
+                $('#list-users').append(`
+                    <div class="d-flex justify-content-between rounded align-items-center mb-3 uninvited-users">
+                        <div class="ml-3">${users[i].username}</div>
+                        <button class="btn btn-danger" id="invite-${users[i]._id}">Invite</button>
+                    </div>
+                `);
+
+                $(`#invite-${users[i]._id}`).on('click', function() {
+                    sendInvitation(groupId, users[i].username);
+                });
+            }
+        })
+        .fail(function(err) {
+            console.log('Get Uninvited Users Error: ', err);
+            fillErrorBoard(err);
+        });
+}
+
+function sendInvitation(groupId, username) {
+    emptyErrorBoard();
+    const token = localStorage.getItem('token');
+    $.ajax({
+        method: 'PATCH',
+        url: `${config.host}/users/invite`,
+        headers: {
+            'access-token': token
+        },
+        data: {
+            username: username,
+            group: groupId
+        }
+    })
+        .done(function(result) {
+            console.log('Invitation Result: ', result);
+            getUninvitedUsers();
+        })
+        .fail(function(err) {
+            console.log('Invitation Error: ', err);
+            fillErrorBoard(err);
+        });
+}
+
 $('#form-login').on('submit', function(e) {
     e.preventDefault();
     login();
-})
+});
+
+$('#form-register').on('click', function(e) {
+    e.preventDefault();
+    register();
+});
 
 $(document).ready(function() {
     checkToken();
@@ -365,5 +709,7 @@ $(document).ready(function() {
     
     if (token) {
         getTodos();
+        getGroups();
+        getProfile();
     }
 });

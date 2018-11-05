@@ -1,12 +1,26 @@
-#div-todo-list, #div-detail-list {
+#div-todo-list, #div-detail-list, #div-group-list, #div-detailgroup-list {
     font-family: 'Roboto Slab', serif;
+}
+
+#nav-title {
+    font-family: 'Oswald', serif;
+}
+
+#nav-bar {
+    background-color: #862241;
+    height: 65px;
 }
 
 #error-msg, #error-status {
     display: none;
 }
 
-#todo-list h4:hover {
+#todo-list .todos:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#group-list .groups:hover {
     text-decoration: underline;
     cursor: pointer;
 }
@@ -14,4 +28,25 @@
 #btn-edit-delete {
     cursor: pointer;
     font-size: 20px;
+}
+
+.todos, .groups {
+    font-size: 20px;
+}
+
+.uninvited-users {
+    background-color: #003d4f;
+    color: white;
+}
+
+#invite-dropdown {
+    width: 110px;
+    height: 50px;
+}
+
+.invitation-item {
+    width: 500px;
+    height: 60px;
+    background-color: #0e2f44;
+    color: white;
 }

@@ -14,9 +14,9 @@
         <title>Todo More Fancy</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-2 text-white">
+        <nav class="navbar navbar-expand-sm mb-2 text-white" id="nav-bar">
             <div class="container">
-                <a class="navbar-brand">Todo More Fancy</a>
+                <a class="navbar-brand" id="nav-title">Todo M<i class="fas fa-meteor"></i>re Fancy</a>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item" id="form-login">
                         <form class="d-flex justify-content-around align-items-center" id="form-login">
@@ -35,11 +35,45 @@
                 </ul>
             </div>
         </nav>
+
+        <div class="col-lg-4 mt-5 mx-auto" id="registerForm">
+            <div class="card text-center card-form">
+                <div class="card-body">
+                    <h3>Register Here</h3>
+                    <p>Please fill out this form to register</p>
+                    <form id="form-register">
+                        <div class="form-group">
+                            <input type="text" id="register-username" class="form-control" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="register-email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="register-password" class="form-control" placeholder="Password">
+                        </div>
+                        <input type="submit" value="Register" class="btn btn-outline-danger btn-block mb-3">
+                    </form>
+                    <div class="mb-3">or</div>
+			        <div class="mb-4">Sign Up With Google Account?</div>
+                    <div class="g-signin2 d-flex justify-content-center mb-3" data-onsuccess="onSignIn"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="container" id="main-content">
-            <div class="mt-4 mb-5">
-                <h1 class="display-2 text-center">
+            <div class="mt-5 mb-5 d-flex justify-content-between align-items-center">
+                <h1 class="display-2 ml-5">
                     Todo M<i class="fas fa-meteor"></i>re Fancy
                 </h1>
+                <button class="btn btn-warning dropdown-toggle ml-auto mr-5" id="invite-dropdown">
+                    <i class="far fa-bell mr-2"></i>
+                    <span class="badge badge-dark px-2 py-2 mr-1" id="invite-badge">
+                        <!-- Number of invitations recieved will appear here -->
+                    </span>
+                </button>
+            </div>
+            <div class="d-flex justify-content-end" id="dropdown-invite">
+                <!-- List of Group Invitations will appear here -->
             </div>
             <p class="mb-5 text-center" id="error-status"></p>
             <p class="mb-5 text-center" id="error-msg"></p>
@@ -131,6 +165,115 @@
                     <div class="modal-footer">
                         <button class="btn btn-danger font-weight-bold" data-dismiss="modal">Cancel</button>
                         <button class="btn btn-primary font-weight-bold ml-2" data-dismiss="modal" onclick="editTodo()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="group-content">
+            <div class="row">
+                <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#createGroup" onclick="emptyCreateGroupModal()">Create a group</button>
+            </div>
+            <div class="row">
+                <div class="col-md-5 border mb-5" id="div-group-list">
+                    <h1 class="h2 mt-3 text-center" id="head-list">Group List</h1>
+                    <hr>
+                    <div id="group-list">
+                        <!-- List of groups will appear here -->
+                    </div>
+                </div>
+                <div class="col-md-7 border mb-5" id="div-detailgroup-list">
+                    <h1 class="h2 mt-3 text-center" id="head-list">Group Detail</h1>
+                    <hr>
+                    <div id="group-detail">
+                        <!-- Group's detail information will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATE GROUP MODAL -->
+        <div class="modal fade" id="createGroup">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Group</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group d-flex flex-column">
+                                <label for="name" class="text-left">Name</label>
+                                <input type="text" placeholder="Group Name" class="form-control" id="group-name">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger font-weight-bold" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary font-weight-bold ml-2" data-dismiss="modal" onclick="createGroup()">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALL USERS MODAL -->
+        <div class="modal fade" id="allUsers">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Choose Users to Invite</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="input-group mb-3" id="div-search-input">
+                                <input class="form-control" id="search-input" type="text" placeholder="Username">
+                                <div class="input-group-append" style="cursor: pointer" id="div-btn-search">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="list-users">
+                            <!-- List of all users who haven't been invited will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATE PROJECT TASK MODAL -->
+        <div class="modal fade" id="createProjectTodo">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Project Task</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group d-flex flex-column">
+                                <label for="title" class="text-left">Title</label>
+                                <input type="text" placeholder="Task Title" class="form-control" id="create-title">
+                            </div>
+                            <div class="form-group d-flex flex-column">
+                                <label for="description" class="text-left">Description</label>
+                                <textarea class="form-control" id="create-description" rows="3" placeholder="Task Explanation" ></textarea>
+                            </div>
+                            <div class="form-group d-flex flex-column">
+                                <label for="priority" class="text-left">Priority</label>
+                                <input type="number" min="1" max="5" placeholder="Task Priority" class="form-control" id="create-priority">
+                            </div>
+                            <div class="form-group d-flex flex-column">
+                                <label for="priority" class="text-left">Due Date</label>
+                                <input type="date" placeholder="Task Due Date" class="form-control" id="create-dueDate">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger font-weight-bold" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary font-weight-bold ml-2" data-dismiss="modal" onclick="createProjectTodo()">Create</button>
                     </div>
                 </div>
             </div>
