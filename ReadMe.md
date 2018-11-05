@@ -157,5 +157,17 @@ status : 404
 Acces the website via http://localhost:3000 
 
 
+### addition section :
+how to drop node_modules that you push to repo
+
+git rm -r --cached node_modules
+
+git commit -m 'Remove the now ignored directory 
+
+node_modules'
+
+git push origin master
+
+
 
 
