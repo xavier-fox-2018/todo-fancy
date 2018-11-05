@@ -1,3 +1,6 @@
+<head>
+	<meta name="google-signin-client_id" content="1066847027273-3414naubmjmj7c5ev82tsjpfkkp3bvjm.apps.googleusercontent.com">
+</head>
 <body>
     <section class="navbarWrapper">
         <div class="navwrapper">
@@ -26,7 +29,7 @@
                         <a id="userBtn"></a>
                     </div>
                     <div>
-                        <a class="logout">LOG OUT</a>
+                        <a onclick="signOut();">SIGN OUT</a>
                     </div>
                 </div>
 
@@ -36,17 +39,24 @@
 </body>
 
 <script>
-    $(document).ready(function () {
-        if(!localStorage.getItem('token')){
-            $('.logout').hide();
-        }
+    function signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        
+        localStorage.clear()
+        window.location.href = "http://localhost:8080"
 
-        $('.logout').click(function (e) {
-            localStorage.removeItem('token')
-            window.location.href = "http://localhost:8080"
-        });
-    });
+      });
+    }
+
+    function onLoad() {
+      gapi.load('auth2', function() {
+        gapi.auth2.init();
+      });
+    }
 </script>
+
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
 
 <style scoped>

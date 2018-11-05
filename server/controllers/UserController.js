@@ -58,7 +58,7 @@ const UserController = {
                     email : result.email
                 })
     
-                res.status(200).json({
+                res.status(201).json({
                     message: "Register Success",
                     token: token
                 })
@@ -140,6 +140,55 @@ const UserController = {
             }
             return res.status(204).json();
         });
+    },
+
+    googleSignUp: (req, res) => {
+
+        UserModel.findOne({
+                email: req.body.email
+            })
+            .then(data => {
+                if (!data) {
+                    UserModel.create({
+                            name: req.body.name,
+                            email: req.body.email,
+                            password: helpers.hash(req.body.email)
+                        })
+                        .then((result) => {
+                            let token = helpers.createToken({
+                                _id: result._id.toString(),
+                                name : result.name,
+                                email : result.email
+                            })
+                
+                            res.status(201).json({
+                                message: "Register Success",
+                                token: token
+                            })
+                        }).catch((err) => {
+                            res.status(400).json(err)
+                        });
+                } else {
+                    let token = helpers.createToken({
+                        _id: data._id.toString(),
+                        name : data.name,
+                        email : data.email
+                    })
+                    res.status(200).json({
+                        token: token,
+                        message: "Login Success",
+                        user : {
+                            _id : data._id,
+                            name : data.name
+                        }
+                    })
+                }
+            })
+            .catch(err => {
+                res.status(500).json({
+                    message: err.message
+                })
+            })
     }
 };
 

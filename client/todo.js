@@ -179,6 +179,9 @@ function changeTaskStatus(todoId) {
     $.ajax({
         type: "put",
         url: `http://localhost:3000/todos/${todoId}/status`,
+        headers: {
+            token : localStorage.getItem('token')
+        },
         success: function (response) {
             notif.setContent(`${response.title}'s Status changed to : ${response.status}`).open()
             detail.close()
@@ -200,6 +203,9 @@ function deleteTask(todoId) {
             type: "delete",
             url: `http://localhost:3000/todos/${todoId}`,
             dataType: "json",
+            headers: {
+                token : localStorage.getItem('token')
+            },
         })
         .done( () => {
             detail.close()

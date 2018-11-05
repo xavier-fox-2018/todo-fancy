@@ -1,3 +1,7 @@
+<head>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+	<meta name="google-signin-client_id" content="1066847027273-3414naubmjmj7c5ev82tsjpfkkp3bvjm.apps.googleusercontent.com">
+</head>
 <body>
     <section id="register">
 
@@ -29,6 +33,8 @@
                 <input type="submit" id="loginBtn" value="Sign In" class="btn btn-primary">
 
             </form>
+            <hr style="border-color: wheat">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
         </div>
     </section>
 </body>
@@ -45,6 +51,35 @@
         offset : {x: -45, y: -50},
         closeButton: false,
     })
+
+    function onSignIn(googleUser) {
+
+        var id_token = googleUser.getAuthResponse().id_token;
+        $.ajax({
+                type: "post",
+                url: "http://localhost:3000/gsignin",
+                data: {
+                    googleToken: id_token
+                },
+                dataType: "json"
+            })
+            .done(result => {
+
+                dialog.setContent(result.message).open()
+                $('#loginForm').hide();
+                $("#content").show()
+                localStorage.setItem('token', result.token)
+                setTimeout(() => {
+                    window.location.href = "http://localhost:8080/"
+
+                }, 1000);
+
+            })
+            .fail(err => {
+                console.log(err);
+            })
+
+    }
 
     $(document).ready(function () {
         $('#registerBtn').click(function (e) {
