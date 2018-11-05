@@ -155,7 +155,8 @@
                     $("#todoList").show()
                 })
                 .fail( err => {
-                    $("#error").text(JSON.stringify(err))
+                    $("#error").empty()
+                    $("#error").append(JSON.stringify(err))
                 })
             }
 
@@ -169,7 +170,8 @@
                     listToDo()
                 })
                 .fail( err => {
-                    $("#error").text(JSON.stringify(err))
+                    $("#error").empty()
+                    $("#error").append(JSON.stringify(err)), setTimeout(1000)
                 })
             }
 
@@ -185,7 +187,8 @@
                     console.log( response )
                 })
                 .fail( err => {
-                    $("#error").text(JSON.stringify(err))
+                    $("#error").empty()
+                    $("#error").append(JSON.stringify(err)), setTimeout(1000)
                 })
             }
 
@@ -234,7 +237,8 @@
                         }
                     })
                     .fail( err => {
-                        $("#error").text(JSON.stringify(err))
+                        $("#error").empty()
+                        $("#error").append(JSON.stringify(err)), setTimeout(1000)
                     })
             }
 
@@ -251,7 +255,8 @@
                     location.reload();
                 })
                 .fail( err => {
-                    $("#error").text(JSON.stringify(err))
+                    $("#error").empty()
+                    $("#error").append(JSON.stringify(err)), setTimeout(1000)
                 })
             }
 
@@ -279,7 +284,8 @@
                     location.reload(); 
                 })
                 .fail( err => {
-                    $("#error").text(JSON.stringify(err))
+                    $("#error").empty()
+                    $("#error").append(JSON.stringify(err)), setTimeout(1000)
                 })
             })
 
@@ -302,7 +308,8 @@
                     location.reload();
                 })
                 .fail( err => {
-                    $("#error").text(JSON.stringify(err))
+                    $("#error").empty()
+                    $("#error").append(JSON.stringify(err)), setTimeout(1000)
                 })
             })
 

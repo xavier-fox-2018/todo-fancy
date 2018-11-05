@@ -1,5 +1,6 @@
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 class Helper {
     static encryp ( pass, salt ) {
@@ -12,7 +13,7 @@ class Helper {
     static decodeJws ( jToken ) {
         console.log(`dalem helper decode`)
         console.log(jToken)
-        let check = jwt.verify( jToken, '67^%$3jHu9sdFei33S%!8#!5')
+        let check = jwt.verify( jToken, process.env.jSecret)
         console.log(check) // REMINDER : pindahkan ke env
         return check
     }
