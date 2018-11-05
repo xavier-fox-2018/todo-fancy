@@ -7,6 +7,7 @@ $( document ).ready(function(){
     getUserData()
     getGroupsData()
     getInboxData()
+    onLoad()
 })
 
 function checkToken(){
@@ -52,9 +53,19 @@ function getInboxData(){
     })
 }
 
+function onLoad() {
+    gapi.load('auth2', function() {
+      gapi.auth2.init();
+    });
+  }
+
 function logOut(){
     localStorage.removeItem('token')
     localStorage.removeItem('userId')
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
     checkToken()
 }
 

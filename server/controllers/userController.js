@@ -52,18 +52,12 @@ class Controller {
     }
 
     static gsignin(req,res){
-        console.log('req body',req.body)
-        console.log('masuk ke controller gsignin')
-        console.log('====')
-        console.log(process.env.CLIENT_ID)
-        console.log('===')
 
         client.verifyIdToken({
             idToken: req.body.gtoken,
             audience: process.env.CLIENT_ID
             
         },function(err,result){
-            console.log('result',result)
             let pEmail = result.payload.email
             let pName = result.payload.name
 
