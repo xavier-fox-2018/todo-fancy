@@ -1,0 +1,128 @@
+<body>
+    <section id="register">
+
+        <div class="span3">
+            <h2>Register</h2>
+            <form>
+                <label>Name</label>
+                <input type="text" id="registerName" name="firstname" class="span3">
+
+                <label>Email Address</label>
+                <input type="email" id="registerEmail" name="email" class="span3" autocomplete="email">
+
+                <label>Password</label>
+                <input type="password" id="registerPassword" name="password" class="span3" autocomplete="new-password">
+                <br><br>
+                <input type="submit" id="registerBtn" value="Sign up" class="btn btn-primary">
+            </form>
+        </div>
+
+        <div class="span3">
+            <h2>login</h2>
+            <form>
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" class="span3" autocomplete="email">
+
+                <label>Password</label>
+                <input type="password" id="loginPassword" class="span3" autocomplete="new-password">
+                <br><br>
+                <input type="submit" id="loginBtn" value="Sign In" class="btn btn-primary">
+
+            </form>
+        </div>
+    </section>
+</body>
+
+<script>
+    var dialog = new jBox('Modal', {
+        maxWidth: 400,
+        minHeight: 50,
+        autoClose: 2000,
+        overlay : false,
+        addClass : 'jBox-Notice',
+        blockScroll : false,
+        position: { x: 'right' , y: 'bottom' },
+        offset : {x: -45, y: -50},
+        closeButton: false,
+    })
+
+    $(document).ready(function () {
+        $('#registerBtn').click(function (e) {
+            e.preventDefault()
+            $.ajax({
+                    type: "POST",
+                    url: "http://localhost:3000/register",
+                    data: {
+                        name: $('#registerName').val(),
+                        email: $('#registerEmail').val(),
+                        password: $('#registerPassword').val(),
+                    }
+                })
+                .done(result => {
+                    localStorage.setItem('token', result.token)
+                    dialog.setContent(result.message).open()
+                    setTimeout(() => {
+                        window.location.href = "http://localhost:8080/"
+                    }, 1000);
+
+                })
+                .fail(err => {
+                    dialog.setContent(err.responseJSON.message).open()
+                })
+        });
+
+        $('#loginBtn').click(function (e) {
+            e.preventDefault()
+            $.ajax({
+                    type: "POST",
+                    url: "http://localhost:3000/login",
+                    data: {
+                        email: $('#loginEmail').val(),
+                        password: $('#loginPassword').val()
+                    },
+                })
+                .done(result => {
+                    dialog.setContent(result.message).open()
+                    $('#loginForm').hide();
+                    $("#content").show()
+                    localStorage.setItem('token', result.token)
+                    setTimeout(() => {
+                        window.location.href = "http://localhost:8080/"
+
+                    }, 1000);
+
+                })
+                .fail(err => {
+                    dialog.setContent(err.responseJSON.message).open()
+                })
+
+        });
+    });
+</script>
+
+<style scoped>
+    body {
+        transition: all 1s;
+    }
+
+    #register {
+        width: 700px;
+        height: 70%;
+        background-color: rgba(255, 255, 255, 0.089);
+        justify-self: center;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-content: center;
+        align-content: center;
+        justify-items: center;
+        /* align-items: center; */
+        border-radius: 15px;
+        /* filter: drop-shadow(0 0 0.09rem rgba(255, 255, 255, 0.801)); */
+        box-shadow: 0 0 0.29rem rgba(255, 255, 255, 0.958);
+        color: white;
+    }
+
+    input {
+        height: 30px !important;
+    }
+</style>

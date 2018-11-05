@@ -1,0 +1,122 @@
+<body>
+    <section class="navbarWrapper">
+        <div class="navwrapper">
+            <div id="nav">
+                <div class="linkBar">
+                    <div class='searchbar'>
+
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                <div class="logoSect">
+                    <a>Todo App</a>
+                </div>
+
+                <div class="linkBar">
+                    <div>
+
+                    </div>
+                    <div>
+                        
+                    </div>
+                    <div>
+                        <a id="userBtn"></a>
+                    </div>
+                    <div>
+                        <a class="logout">LOG OUT</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</body>
+
+<script>
+    $(document).ready(function () {
+        if(!localStorage.getItem('token')){
+            $('.logout').hide();
+        }
+
+        $('.logout').click(function (e) {
+            localStorage.removeItem('token')
+            window.location.href = "http://localhost:8080"
+        });
+    });
+</script>
+
+
+<style scoped>
+    .navbarWrapper {
+        padding: 0px;
+        text-align: center;
+    }
+
+    .navwrapper {
+        /* min-height: 65px; */
+    }
+
+    #nav {
+        z-index: 100;
+        background-image: linear-gradient(-60deg, #ebebeb21, #fafafa2d);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-auto-rows: minmax(50px, auto);
+        width: 100%;
+        margin: 0 auto;
+        height: 50px;
+        grid-gap: 10px;
+        text-shadow: 0 0 2px rgb(175, 210, 255);
+        box-shadow: 0 0 0.29rem rgba(255, 255, 255, 0.958);
+        top: 0;
+        left: 0;
+        position: fixed;
+    }
+
+    header div {
+        align-self: center;
+    }
+
+    .logoSect {
+
+        font-size: 30px;
+    }
+
+    .linkBar {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-auto-rows: minmax(20px, auto);
+        font-size: 12px;
+        align-items: center;
+    }
+
+    .linkBar div:hover {
+        /* margin-top: px; */
+        transition: 0.2s;
+        text-shadow: 0px 0px 2px #fff9fb;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    #nav a {
+        font-weight: bold;
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+    #nav a.router-link-exact-active {
+        color: #026958;
+    }
+
+    .searchbar {
+        grid-column: 1/4;
+        margin: 15px 10px 0 10px;
+    }
+
+    .linkBar .searchbar:hover {
+        margin: 15px 10px 0 10px;
+    }
+</style>

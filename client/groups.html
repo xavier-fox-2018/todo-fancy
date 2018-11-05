@@ -1,0 +1,39 @@
+<body>
+    <section id="groupWrapper">
+        <h4>Groups <button id="cerateGroupToggle" class="btn-sm btn-info pull-right">+ Create</button></h4>
+        <div id="spanAddGroup" class="input-group" style="display: none;">
+            <input type="text" id="groupNameAdd" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn-sm btn-primary" onclick="addGroup()" type="button">Add</button>
+            </span>
+        </div>
+        <hr>
+        <div id="listOfGroup">
+            <!-- list -->
+        </div>
+
+    </section>
+</body>
+
+<script src="groups.js"></script>
+
+<style scoped>
+    .list-group-item {
+        color: rgb(31, 30, 30);
+    }
+
+    #listOfGroup {
+        display: grid;
+        grid-gap: 10px;
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    .input-group input {
+        height: 33px;
+    }
+
+    .invitebutton {
+        cursor: pointer;
+    }
+</style>
