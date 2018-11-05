@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const bcryptPassword = require('../helper/bcryptPass')
-const gSignin = require('../helper/gSignIn')
+const {gSignin, isLogin} = require('../helper/gSignIn')
 const Account = require('../models/user')
 
 module.exports = {
@@ -118,4 +118,5 @@ module.exports = {
         })
     },
     gSignin,
+    isLogin,
 }

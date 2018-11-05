@@ -1,7 +1,7 @@
+require('dotenv').config()
 const express  = require('express')
 const mongoose = require('mongoose')
 const cors     = require('cors')
-require('dotenv').config()
 const app = express()
 const indexRouter   = require('./routers/index')
 const userRouter = require('./routers/user')
@@ -16,8 +16,8 @@ db.once('open', function() {
 });
 
 app.use(cors())
-app.use(express.urlencoded({extended : false}))
 app.use(express.json())
+app.use(express.urlencoded({extended : false}))
 
 app.use('/', indexRouter)
 app.use('/user', userRouter)

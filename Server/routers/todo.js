@@ -6,8 +6,8 @@ const { findAll, insert, update, remove, findBy, gSignin } = require('../control
 router.get('/', findAll)
 router.post('/', insert)
 router.put('/', update)
-router.delete('/', remove)
-router.get('/findBy', findBy)
+router.delete('/:id', remove)
+router.get('/:id', findBy)
 // router.post('/gsignin', gSignin)
 
 

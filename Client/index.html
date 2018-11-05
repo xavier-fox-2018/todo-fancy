@@ -5,21 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="google-signin-client_id" content="534193051040-q1tah2abccu2dtq50nop9oq58pp5t5ih.apps.googleusercontent.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
     <script  src="https://code.jquery.com/jquery-3.3.1.js"   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="   crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Halo boys</h1>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <a href="#" onclick="signOut();">Sign out</a>
+
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a href="index.html" class="navbar-brand">Home</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto" id="list_navbar">
+                <a href="#" class="nav-item active nav-link" onclick="todoList()">Todo List</a>
+                <a href="#" class="nav-item active nav-link">profile</a>
+
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle active" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Information</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a href="#" class="dropdown-item">Something</a>
+                        <a href="#" class="dropdown-item">Connect</a>
+                    </div>
+                </li>
+            </ul>
+
+            <form action="#" method="post" class="form-inline my-2 mylg-0">
+                <input type="search" name="buscar" id="buscar" class="form-control mr-sm-2" placeholder="Buscar em todo o site" aria-label="Buscar">
+                <div id="fb-root"></div>
+                <!-- <fb:login-button scope="public_profile" onlogin="checkLoginState();" >
+                </fb:login-button> -->
+                <a href="#" onclick="signOut();" id="gSignOut" >Sign out</a>
+                <button type="button" class="btn btn-outline-success" id="myBtn">Login</button>
+                <button class="btn btn-outline-success" type="submit">Register</button>
+            </form>
+        </div>
+    </nav>
+    
+
+    <!-- Login session -->
+    <div class="container">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="padding:35px 50px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4><span class="glyphicon glyphicon-lock" id="normal_login"></span> Login</h4>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="fb-login-button" onlogin="checkLoginState()" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="g-signin2" data-onsuccess="onSignIn" id="gSignIn"></div>
+                        </div>
+                    </div>
+                <form role="form">
+                    <div class="form-group">
+                    <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
+                    <input type="text" class="form-control" id="usrname" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                    <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+                    <input type="text" class="form-control" id="psw" placeholder="Enter password">
+                    </div>
+                    <div class="checkbox">
+                    <label><input type="checkbox" value="" checked>Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+                </form>
+                </div>
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                <p>Not a member? <a href="#">Sign Up</a></p>
+                <p>Forgot <a href="#">Password?</a></p>
+                </div>
+            </div>
+            
+            </div>
+        </div> 
+    </div>
+
+    <table id="table_todo" border="1" cellspacing="2">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="listTodo">
+        </tbody>
+    </table>
 
     <div id="userdata"></div>
     <div id="inputdata"></div>
-
-    <!-- <input type="text">
-    <button ></button> -->
+    <div id="taskId"></div>
 
     <script>
 
@@ -29,9 +121,18 @@
 
 
         $(document).ready(function() {
+            $('#gSignOut').hide()
+            $('#table_todo').hide()
+            $('#list_navbar').hide()
             // userData()
             inputdata()
         })
+
+        $(document).ready(function(){
+            $("#myBtn").click(function(){
+                $("#myModal").modal();
+            });
+        });
         
         function inputdata() {
             $.ajax({
@@ -75,31 +176,94 @@
             })
         }
 
-        function onSignIn(googleUser) {
-            var id_token = googleUser.getAuthResponse().id_token;
-            console.log(id_token)
+
+        function todoList() {
             $.ajax({
-                method: 'POST',
-                url: "http://localhost:3000/user/gsignin",
-                data: {
-                    gToken: id_token
-                }
+                method: 'GET',
+                url: `${config.port}/todo`
             })
-            .done(jwt => {
-                console.log(jwt.token);
-                localStorage.setItem('token',jwt.token)
+            .done(lists => {
+                console.log(lists.Todo);
+                let tasks = lists.Todo
+                $('#listTodo').text('')
+                $('#table_todo').show()
+                tasks.forEach(task => {
+                    
+                    $('#listTodo').append(`
+                    <tr>
+                    <td>${task.title}</td>
+                    <td>${task.date_time.slice(0, 10)}</td>
+                    <td>${task.task}</td>
+                    <td><a onclick="updateTodo(${task._id})">Edit</a>|<a href="">Delete</a></td>
+                    </tr>
+                    `)
+                })
             })
             .fail(err => {
-                console.log(err);
+                $('#listTodo').text(err)
             })
         }
+        
+        // function updateTodo(todoId){
+        //     $.ajax({
+        //         method: 'GET',
+        //         url: `${config.port}/todo/${todoId}`
+        //     })
+        //     .done(task => {
+        //         console.log(task);
+        //         $('#taskId').text('')
+        //         $('#taskId').text(task)
+        //     })
+        //     fail(err => {
+        //         $('#taskId').text(err)
+        //     })
+        // }
 
         function signOut() {
+            
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {
             console.log('User signed out.');
             });
+            localStorage.removeItem('token')
+            allSignOut()
+        }
+
+        
+
+        // function checkToken() {
+        //     const token = localStorage.getItem('token');
+
+        //     if (token) {
+        //         $('#btn-logout').show();
+        //         $('#form-login').hide();
+        //         $('#registerForm').hide();
+        //         $('#main-content').show();
+        //         $('#group-content').show();
+        //     } else {
+        //         $('#btn-logout').hide();
+        //         $('#form-login').show();
+        //         $('#registerForm').show();
+        //         $('#main-content').hide();
+        //         $('#group-content').hide();
+        //     }
+        // }
+
+        function allSignOut() {
+            $('#navbarSupportedContent').hide()
+            $('#gSignIn').show()
+            $('#gSignOut').hide()
+            $('#list_navbar').hide()
+        }
+
+        function allSignIn() {
+            $('#navbarSupportedContent').show()
+            $('#gSignIn').hide()
+            $('#gSignOut').show()
+            $('#list_navbar').show()
         }
     </script>
+    <script src="./js/fbSignIn.js"></script>
+    <script src="./js/gSignIn.js"></script>
 </body>
 </html>

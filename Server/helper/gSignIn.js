@@ -24,8 +24,8 @@ const gSignin = function (req,res) {
                 email: emailUser
             },function(error,response) {
                 if (response) {
-                    console.log("IniRahasiaKitaYa");
-                    const token = jwt.sign({response}, "IniRahasiaKitaYa")
+                    console.log(process.env.JWT_SECRET);
+                    const token = jwt.sign({response}, process.env.JWT_SECRET)
                     
                     res.status(200).json({
                         response: response,
@@ -35,12 +35,11 @@ const gSignin = function (req,res) {
                 else {
                     accountUser.create({
                         email: emailUser,
-                        password: req.body.password
+                        password: 12345
                     }, function(error, response) {
                         if (!err) {
-                            console.log("IniRahasiaKitaYa");
                             
-                            const token = jwt.sign({response}, "IniRahasiaKitaYa")
+                            const token = jwt.sign({response}, process.env.JWT_SECRET)
                             res.status(201).json({
                                 response: response,
                                 token: token
@@ -60,7 +59,7 @@ const gSignin = function (req,res) {
 
 module.exports = {
     isLogin(req,res, next) {
-        let decoded = jwt.verify(req.headers.token, "IniRahasiaKitaYa", (err, decoded) => {
+        let decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET, (err, decoded) => {
             if ( err ) {
                 console.log((err));
                 res.status(401).json({
@@ -104,17 +103,5 @@ module.exports = {
             }
           });
         })
-      },
-    
-      listRepoStarred (data) {
-        let temp = []
-    
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].stargazers_count > 0) {
-            temp.push(data[i])
-          }
-        }
-    
-        return temp
       }
 }
