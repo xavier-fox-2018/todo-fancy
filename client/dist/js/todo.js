@@ -1,6 +1,7 @@
 const  url = `http://localhost:3000/todo`
 
 $(document).ready(function () {
+    isLogin()
     getAllTodo()
 })
 
