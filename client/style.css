@@ -1,0 +1,22 @@
+.card{
+    height: 100%;
+
+}
+.main-box {
+    margin: 2%;
+    height: 100%;
+}
+
+.btn {
+    margin: 5px;
+    line-height: 5px;
+    
+}
+
+.try {
+    width: 100%;
+}
+
+button.c {
+    word-break: break-all !important;
+}
