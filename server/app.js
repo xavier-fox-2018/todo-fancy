@@ -10,7 +10,7 @@ var todosRouter = require('./routes/todos')
 var cors = require('cors')
 
 var app = express();
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 app.use(cors())
 
 // view engine setup
