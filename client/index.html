@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="43340400785-g34b4gvre9nn2e24kq4ogn2074p5fda4.apps.googleusercontent.com">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+  <title>Login</title>
+  <style>
+    .regist {
+      color: white !important;
+    }
+  </style>
+</head>
+<body style="background: linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.3)), url('https://picsum.photos/1920/1080/?random&blur')">
+  <!-- <script src="./scripts/fb.js"></script>   -->
+  <div class="ui aligned center header" style="margin : 120px auto 0px">
+      <h2 style="color: white; font-size: 60px;">Login</h2>
+    </div>
+  <div class="ui grid">
+    <div class="ui four wide column raised segment" style="margin: 50px auto">
+      <div class="ui large form">
+        <div class="ui field">
+          <label for="email">Email:</label>
+          <div class="ui input icon">
+            <i class="ui mail icon"></i>
+            <input type="text" placeholder="Input Email Here..." id="email">
+          </div>
+        </div>
+        <div class="ui field">
+          <label for="password">Password:</label>
+          <div class="ui input icon">
+              <i class="ui lock icon"></i>
+              <input type="password" placeholder="Input Password Here..." id="password">
+            </div>
+        </div>
+        <div class="ui extra content">
+          <div class="ui grid">
+            <div class="ui ten wide column">
+                <p id="notifLogin" style="color: red; font-weight: bold;"></p>
+            </div>
+            <div class="ui three wide column">
+             
+            </div>
+            <div class="ui three wide column">
+              <button class="ui blue right floated button" tabindex="0" onclick="login()"> Login </button>
+            </div>
+          </div>
+          <div class="ui grid">
+            <div id="my-signin2"></div>
+            <!-- <fb:login-button 
+                scope="public_profile,email"
+                onlogin="checkLoginState();"
+                data-size="large"                
+                style="padding-left:90px;margin-top:10px"
+                >
+              </fb:login-button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="ui four wide column" style="margin: 0px auto; padding: 10px 0;">
+      <div class="ui field">
+        <p style="font-weight: regular; font-size: 15px; color: white">Doesn't have an account?</p>
+        <a href="#" style="font-size: 16px; color:white; font-weight: bold;" class="register">Register</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGIST MODAL -->
+  <div class="ui basic modal">
+      <div class="ui icon header">
+        <i class="archive icon"></i>
+        Registration Form
+      </div>
+      <div class="content">
+        <div class="ui large form">
+          <div class="ui three fields">
+            <div class="ui field required">
+              <label class="regist">Username</label>
+              <div class="ui input">
+                <input type="text" placeholder="Username" id="usernameRegist">
+              </div>
+            </div>
+            <div class="ui field required">
+              <label class="regist">Email</label>
+              <div class="ui input">
+                <input type="text" placeholder="Email" id="emailRegist">
+              </div>
+            </div>
+            <div class="ui field required">
+              <label class="regist">Password</label>
+              <div class="ui input">
+                <input type="password" placeholder="Password" id="passwordRegist">
+              </div>
+            </div>
+          </div>
+          <div class="ui extra content">
+            <div class="ui grid">
+              <div class="ui thirteen wide column">
+                <p style="color: red; font-weight: bold;" id="notifRegist"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui red basic cancel inverted button">
+          <i class="remove icon"></i>
+          Cancel
+        </div>
+        <div class="ui green ok inverted button" onclick="regist()">
+          <i class="checkmark icon"></i>
+          Register
+        </div>
+      </div>
+    </div>
+  <!-- / REGIST MODAL -->
+
+  <script src="./scripts/login.js"></script>
+  <script>
+    $('.register').click(function(e){
+      $('.ui.basic.modal')
+        .modal('show')
+      ;
+    })
+     function onSuccess(googleUser) {
+      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+      loginGoogle(googleUser.Zi.id_token)
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': '240',
+        'height': 30,
+        'longtitle': true,
+        'theme': 'light',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+  </script>
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>
