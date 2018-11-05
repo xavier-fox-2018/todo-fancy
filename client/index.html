@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="757331088672-pola7jfrgp45f8h11j5t5mtu7mutggm3.apps.googleusercontent.com">  <!-- PINDAH KE ENV!! -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+</head>
+
+<body>
+
+
+    <div class="loginPage">
+        Please login to continue
+        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    </div>
+
+
+    <!-- Page content -->
+    <div class="afterLogin" style="display:none">
+
+        <!-- Side navigation -->
+        <div class="sidenav">
+            <p id="addNew" data-toggle="modal" data-target="#formTask" data-whatever="Add New">Add new todo</p>
+            <p id="listTask">All List</p>
+            <p>Today</p>
+            <p>This Week</p>
+            <p class="g-signOut" onclick="signOut();" style="display:none">Sign Out</p>
+        </div>
+
+        <div class="mainHead">
+            <div class="jumbotron">
+                <h1 class="display-4">todoFancy</h1>
+                <p class="lead">Increase your productivity!</p>
+                <hr class="my-4">
+                
+
+                <!-- Modal di mainHead body ato diluar?-->
+                <div class="modal fade" id="formTask" tabindex="-1" role="dialog" aria-labelledby="formTaskLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="formTaskLabel">Add New Task</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="inputName">Name</label>
+                                        <input type="text" class="form-control" id="inputName" aria-describedby="emailHelp" placeholder="Enter new task name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputDescription">Description</label>
+                                        <textarea class="form-control" id="inputDescription" rows="3" placeholder="Enter description here"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputDueDate">Due Date</label>
+                                        <input type="datetime-local" class="form-control" id="inputDueDate" aria-describedby="emailHelp" placeholder="Enter new task name">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="submitNewTask" data-dismiss="modal" aria-label="Close">Add new</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="mainBody">
+        </div>
+    </div>
+
+
+    <script>
+        function onSignIn(googleUser) {
+            
+            // Useful data for your client-side scripts:
+            var profile = googleUser.getBasicProfile();
+            console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+            console.log('Full Name: ' + profile.getName());
+            console.log("Email: " + profile.getEmail());
+
+            // The ID token you need to pass to your backend:
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
+
+
+            // start here: ajax post ->  routes index -> controller User
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/googleLogin',
+                data: {
+                    gToken: id_token
+                },
+                json: true
+            })
+            .done( response => {
+                console.log(response);
+                $('.loginPage').hide() // ga ke hide karena td ga ada response
+                $('.afterLogin').show()
+                $('.g-signOut').show()
+            })
+            .fail(err => {
+                console.log(err);
+            })
+        };
+
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            $('.afterLogin').hide()
+            $('.loginPage').show()
+        });
+  }
+
+    
+    </script>
+
+
+
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
+
+
