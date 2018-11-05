@@ -99,6 +99,7 @@ function fillErrorBoard(error) {
         margin: '0 auto'
     });
 
+    // Only handling when creating task if title and dueDate are sent empty
     if (error.responseJSON.errors.dueDate && !error.responseJSON.errors.title) {
         $('#error-msg').text(`${error.responseJSON.errors.dueDate.message}`);
         $('#error-msg').css({
@@ -258,8 +259,8 @@ function seeDetail(id, title, description, priority, dueDate, isDone, createdAt,
                     <div class="card-text"> <b>Last Updated At:</b><br> ${arrRealTimestamps[1]}</div>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <button class="btn btn-success mr-3" id="btn-done" onclick="done()">Mark as done</button>
-                    <button class="btn btn-warning text-white ml-3" id="btn-undone" onclick="undone()">Mark as undone</button>
+                    <button class="btn btn-success mr-3" id="btn-done" onclick="done('${id}')">Mark as done</button>
+                    <button class="btn btn-warning text-white ml-3" id="btn-undone" onclick="undone('${id}')">Mark as undone</button>
                 </div>
             </div>
         </div>
@@ -332,13 +333,12 @@ function editTodo() {
         });
 }
 
-function done() {
+function done(id) {
     const token = localStorage.getItem('token');
-    const taskId = localStorage.getItem('taskId');
 
     $.ajax({
         method: 'PATCH',
-        url: `${config.host}/tasks/markdone/${taskId}`,
+        url: `${config.host}/tasks/markdone/${id}`,
         headers: {
             'access-token': token
         }
@@ -346,6 +346,7 @@ function done() {
         .done(function(result) {
             console.log("Mark As Done Todo Result: ", result);
             getTodos();
+            getProjectTodos();
         })
         .fail(function(err) {
             console.log("Mark As Done Todo Error: ", err);
@@ -353,13 +354,12 @@ function done() {
         });
 }
 
-function undone() {
+function undone(id) {
     const token = localStorage.getItem('token');
-    const taskId = localStorage.getItem('taskId');
 
     $.ajax({
         method: 'PATCH',
-        url: `${config.host}/tasks/markundone/${taskId}`,
+        url: `${config.host}/tasks/markundone/${id}`,
         headers: {
             'access-token': token
         }
@@ -367,6 +367,7 @@ function undone() {
         .done(function(result) {
             console.log("Mark As Undone Todo Result", result);
             getTodos();
+            getProjectTodos();
         })
         .fail(function(err) {
             console.log("Mark As Undone Todo Error", err);
@@ -533,8 +534,8 @@ function seeDetailTodoP(id, title, description, priority, dueDate, isDone, creat
                     <div class="card-text"> <b>Last Updated At:</b><br> ${arrRealTimestamps[1]}</div>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <button class="btn btn-success mr-3" id="btn-done" onclick="donePTodo()">Mark as done</button>
-                    <button class="btn btn-warning text-white ml-3" id="btn-undone" onclick="undonePTodo()">Mark as undone</button>
+                    <button class="btn btn-success mr-3" id="btn-done" onclick="done('${id}')">Mark as done</button>
+                    <button class="btn btn-warning text-white ml-3" id="btn-undone" onclick="undone('${id}')">Mark as undone</button>
                 </div>
             </div>
         </div>
@@ -584,50 +585,6 @@ function editProjectTodo() {
         })
         .fail(function(err) {
             console.log("Edit Todo Error: ", err);
-            fillErrorBoard(err);
-        });
-}
-
-function donePTodo() {
-    const token = localStorage.getItem('token');
-    const taskProjectId = localStorage.getItem('taskProjectId');
-
-    $.ajax({
-        method: 'PATCH',
-        url: `${config.host}/tasks/markdone/${taskProjectId}`,
-        headers: {
-            'access-token': token
-        }
-    })
-        .done(function(result) {
-            console.log("Mark As Done Todo Result: ", result);
-            getTodos();
-            getProjectTodos();
-        })
-        .fail(function(err) {
-            console.log("Mark As Done Todo Error: ", err);
-            fillErrorBoard(err);
-        });
-}
-
-function undonePTodo() {
-    const token = localStorage.getItem('token');
-    const taskProjectId = localStorage.getItem('taskProjectId');
-
-    $.ajax({
-        method: 'PATCH',
-        url: `${config.host}/tasks/markundone/${taskProjectId}`,
-        headers: {
-            'access-token': token
-        }
-    })
-        .done(function(result) {
-            console.log("Mark As Undone Todo Result", result);
-            getTodos();
-            getProjectTodos();
-        })
-        .fail(function(err) {
-            console.log("Mark As Undone Todo Error", err);
             fillErrorBoard(err);
         });
 }
