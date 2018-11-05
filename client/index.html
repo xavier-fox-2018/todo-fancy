@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <meta name="google-signin-client_id" content="601481270136-k8nppkr4b3pgnnid05kntlrickot562c.apps.googleusercontent.com">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="error"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="container-fluid" id="signUp">
+                        <div class="form-group">
+                            <h3>Sign Up</h3>
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="emailSignUp" aria-describedby="emailHelp" placeholder="Enter email">
+                            <small id="signUp" class="form-text text-muted" >We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="passwordSignUp" placeholder="Password">
+                        </div>
+                        <button id="signUp" type="button" class="btn btn-primary">Sign Up</button>
+                    </div>
+                    <div class="container-fluid" id="signIn">
+                        <div class="form-group">
+                            <h3>Sign In</h3>
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="passwordLogin" placeholder="Password">
+                        </div>                      
+                        <!-- buat sejajar -->      
+                        <button id="login" type="button" class="btn btn-primary">Sign In</button> or <div class="g-signin2" data-onsuccess="onSignIn"></div> <!-- REMINDER : ubah icon kalau sudah beres semua-->
+                    </div>
+                    <div class="container-fluid" id="todoList">
+                        <div class="form-group">
+                            <h3>Your To Do List ...</h3>
+                            <div id="list"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="createToDo">
+                        <div class="form-group">
+                            <h3>Create new todo</h3>
+                            <label for="exampleInputEmail1">Name</label>
+                            <input type="email" class="form-control" id="nameToDo" aria-describedby="emailHelp" placeholder="yout 'to do' title here..">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Description</label>
+                            <input type="text" class="form-control" id="descToDo" placeholder="your 'to do' description here..">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">due date</label>
+                            <input type="date" id="dueDateToDo">
+                        </div>
+                        <button id="doCreate" type="button" onclick="createToDo();" class="btn btn-primary">Save</button>
+                    </div>
+                    <div class="container-fluid" id="editToDo">
+                        <div class="form-group">
+                            <h3>Edit todo</h3>
+                            <label for="exampleInputEmail1">Name</label>
+                            <input type="email" class="form-control" id="editNameToDo" aria-describedby="emailHelp" placeholder="yout 'to do' title here..">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Description</label>
+                            <input type="text" class="form-control" id="editDescToDo" placeholder="your 'to do' description here..">
+                        </div>
+                        <div class="form-gorup">
+                            <label for="exampleInputPassword1">Completion status</label>
+                            <select>
+                                <option value="done" >Done</option>
+                                <option value="Not done">Not Done</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">due date</label>
+                            <input type="date" id="editDueDateToDo">
+                        </div>
+                        <div id="forButtonSaveEdit"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" onclick="" class="btn btn-outline-primary" id="signUpButton">Sign up</button><br><br>
+                    <button type="button" onclick="" class="btn btn-outline-success" id="signInButton">Sign in</button><br><br>
+                    <button type="button" onclick="listToDo()" class="btn btn-outline-success" id="listButton">See to do list</button><br><br>
+                    <button type="button" onclick="" class="btn btn-outline-success" id="newButton">Insert new to do</button><br><br>
+                    <button type="button" onclick="signOut();" class="btn btn-outline-danger" id="signOutButton">Sign out</button><br><br>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+
+            function formatTanggal(date) {
+                return `${new Date(date).getMonth()+1}/${new Date(date).getDate()}/${new Date(date).getFullYear()}`
+            }
+            
+            //tampung todo
+            let data = []
+
+            //show edit todo
+            function showEditToDo(id) { 
+                //hideing
+                $("#signUpButton").hide()
+                $("#signInButton").hide()
+                $("#signOutButton").show()
+                $("#listButton").show()
+                $("#newButton").show()
+                $("#signIn").hide()
+                $("#signUp").hide()
+                $("#todoList").hide()
+                $("#createToDo").hide()
+                $("#editToDo").show()
+
+                $("#editNameToDo").empty()
+                $("#editDescToDo").empty()
+                $("#editDueDateToDo").empty()
+                for ( let i = 0; i < data.length; i++ ) {
+                    if ( data[i]._id === id) {
+                        $("#editNameToDo").val(data[i].name)
+                        $("#editDescToDo").val(data[i].desc)
+                        $("#editDueDateToDo").val(formatTanggal(data[i].dueDate))
+                        $( "#forButtonSaveEdit" ).empty()
+                        $( "#forButtonSaveEdit" ).append(`
+                            <button class="btn btn-outline-success" onclick=saveEditToDo("${data[i]._id}")> Save</button>
+                        `)
+                    }
+                }
+            }
+
+            //save edit todo
+            function saveEditToDo(id) { 
+                $.ajax({
+                    method: "PUT",
+                    url: `http://localhost:3000/${id}`,
+                    data: { name:$("#editNameToDo").val(), desc: $("#editDescToDo").val(), dueDate: new Date($("#editDueDateToDo").val())}
+                })
+                .done( response => {
+                    listToDo()
+                    $("#signUpButton").hide()
+                    $("#signInButton").hide()
+                    $("#signIn").hide()
+                    $("#signUp").hide()
+                    $("#createToDo").hide()
+                    $("#editToDo").hide()
+                    $("#listButton").hide()
+                    $("#todoList").show()
+                })
+                .fail( err => {
+                    $("#error").text(JSON.stringify(err))
+                })
+            }
+
+            //delete todo
+            function deleteToDo(id) { 
+                $.ajax({
+                    method: "DELETE",
+                    url: `http://localhost:3000/${id}`
+                })
+                .done( response => {
+                    listToDo()
+                })
+                .fail( err => {
+                    $("#error").text(JSON.stringify(err))
+                })
+            }
+
+            //insert new todo
+            function createToDo() { 
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/",
+                    headers: { jToken: localStorage.getItem('jToken') },
+                    data: { name:$("#nameToDo").val(), desc: $("#descToDo").val(), dueDate: new Date($("#dueDateToDo").val())}
+                })
+                .done( response => {
+                    console.log( response )
+                })
+                .fail( err => {
+                    $("#error").text(JSON.stringify(err))
+                })
+            }
+
+            //read all todo
+            function listToDo() { 
+                $.ajax({
+                    method: "GET",
+                    url: "http://localhost:3000/all",
+                    headers: { jToken: localStorage.getItem('jToken') }
+                })
+                .done( todos => {
+                    if ( todos.length === 0 ) {
+                        $( "#list" ).empty()
+                        $( "#list" ).append(`
+                            nothing to do, please press insert new to do to create one..
+                        `)
+                    } else {
+                        $( "#list" ).empty()
+                        $( "#list" ).append(`
+                        <table class="table table-stripped">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Name</th>
+                                    <th>Desc</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelToDo">
+                            </tbody>
+                        </table>` )
+                        for ( let i = 0; i < todos.length; i++ ){ 
+                            data.push(todos[i])
+                            $( "#tabelToDo" ).append(`
+                            <tr>
+                            <td> ${i+1}</td> 
+                            <td> ${todos[i].name}</td> 
+                            <td> ${todos[i].desc}</td> 
+                            <td> ${formatTanggal(data[i].dueDate)}</td> 
+                            <td> ${todos[i].status}</td> 
+                            <td><button class="btn btn-warning btn-sm" onclick=showEditToDo("${todos[i]._id}")> Edit</button> <button class="btn btn-danger btn-sm" onclick=deleteToDo("${todos[i]._id}")> Delete</button></td>
+                            </tr>
+                            ` )}
+                        }
+                    })
+                    .fail( err => {
+                        $("#error").text(JSON.stringify(err))
+                    })
+            }
+
+            //google login
+            function onSignIn(googleUser) {
+                let id_token = googleUser.getAuthResponse().id_token;
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/gSignIn",
+                    headers: { gToken : id_token }
+                })
+                .done( jToken => {
+                    localStorage.setItem("jToken", jToken)
+                    location.reload();
+                })
+                .fail( err => {
+                    $("#error").text(JSON.stringify(err))
+                })
+            }
+
+            //all logout
+            function signOut() {
+                console.log(`masuk sign out`)
+                let auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                console.log('User signed out.');
+                });
+                localStorage.clear()
+                location.reload()
+            }
+
+
+            //Login
+            $("#login").click( function() {
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/signIn",
+                    data: { email: $("#emailLogin").val(), password: $("#passwordLogin").val() }
+                })
+                .done( jToken => {
+                    localStorage.setItem("jToken", jToken)
+                    location.reload(); 
+                })
+                .fail( err => {
+                    $("#error").text(JSON.stringify(err))
+                })
+            })
+
+            //Signup
+            $("#signUp").click( function() {
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/signUp",
+                    data: { email: $("#emailSignUp").val(), password: $("#passwordSignUp").val() }
+                })
+                .done( response => {
+                    listToDo()
+                    $("#signUpButton").hide()
+                    $("#signInButton").hide()
+                    $("#signIn").hide()
+                    $("#signUp").hide()
+                    $("#createToDo").hide()
+                    $("#editToDo").hide()
+                    $("#listButton").hide()
+                    location.reload();
+                })
+                .fail( err => {
+                    $("#error").text(JSON.stringify(err))
+                })
+            })
+
+            //check login
+            $(document).ready( function() {
+                checkLogin()
+            })
+
+            function checkLogin(){
+                console.log(`masuk sini`)
+                let jtoken = localStorage.getItem('jToken')
+                if ( !jtoken ) {
+                    $("#signUp").hide()
+                    $("#todoList").hide()
+                    $("#createToDo").hide()
+                    $("#editToDo").hide()
+                    $("#signOutButton").hide()
+                    $("#listButton").hide()
+                    $("#newButton").hide()
+
+
+                     $("#signInButton").click(function() {
+                        $("#signIn").show()
+                        $("#signUp").hide()
+                        $("#todoList").hide()
+                        $("#createToDo").hide()
+                        $("#editToDo").hide()
+                    })
+
+                    $("#signUpButton").click(function() {
+                        $("#signIn").hide()
+                        $("#signUp").show()
+                        $("#todoList").hide()
+                        $("#createToDo").hide()
+                        $("#editToDo").hide()
+                    })
+
+                } else {
+                    listToDo()
+                    $("#signUpButton").hide()
+                    $("#signInButton").hide()
+                    $("#signIn").hide()
+                    $("#signUp").hide()
+                    $("#createToDo").hide()
+                    $("#editToDo").hide()
+                    $("#listButton").hide()
+                }
+            }
+
+            $("#newButton").click(function() {
+                $("#signOutButton").show()
+                $("#listButton").show()
+                $("#todoList").hide()
+                $("#createToDo").show()
+                $("#editToDo").hide()
+                $("#newButton").hide()
+            })
+            
+            $("#doCreate").click(function() {
+                listToDo()
+                $("#todoList").show()
+                $("#createToDo").hide()
+                $("#editToDo").hide()
+            })
+
+            $("#listButton").click(function() {
+                listToDo()
+                $("#todoList").show()
+                $("#createToDo").hide()
+                $("#editToDo").hide()
+                $("#listButton").hide()
+                $("#listButton").hide()
+                $("#newButton").show()
+            })
+
+        </script>
+    </body>
+</html>

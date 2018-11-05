@@ -1,0 +1,5 @@
+/server/node_modules
+/client/index_3.html
+/client/index_backup.html
+/client/index2.html
+/server/.env
