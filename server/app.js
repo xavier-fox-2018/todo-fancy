@@ -6,7 +6,8 @@ const logger = require('morgan');
 const cors = require('cors')
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost:27017/todo',{ useNewUrlParser: true })
+// mongoose.connect('mongodb://localhost:27017/todo',{ useNewUrlParser: true })
+mongoose.connect('mongodb://todoapp1:todoapp1@ds151463.mlab.com:51463/todoapp',{ useNewUrlParser: true })
 mongoose.connection.on("error", console.error.bind(console, "MongoDB connection error"))
 mongoose.connection.once("open", ()=> {console.log("MongoDB Connected!")})
 
