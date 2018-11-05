@@ -51,7 +51,7 @@ module.exports = {
             })
           
         } else {
-          res.status(404).json({
+          res.status(500).json({
             status: 'failed',
             message: 'Wrong password or email'
           })
@@ -73,6 +73,7 @@ module.exports = {
   },
 
   register (req, res) {
+    console.log('masuk server register--', req.body)
     let newUser = {
       email: req.body.email,
       username: req. body.username,
@@ -107,7 +108,7 @@ module.exports = {
         // }
         res.status(500).json({
           status: 'failed',
-          err
+          message: err.message
         })
       })
   },

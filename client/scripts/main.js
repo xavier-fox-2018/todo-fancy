@@ -369,7 +369,35 @@ function deleteTodo (taskId) {
 }
 
 function completedTodo(task) {
-  if(task.userId._id !== localStorage.getItem('userId')) {
+  if(localStorage.getItem('groupId')) {
+    if(task.userId._id !== localStorage.getItem('userId')) {
+      let data;
+      if (new Date() > new Date(task.dueDate)) {
+        data = {done:1, late:1}
+      } else {
+        data = {done:1, late:0}
+      }
+      $.ajax({
+        url: `${host}/tasks/${task._id}`,
+        method: 'PUT',
+        data: data
+        ,headers: {
+          authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .done(response=>{
+        let groupId = localStorage.getItem('groupId')
+        if(groupId) {
+          getGroupTask(groupId)
+        } else {
+          getTasks()
+        }
+      })
+      .fail(err=>{
+        console.log(err)
+      })
+    }
+  } else {
     let data;
     if (new Date() > new Date(task.dueDate)) {
       data = {done:1, late:1}
@@ -399,7 +427,8 @@ function completedTodo(task) {
 }
 
 function uncompletedTodo(task) {
-  if(task.userId._id !== localStorage.getItem('userId')) {
+  if(localStorage.getItem('groupId')) {
+    if(task.userId._id !== localStorage.getItem('userId')) {
     let data = {done:0, late:0}
     $.ajax({
       url: `${host}/tasks/${task._id}`,
@@ -421,6 +450,28 @@ function uncompletedTodo(task) {
       console.log(err)
     })
   }
+} else {
+  let data = {done:0, late:0}
+    $.ajax({
+      url: `${host}/tasks/${task._id}`,
+      method: 'PUT',
+      data: data
+      ,headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .done(response=>{
+      let groupId = localStorage.getItem('groupId')
+      if(groupId) {
+        getGroupTask(groupId)
+      } else {
+        getTasks()
+      }
+    })
+    .fail(err=>{
+      console.log(err)
+    })
+}
 }
 
 
@@ -513,6 +564,7 @@ function goToChart() {
       }
     })
     .done(response=>{
+      
       let completed=[],uncompleted=[],late=[]
       response.result.forEach(task=>{
         if(task.late) {
@@ -539,14 +591,17 @@ function goToChart() {
       }
     })
     .done(response=>{
+      console.log('ini res getchart--',response)
       let completed=[],uncompleted=[],late=[]
       response.forEach(task=>{
-        if(task.late) {
-          late.push(task)
-        } else if (task.done && !task.late) {
-          completed.push(task)
-        } else {
-          uncompleted.push(task)
+        if(!task.groupId) {
+          if(task.late) {
+            late.push(task)
+          } else if (task.done && !task.late) {
+            completed.push(task)
+          } else {
+            uncompleted.push(task)
+          }
         }
       })
       drawChart(completed.length ,uncompleted.length ,late.length)

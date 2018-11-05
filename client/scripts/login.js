@@ -11,7 +11,9 @@ const host = `http://localhost:3000`
 
 function login() {
   let email = $('#email').val()
-  let password = $('#password').val()  
+  let password = $('#password').val()
+  console.log('masuk LOGIN client', email, password)
+  
   $.ajax({
     url: `${host}/users/login`,
     method: 'POST',

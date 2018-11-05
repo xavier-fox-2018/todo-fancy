@@ -5,7 +5,8 @@ const Schema = mongoose.Schema
 const groupSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Please add Group Name!']
+    required: [true, 'Please add Group Name!'],
+    unique: [true, 'Group Name is already in use, please use another name']
   },
   userId: [{
     type: Schema.Types.ObjectId,
