@@ -117,91 +117,13 @@
             </svg>
             
             
-            <div class="todo-list">
-              <label class="todo">
-                <input class="todo__state" type="checkbox" />
-                
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
-                  <use xlink:href="#todo__line" class="todo__line"></use>
-                  <use xlink:href="#todo__box" class="todo__box"></use>
-                  <use xlink:href="#todo__check" class="todo__check"></use>
-                  <use xlink:href="#todo__circle" class="todo__circle"></use>
-                </svg>
-            
-                <div class="todo__text">Do a very important task Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod error mollitia vero quae provident reiciendis dolorum. Facilis debitis laborum molestias labore laboriosam recusandae. Quia impedit dolorem distinctio ratione veritatis modi.</div>
-                
-              </label>
-    
-              <label class="todo">
-                  <input class="todo__state" type="checkbox" />
-                  
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
-                    <use xlink:href="#todo__line" class="todo__line"></use>
-                    <use xlink:href="#todo__box" class="todo__box"></use>
-                    <use xlink:href="#todo__check" class="todo__check"></use>
-                    <use xlink:href="#todo__circle" class="todo__circle"></use>
-                  </svg>
+            <div class="todo-list"  id="allTodoTask">
               
-                  <div class="todo__text">Do a very important task Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod error mollitia vero quae provident reiciendis dolorum. Facilis debitis laborum molestias labore laboriosam recusandae. Quia impedit dolorem distinctio ratione veritatis modi.</div>
-                  
-                </label>
-                <label class="todo">
-                    <input class="todo__state" type="checkbox" />
-                    
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
-                      <use xlink:href="#todo__line" class="todo__line"></use>
-                      <use xlink:href="#todo__box" class="todo__box"></use>
-                      <use xlink:href="#todo__check" class="todo__check"></use>
-                      <use xlink:href="#todo__circle" class="todo__circle"></use>
-                    </svg>
-                
-                    <div class="todo__text">Do a very important task Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod error mollitia vero quae provident reiciendis dolorum. Facilis debitis laborum molestias labore laboriosam recusandae. Quia impedit dolorem distinctio ratione veritatis modi.</div>
-                    
-                  </label>
-    
-                  <label class="todo">
-                      <input class="todo__state" type="checkbox" />
-                      
-                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
-                        <use xlink:href="#todo__line" class="todo__line"></use>
-                        <use xlink:href="#todo__box" class="todo__box"></use>
-                        <use xlink:href="#todo__check" class="todo__check"></use>
-                        <use xlink:href="#todo__circle" class="todo__circle"></use>
-                      </svg>
-                  
-                      <div class="todo__text">Do a very important task Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod error mollitia vero quae provident reiciendis dolorum. Facilis debitis laborum molestias labore laboriosam recusandae. Quia impedit dolorem distinctio ratione veritatis modi.</div>
-                      
-                    </label>
     
               
-            
-              <label class="todo">
-            
-                <input class="todo__state" type="checkbox" />
-            
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
-                  <use xlink:href="#todo__line" class="todo__line"></use>
-                  <use xlink:href="#todo__box" class="todo__box"></use>
-                  <use xlink:href="#todo__check" class="todo__check"></use>
-                  <use xlink:href="#todo__circle" class="todo__circle"></use>
-                </svg>
-            
-                <div class="todo__text">Another important task</div>
                 
-              </label>
             
-              <label class="todo">
-                <input class="todo__state" type="checkbox" />
-                
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
-                  <use xlink:href="#todo__line" class="todo__line"></use>
-                  <use xlink:href="#todo__box" class="todo__box"></use>
-                  <use xlink:href="#todo__check" class="todo__check"></use>
-                  <use xlink:href="#todo__circle" class="todo__circle"></use>
-                </svg>
-                
-                <div class="todo__text">Not so important task</div>
-              </label>
+              
           </div>
 
       </div>
@@ -267,6 +189,7 @@
 
     $('#mainPage').hide()
     $('#createTodo').hide()
+    showAllTodo()
 
 
     const inP = $('.input-field');
@@ -408,11 +331,12 @@
     function pressList() {
       $('#allTaskList').show()
       $('#createTodo').hide()
+      $('#allTodoTask').empty()
+      showAllTodo()
     }
 
     function createTodo(inputTitle, inputAbout, inputDueDate) {
       
-
       $.ajax({
         method: 'POST',
         url: `http://localhost:3000/todo`,
@@ -427,7 +351,6 @@
       })
         .done(result => {
           console.log('Create todo Successfully', result)
-          localStorage.setItem('token', result.token)
           $('#allTaskList').hide()
           $('#createTodo').show()
 
@@ -439,6 +362,56 @@
             
         })
 
+    }
+
+    function showAllTodo() {
+      $.ajax({
+        method: 'GET',
+        url: `http://localhost:3000/todo`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .done(result => {
+          console.log('Show todo Successfully', result)
+          let tasks = result.data
+
+          for (let i = 0; i < tasks.length; i++) {
+
+            $('#allTodoTask').append(
+
+
+              `
+              <label class="todo">
+                <input class="todo__state" type="checkbox" />
+                
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 25" class="todo__icon">
+                  <use xlink:href="#todo__line" class="todo__line"></use>
+                  <use xlink:href="#todo__box" class="todo__box"></use>
+                  <use xlink:href="#todo__check" class="todo__check"></use>
+                  <use xlink:href="#todo__circle" class="todo__circle"></use>
+                </svg>
+                <div class="todo__text">${tasks[i].title}</div>
+                <div class="todo__text">${tasks[i].about}</div>
+                
+              </label>
+
+              `
+
+
+            )
+
+          }
+          
+          
+
+          
+
+        })
+        .fail(err => {
+          console.log(err);
+            
+        })
     }
 
 </script>
