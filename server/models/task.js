@@ -7,4 +7,4 @@ var TaskSchema = new mongoose.Schema({
     date: String
 })
 
-module.exports= TaskSchema
+module.exports = TaskSchema

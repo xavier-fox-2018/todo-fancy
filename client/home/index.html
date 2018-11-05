@@ -26,17 +26,17 @@
                 <ul class="navbar-nav mr-auto">
 
                     <li class="nav-item active" id="Tasks">
-                        <a class="nav-link" href="" >Tasks
+                        <a class="nav-link" href="">Tasks
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
 
-                    <li class="nav-item"id="complete-task">
-                        <a class="nav-link " href="" >Completed</a>
+                    <li class="nav-item" id="complete-task">
+                        <a class="nav-link " href="">Completed</a>
                     </li>
 
                     <li class="nav-item" id="incomplete-task">
-                        <a class="nav-link " href="" >Incompleted</a>
+                        <a class="nav-link " href="">Incompleted</a>
                     </li>
                 </ul>
                 <img style="width: 30px" class="navbar-brand" id="userPhoto" src="" alt="">
@@ -355,7 +355,7 @@
                     })
             })
 
-             $('#incomplete-task').click(function (event) {
+            $('#incomplete-task').click(function (event) {
                 event.preventDefault()
                 $.ajax({
                     method: "POST",

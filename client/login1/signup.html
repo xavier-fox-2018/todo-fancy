@@ -29,7 +29,7 @@
 
                 <div class="form__field">
                     <label for="loginEmail">
-                        <span >Email</span>
+                        <span>Email</span>
                     </label>
                     <input id="loginEmail" type="email" name="email" class="form__input" placeholder="Email" required>
                 </div>
@@ -72,25 +72,25 @@
         </svg>
 
         <script>
-            $('#submitbtn').click(function(event){
+            $('#submitbtn').click(function (event) {
                 event.preventDefault()
                 let input = {
                     name: $('#loginName').val(),
                     email: $('#loginEmail').val(),
                     password: $('#loginPassword').val(),
-                    photo:  $('#loginPhoto').val()
+                    photo: $('#loginPhoto').val()
                 }
                 $.ajax({
-                    method:"POST",
+                    method: "POST",
                     url: "http://localhost:3000/users/signup",
                     data: input
                 })
-                .done(data => {
-                   window.location.href = '/login1'
-                })
-                .fail(err => {
-                    console.log(err)
-                })
+                    .done(data => {
+                        window.location.href = '/login1'
+                    })
+                    .fail(err => {
+                        console.log(err)
+                    })
             })
         </script>
     </body>

@@ -44,7 +44,7 @@ class Helpers {
         })
     }
 
-    static getUserDataServer(input){
+    static getUserDataServer(input) {
         var data = jwt.verify(input, process.env.JWT_Secret)
         return userModel.findOne({
             email: data.email
