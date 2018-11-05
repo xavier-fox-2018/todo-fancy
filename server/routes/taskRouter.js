@@ -7,7 +7,7 @@ const isInGroup = require('../middlewares/isInGroup.js');
 taskRouter.get('/group/:groupId', isLogin, isInGroup, TaskController.getTasksinGroup);
 taskRouter.get('/:id', isLogin, isAuthorizedUser, TaskController.getOne);
 taskRouter.get('/', isLogin, TaskController.getAll);
-taskRouter.post('/group', isLogin, isInGroup, TaskController.createForGroup);
+taskRouter.post('/group', isLogin, TaskController.createForGroup);
 taskRouter.post('/', isLogin, TaskController.create);
 taskRouter.put('/:id', isLogin, isAuthorizedUser, TaskController.update);
 taskRouter.delete('/:id', isLogin, isAuthorizedUser, TaskController.delete);

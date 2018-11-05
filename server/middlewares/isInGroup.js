@@ -13,12 +13,14 @@ function isInGroup(req, res, next) {
                     if (filteredUser.length === 1) {
                         next();
                     } else if (filteredUser.length === 0) {
+                        console.log('Wrong Group')
                         res.status(401).json({
                             message: 'Wrong group. You can only access your own group data'
                         });
                     }
                 })
                 .catch(function(err) {
+                    console.log('Error Find Group')
                     res.status(500).json(err);
                 });
         } catch(err) {

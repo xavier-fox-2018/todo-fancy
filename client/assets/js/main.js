@@ -407,6 +407,13 @@ function createTodo() {
         });
 }
 
+function emptyCreateProjectModal() {
+    $('#create-project-title').val('');
+    $('#create-project-description').val('');
+    $('#create-project-priority').val('');
+    $('#create-project-dueDate').val('');
+}
+
 function createProjectTodo() {
     const token = localStorage.getItem('token');
     const groupId = localStorage.getItem('groupId');
@@ -418,10 +425,10 @@ function createProjectTodo() {
             'access-token': token
         },
         data: {
-            title: $('#create-title').val(),
-            description: $('#create-description').val(),
-            priority: $('#create-priority').val(),
-            dueDate: $('#create-dueDate').val(),
+            title: $('#create-project-title').val(),
+            description: $('#create-project-description').val(),
+            priority: $('#create-project-priority').val(),
+            dueDate: $('#create-project-dueDate').val(),
             group: groupId
         }
     })
@@ -429,9 +436,198 @@ function createProjectTodo() {
             console.log("Create Project Todo Result: ", result);
             getTodos();
             getGroups();
+            getProjectTodos();
         })
         .fail(function(err) {
             console.log("Create Project Todo Error: ", err);
+        });
+}
+
+function getProjectTodos() {
+    const token = localStorage.getItem('token');
+    const groupId = localStorage.getItem('groupId');
+
+    $.ajax({
+        method: 'GET',
+        url: `${config.host}/tasks/group/${groupId}`,
+        headers: {
+            'access-token': token
+        }
+    })
+        .done(function(todos) {
+            console.log('Get Project Todos Result: ', todos);
+            $('#project-todos').empty();
+            $('#projecttodos-detail').empty();
+
+            for (let i = 0; i < todos.length; i++) {
+                const escapedTitle = todos[i].title.replace(/'/g, "\\'");
+                const escapedDescription = todos[i].description.replace(/'/g, "\\'");
+
+                $('#project-todos').append(`
+                    <div class="mb-3 d-flex justify-content-between align-items-center" id="div-ptodo-${todos[i]._id}">
+                        <div class="ml-3 todos" onclick="seeDetailTodoP('${todos[i]._id}', '${escapedTitle}', '${escapedDescription}', '${todos[i].priority}', '${todos[i].dueDate}', '${todos[i].isDone}', '${todos[i].createdAt}', '${todos[i].updatedAt}')">${todos[i].title}</div>
+                    </div>
+                `);
+
+                if (todos[i].isDone === true) {
+                    $(`#div-ptodo-${todos[i]._id}`).append(`
+                        <div class="bg-danger text-white p-2">Done <i class="fas fa-check-circle ml-1"></i></div>
+                    `);
+                    $(`#div-ptodo-${todos[i]._id}`).css({
+                        background: '#ebb329'
+                    });
+                }
+            }
+        })
+        .fail(function(result) {
+            console.log('Get Project Todo Error: ', err);
+        });
+}
+
+function seeDetailTodoP(id, title, description, priority, dueDate, isDone, createdAt, updatedAt) {
+    localStorage.setItem('taskProjectId', id);
+    let arrTimestamps = [createdAt, updatedAt, dueDate];
+    let arrRealTimestamps = [];
+    const escapedTitle = title.replace(/'/g, "\\'");
+
+    for(let i = 0; i < arrTimestamps.length; i++) {
+        let date = new Date(arrTimestamps[i]);
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+
+        let newDate = `${day}/${month}/${year}`;
+        arrRealTimestamps.push(newDate);
+    }
+
+    if (description === 'null' || description === '') {
+        description = '-';
+        const escapedDescription = description.replace(/'/g, "\\'");
+        var paramDesc = escapedDescription;
+    } else {
+        const escapedDescription = description.replace(/'/g, "\\'");
+        var paramDesc = escapedDescription;
+    }
+
+    if (isDone === 'false') {
+        var done = 'Not done yet';
+    } else {
+        var done = 'Done';
+    }
+
+    $('#projecttodos-detail').empty();
+    $('#projecttodos-detail').append(`
+        <div class="card mt-3 mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-end align-items-center">
+                    <i class="fas fa-edit text-dark mr-3" onclick="fillEditTodoPModal('${escapedTitle}', '${paramDesc}', '${priority}', '${arrRealTimestamps[2]}')" data-toggle="modal" data-target="#editProjectTodo" id="btn-edit-delete"></i>
+                    <i class="fas fa-minus-circle text-danger" onclick="deleteTodo('${id}')" id="btn-edit-delete"></i>
+                </div>
+                <p class="card-text"> <b>Title:</b><br> ${title}</p>
+                <p class="card-text"> <b>Description:</b><br> ${description}</p>
+                <p class="card-text"> <b>Priority:</b><br> ${priority}</p>
+                <p class="card-text"> <b>Status:</b><br> ${done}</p>
+                <p class="card-text"> <b>Due Date:</b><br> ${arrRealTimestamps[2]}</p>
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <div class="card-text"> <b>Created At:</b><br> ${arrRealTimestamps[0]}</div>
+                    <div class="card-text"> <b>Last Updated At:</b><br> ${arrRealTimestamps[1]}</div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-success mr-3" id="btn-done" onclick="donePTodo()">Mark as done</button>
+                    <button class="btn btn-warning text-white ml-3" id="btn-undone" onclick="undonePTodo()">Mark as undone</button>
+                </div>
+            </div>
+        </div>
+    `);
+
+    if (done === 'Done') {
+        $('#btn-done').prop('disabled', true);
+    } else {
+        $('#btn-undone').prop('disabled', true);
+    }
+}
+
+function fillEditTodoPModal(title, description, priority, dueDate) {
+    $('#edit-project-title').val(title);
+    $('#edit-project-description').val(description);
+    $('#edit-project-priority').val(priority);
+
+    var date = new Date(dueDate);
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var today = date.getFullYear()+"-"+(month)+"-"+(day) ;
+
+    $('#edit-project-dueDate').val(today);
+}
+
+function editProjectTodo() {
+    const token = localStorage.getItem('token');
+    const taskProjectId = localStorage.getItem('taskProjectId');
+
+    $.ajax({
+        method: 'PUT',
+        url: `${config.host}/tasks/${taskProjectId}`,
+        headers: {
+            'access-token': token
+        },
+        data: {
+            title: $('#edit-project-title').val(),
+            description: $('#edit-project-description').val(),
+            priority: $('#edit-project-priority').val(),
+            dueDate: $('#edit-project-dueDate').val()
+        }
+    })
+        .done(function(result) {
+            console.log("Edit Todo Result: ", result);
+            getTodos();
+            getProjectTodos();
+        })
+        .fail(function(err) {
+            console.log("Edit Todo Error: ", err);
+            fillErrorBoard(err);
+        });
+}
+
+function donePTodo() {
+    const token = localStorage.getItem('token');
+    const taskProjectId = localStorage.getItem('taskProjectId');
+
+    $.ajax({
+        method: 'PATCH',
+        url: `${config.host}/tasks/markdone/${taskProjectId}`,
+        headers: {
+            'access-token': token
+        }
+    })
+        .done(function(result) {
+            console.log("Mark As Done Todo Result: ", result);
+            getTodos();
+            getProjectTodos();
+        })
+        .fail(function(err) {
+            console.log("Mark As Done Todo Error: ", err);
+            fillErrorBoard(err);
+        });
+}
+
+function undonePTodo() {
+    const token = localStorage.getItem('token');
+    const taskProjectId = localStorage.getItem('taskProjectId');
+
+    $.ajax({
+        method: 'PATCH',
+        url: `${config.host}/tasks/markundone/${taskProjectId}`,
+        headers: {
+            'access-token': token
+        }
+    })
+        .done(function(result) {
+            console.log("Mark As Undone Todo Result", result);
+            getTodos();
+            getProjectTodos();
+        })
+        .fail(function(err) {
+            console.log("Mark As Undone Todo Error", err);
             fillErrorBoard(err);
         });
 }
@@ -582,6 +778,7 @@ function getGroups() {
 
                 $(`#group-${groups[i]._id}`).on('click', function() {
                     seeDetailGroup(groups[i]._id, escapedName, groups[i].userList);
+                    getProjectTodos();
                 });
             }
         })
@@ -604,7 +801,7 @@ function seeDetailGroup(id, name, userList) {
                 <div id="div-users-${id}" class="mb-3">
                     <b>Users (username):</b><br>
                 </div>
-                <button class="btn btn-success" id="btn-project-todo" data-toggle="modal" data-target="#createProjectTodo">Create project task</button>
+                <button class="btn btn-success" id="btn-project-todo" onclick="emptyCreateProjectModal()" data-toggle="modal" data-target="#createProjectTodo">Create project task</button>
             </div>
         </div>
     `);

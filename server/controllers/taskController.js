@@ -53,7 +53,6 @@ class TaskController {
                             message: `Successfully created task ${task.title} for your group`
                         }
                         res.status(201).json(response);
-                        
                     })
                     .catch(function(err) {
                         res.status(500).json(err);

@@ -1,4 +1,4 @@
-#div-todo-list, #div-detail-list, #div-group-list, #div-detailgroup-list {
+#div-todo-list, #div-detail-list, #div-group-list, #div-detailgroup-list, #div-projecttodos-list, #div-projecttodo-detail {
     font-family: 'Roboto Slab', serif;
 }
 
@@ -21,6 +21,11 @@
 }
 
 #group-list .groups:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#project-todos .todos:hover {
     text-decoration: underline;
     cursor: pointer;
 }
