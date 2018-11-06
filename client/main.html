@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- load jquery script from google cdn -->
+  <link href="./css/main.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>To-Do-Fancy</title>
+</head>
+<body>
+  <header>
+    <h1> Welcome to Your To-Do-App </h1>
+    <div>
+      <a href=#></a>
+      <button id="signOut"> Sign Out</button>
+      <button id="createButton"><i class="fa fa-pencil"></i></button>
+    </div>
+  </header>
+  <main>
+    <div class = "container" id="left">
+      <form id="newTask">
+        <br> <br>
+        <input type="text" name="name" placeholder="name the task."> <br> <br>
+        <input type="text" name="description" placeholder="what needs to be done?">
+        <br><br>
+        <p>Due Date:</p>
+        <input type="date" name="due">
+        <br>
+        <br>
+        <br>
+        Priority
+        <select name="priority"> 
+          <option value="high"> high </option>
+          <option value="medium"> medium </option>
+          <option value="low"> low </option>
+        </select>
+        <br>
+        <br>
+        Add to Google calendar?<input type="checkbox" name="calendar" value="yes"> 
+        <br>
+        <br>
+        <input type="submit" value="Submit" id="submitNew">
+        
+        <br>
+        <br>
+        <div>
+          <p id="msgbar"></p>
+        </div>
+
+      </form>
+      <button value="Update" id="submitUpdate" href="#">Update</button>
+
+    </div>
+    <div class="container" id="right">
+
+    </div>
+  </main>  
+  <script>
+    $("document").ready( ()=> {
+      //check TOKEN 
+      //send token back to server for verification 
+      getAllTasks();
+      $("#signOut").click( function (event) {
+        localStorage.clear();
+        window.location.replace('http://localhost:8080/signIn.html');
+      })
+      
+      $('#newTask').submit( function () {
+        let newTask = $('#newTask').serialize();
+        $.ajax({
+          url: 'http://localhost:3000/main/create',
+          type: 'post',
+          headers: {
+            authorization: localStorage.getItem('token')
+          },
+          data: newTask
+        })
+        .then( res => {
+          $("#msgbar").html('successfully created new task');
+          getAllTasks();
+        })
+        .catch( err => $("#msg").html(err.responseJSON)
+        );
+        return false;
+      })
+      
+      //DISPLAY ALL USER TASK 
+      function getAllTasks () {
+        if (!localStorage.getItem('token')) window.location.replace('http://localhost:8080/signIn.html');
+        else {
+          let token = localStorage.getItem('token');
+          $.ajax({
+            url: "http://localhost:3000/main/",
+            method: "get",
+            headers: {
+              authorization: token
+            }
+          })
+          .then( data => {
+            displayTasks(data);
+          })
+          .catch( err => {})
+        }
+      }
+      function displayTasks (data) {
+        $('#newTask')[0].reset();
+        $("#right").empty();
+        for ( let task=0; task<data.length; task++) {
+          let formatDate = new Date(data[task].due);
+              let month = formatDate.getMonth()+1;
+              let dt = formatDate.getDate();
+              if (dt < 10) {
+                dt = '0' + dt;
+              }
+              if (month < 10) {
+                month = '0' + month;
+              }
+          let result ="";
+          result +=`<div class="task" id="${data[task]._id}">
+                    <div class="details">
+                      <span class="dot${task}">
+                      </span>
+                      <div id="edits">
+                        <button class="btn trash"> delete </i></button>
+                        <button class="btn edit"><i class="fa fa-edit"></i></button>
+                        <button class="btn"><i class="fa fa-calendar-check-o"></i></button>
+                        <button class="btn"><i class="fa fa-share-square-o"></i></button>
+                      </div>
+                      <h2 class="due"> due ${dt +" - "+ month} </h2>
+                      <h3 class="name"> ${data[task].taskName}</h3>
+                      <h4 class="description"> ${data[task].description} </h4>
+                    </div>
+                  </div>`
+          $("#right").append(result);
+          if (data[task].priority === "high") {$(".dot").attr("class","dot red")};
+          if (data[task].priority === "medium") $(".dot").attr("class","dot yellow");
+          if (data[task].priority === "low") $(".dot").attr("class","dot green");
+        }
+        $(".trash").click( function (event) {
+          let id = $(this).parentsUntil($("#right"))[2].id;
+          $.ajax({
+            url: 'http://localhost:3000/main/delete',
+            method: 'post',
+            headers: {
+            authorization: localStorage.getItem('token')
+            },
+            data: {"id":id}
+          })
+          .then( deleted => {
+            $("#msgbar").html('successfully deleted.');
+            getAllTasks();
+          })
+          .catch( err => $("#msg").html(err.responseJSON))
+        })
+        $(".edit").click( 
+          function (event) {
+            let id = $(this).parentsUntil($("#right"))[2].id;
+            $.ajax({
+              url : 'http://localhost:3000/main/getOne',
+              method : 'post',
+              headers : {
+              authorization : localStorage.getItem('token')
+              },
+              data: 
+              {
+                "id" : id
+              }
+            })
+            .then( task => {
+              let date = new Date(task.due);
+              let year = date.getFullYear();
+              let month = date.getMonth()+1;
+              let dt = date.getDate();
+
+              if (dt < 10) {
+                dt = '0' + dt;
+              }
+              if (month < 10) {
+                month = '0' + month;
+              }
+              $("input[name='name']").val(task.taskName)
+              $("input[name='description']").val(task.description)
+              $("input[name='due']").val(year +'-'+ month + '-'+ dt)
+              $(`option[value='${task.priority}']`).attr('selected','selected')
+              $.ajax({})
+        
+        $("#submitUpdate").click ( function () {
+          let editTask = {
+            id: id,
+            taskName: $("input[name='name']").val(),
+            description: $("input[name='description']").val(),
+            due: $("input[name='due']").val(),
+            priority: $("select[name='priority").val()
+          // group: req.body.groupId || null,
+          }
+          $.ajax({
+            url: 'http://localhost:3000/main/edit',
+            type: 'post',
+            headers: {
+              authorization: localStorage.getItem('token')
+          },
+            data: editTask
+          })
+          .then( res => {
+
+          $("#msgbar").html('successfully updated existing task');
+          getAllTasks();
+          })
+          .catch( err => $("#msg").html(err.responseJSON)
+          );
+          return false;
+        })
+      })
+        })
+      }
+    })
+  </script>
+
+</body>
+</html>

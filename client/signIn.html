@@ -1,0 +1,98 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+  <title>Log In</title>
+  <link href="./css/main.css" rel="stylesheet" type="text/css">
+  <!-- load jquery script from google cdn -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script><!-- load google auth2 lib -->
+  <script>
+      function start() {
+        gapi.load('auth2', function() {
+          auth2 = gapi.auth2.init({
+            client_id: '377634833308-14i3ru1bdqogk7mnuaue7c9l6i31s3b5.apps.googleusercontent.com',
+            //scope: 'additional_scope'
+          });
+        });
+      }
+
+  </script>
+</head>
+<body>
+  <h1>Sign In</h1>
+  <form id ="login">
+    <input type = "text" id = "email" placeholder = "enter email" required>
+    <input type = "text" id = "password" placeholder = "enter password" required>
+    <input type = "submit" value="Sign in">
+  </form>
+  <button id="signinButton">Sign in with Google</button>
+  <script>
+      $('#signinButton').click(function() {
+        // signInCallback defined in step 6.
+        auth2.grantOfflineAccess().then(signInCallback);
+      });
+  </script>
+
+  <p id="msg"></p>
+  <a href="registration.html">Register as new user</a>
+  <script>
+      function signInCallback(authResult) {
+        if (authResult['code']) {
+          // Hide the sign-in button now that the user is authorized, for example:
+          $('#signinButton').attr('style', 'display: none');
+          // Send the code to the server
+          $.ajax({
+            type: 'POST',
+            url: 'http://localhost:3000/main',
+            // Always include an `X-Requested-With` header in every AJAX request,
+            // to protect against CSRF attacks.
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            contentType: 'application/json',
+            success: function(result) {
+              console.log('sucessssssssss')
+              //store result in localstorage & redirect to main as USER
+              window.location.replace('http://localhost:8080/main.html')
+            },
+            processData: false,
+            data: JSON.stringify(authResult)
+          });
+        } else {
+          // There was an error.
+        }
+      }
+  </script>
+  <script>
+    $("document").ready( () => {
+      
+      $("#login").submit( function () {
+
+        const loginData = {
+          email : $("#email").val(),
+          password : $("#password").val()
+        }
+
+        $.post('http://localhost:3000/signIn' , loginData)
+        .then( res => {
+            localStorage.setItem ("token", res.token)
+            localStorage.setItem ("auth", res.auth)
+            $("#msg").html('success! Redirecting you to main page...');
+            setTimeout( function () {
+              window.location.replace("http://localhost:8080/main.html")},
+              1000)
+        })
+        .catch( err => $("#msg").html(err.responseJSON)
+        );
+
+       
+
+        return false;
+      })
+    })
+    
+  </script>
+  
+</body>
+
+</html>
