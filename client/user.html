@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="612011361820-fko24n9tmhrjkrm8n31jjen1ct9dfcs9.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./src/style.css">
+  <title>To Do Fancy !</title>
+  
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-company-blue">
+  <a class="navbar-brand" href="#">ToDoFancy</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search task" id="search">
+      </form>
+    <form class="form-inline my-2 my-lg-0">
+      <button class="btn btn-primary my-2 my-sm-0 signOut" type="submit">Log Out</button>
+    </form>
+  </div>
+  </nav>
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="container mt-3 mb-3">
+            <form id="update" >
+                <input type="hidden" id="taskId">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control"id="nameUpdate" >
+                  </div>
+                  <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" class="form-control"id="descUpdate" >
+                  </div>
+                  <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-control form-control-sm" id="statusUpdate">
+                        <option value="doing">just started</option>
+                        <option value="done">finish</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Date</label>
+                      <input type="date" class="form-control form-control-sm" id="dateUpdate">
+                  </div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" href="#" class="btn btn-primary" data-dismiss="modal" id="clickUpdate">Submit</button>
+            </form>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-3">
+    <div class="row justify-content-center" id="errorLogin">
+        <div class="card bg-danger pl-2 pr-2 mb-4" id="displayError">
+            <div class="card-body text-white" id="msg">
+            </div>
+          </div>
+    </div>
+    <div class="row justify-content-center" id="success">
+        <div class="card bg-success pl-2 pr-2 mb-4" id="displaySuccess">
+            <div class="card-body text-white" id="msg-success">
+            </div>
+          </div>
+    </div>
+    <div id="mainContent">
+        <div class="row" id="userContent">
+                <div class="col-lg-3">
+                    <div  id="toDoForm">
+                        <h5 class="bg-primary text-white rounded text-center">Create Task</h3>
+                        <form>
+                            <div class="form-group">
+                              <label>Name</label>
+                              <input type="text" class="form-control form-control-sm" id="toDoName" placeholder="Task Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" class="form-control form-control-sm" id="toDoDesc" placeholder="Task Description">
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select class="form-control form-control-sm" id="toDoStatus">
+                                    <option value="doing">just started</option>
+                                    <option value="done">finish</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" class="form-control form-control-sm" id="toDoDate">
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="addTask">Submit</button>
+                        </form>
+                        <h5 class="bg-primary text-white rounded text-center mt-4">Filter by Status</h3>
+                          <div class="form-group">
+                              <select class="form-control form-control-sm" id="statusFilter">
+                                  <option value="doing">just started</option>
+                                  <option value="done">finish</option>
+                              </select>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <h5 class="bg-primary text-white rounded text-center">Task List</h3>
+                      <div id="toDoList"></div>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="bg-primary text-white rounded text-center">Meal Recommendation</h3>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroup-sizing-sm">Find</span>
+                            </div>
+                            <input type="text" class="form-control" id="searchMeal" placeholder="foods..">
+                        </div>
+                    <div id="mealList">
+
+                    </div>
+                </div>
+        </div>
+    </div>
+  </div>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="./src/main.js"></script>
+
+</body>
+</html>

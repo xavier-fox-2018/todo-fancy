@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="612011361820-fko24n9tmhrjkrm8n31jjen1ct9dfcs9.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./src/style.css">
+  <title>To Do Fancy !</title>
+  
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-company-blue">
+  <a class="navbar-brand" href="#">ToDoFancy</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <button class="btn btn-success my-2 my-sm-0 mr-2 signUp" type="submit" href="#">Sign Up</button>
+      <button class="btn btn-success my-2 my-sm-0 signIn" type="submit" href="#">Log In</button>
+    </form>
+  </div>
+  </nav>
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="container mt-3 mb-3">
+            <form id="update" >
+                <input type="hidden" id="taskId">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control"id="nameUpdate" >
+                  </div>
+                  <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" class="form-control"id="descUpdate" >
+                  </div>
+                  <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-control form-control-sm" id="statusUpdate">
+                        <option value="doing">just started</option>
+                        <option value="done">finish</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Date</label>
+                      <input type="date" class="form-control form-control-sm" id="dateUpdate">
+                  </div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" href="#" class="btn btn-primary" data-dismiss="modal" id="clickUpdate">Submit</button>
+            </form>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-3">
+    <div class="row justify-content-center" id="errorLogin">
+        <div class="card bg-danger pl-2 pr-2 mb-4" id="displayError">
+            <div class="card-body text-white" id="msg">
+            </div>
+          </div>
+    </div>
+    <div class="row justify-content-center" id="success">
+        <div class="card bg-success pl-2 pr-2 mb-4" id="displaySuccess">
+            <div class="card-body text-white" id="msg-success">
+            </div>
+          </div>
+    </div>
+    <div id="mainContent">
+        <div class="row justify-content-center" id="loginPage">
+            <div class="jumbotron">
+                <h1 class="display-4 text-center" id="welcome">Welcome to ToDoFancy!</h1>
+                <p class="lead">We are a simple apps to make your daily schedules and notes, please login first too use our apps</p>
+                <p class="lead">or you can register by clicking <a href="#" class="signUp">here</a></p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8" id="formContainer">
+                        <form id="loginForm">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Email address</label>
+                              <input type="email" class="form-control" id="emailLogin"  required="required" aria-describedby="emailHelp" placeholder="Enter email">
+                              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputPassword1">Password</label>
+                              <input type="password" class="form-control" id="passwordLogin" placeholder="Password" required="required">
+                            </div>
+                            <div class="row">
+                              <button type="submit" href="#" class="ml-3 mr-4 btn btn-primary" id="clickLogin">Submit</button>
+                              <div class="g-signin2 mr-4" data-onsuccess="onSignIn"></div>
+                            </div>
+                        </form>
+                        <form id="registerForm" >
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" class="form-control"id="usernameRegister" placeholder="Enter username">
+                              </div>
+                            <div class="form-group">
+                              <label>Email address</label>
+                              <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp" placeholder="Enter email">
+                              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-group">
+                              <label>Password</label>
+                              <input type="password" class="form-control" id="passwordRegister" placeholder="Password">
+                            </div>
+                            <button type="submit" href="#" class="btn btn-primary" id="clickRegister">Submit</button>
+                        </form>
+                    </div>
+                  </div>
+              </div>
+            </div>
+    </div>
+  </div>
+  <script>
+      function onSignIn(googleUser) {
+        const profile = googleUser.getBasicProfile();
+        const id_token = googleUser.getAuthResponse().id_token;
+        $.ajax({
+          url : "http://localhost:3000/users/googleSignIn",
+          method : "POST",
+          data : {
+            'gToken' : id_token
+          }
+        })
+        .done((response) => {
+          console.log(response);
+          localStorage.setItem('token', response.token);
+          window.location = '/user.html'
+        })
+        .fail(err => {
+          $("#msg").text('Google Login failed');
+          $("#displayError").show();
+        })
+      }
+  
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+          localStorage.clear()
+        });
+      }
+  </script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="./src/login.js"></script>
+  <script>
+    
+  </script>
+</body>
+</html>
