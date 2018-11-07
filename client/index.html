@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="651022295294-1ibho6vmseo306h4hak1t1mo9qp6554s.apps.googleusercontent.com">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div style="width: 80%;margin:auto">
+        <form id="loginForm">
+            <h3 style="display:inline-block">Login</h3>
+            <div id="alert-error" class="alert alert-danger alert-dismissible" role="alert" style="display:none;height:45px;">
+                <strong style="display:inline-block">Validation Error</strong>
+                <p style="display:inline-block"></p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="alert-success" class="alert alert-success alert-dismissible" role="alert" style="display:none;height:45px;">
+                <strong style="display:inline-block">Signup success.</strong>
+                <p style="display:inline-block">Please sign in to your account</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" style="display:inline-block">Submit</button> OR
+                <div id="my-signin2" class="g-signin2" data-onsuccess="onSignIn" style="display:inline-block" -theme="light" data-width="300" data-height="50" data-longtitle="true"></div>
+            </div>
+            <div>
+                <p style="display:inline-block">Don't have an account?</p>
+                <p style="display:inline-block;cursor:pointer;color:blue;" onclick="hideLogin();">Click Here</p>
+            </div>
+        </form>
+        <form id="signupForm" style="display:none">
+            <h3 style="display:inline-block">Sign Up</h3>
+            <div id="alert" class="alert alert-danger alert-dismissible" role="alert" style="display:none;height:45px;">
+                <strong style="display:inline-block">Failed to register</strong>
+                <p style="display:inline-block"></p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name-sg" placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email-sg" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password-sg" placeholder="Password">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" style="display:inline-block">Submit</button>
+            </div>
+            <div>
+                <p style="display:inline-block">Already have an account?</p>
+                <p style="display:inline-block;cursor:pointer;color:blue;" onclick="hideSignUp();">Click Here</p>
+            </div>
+        </form>
+    </div>
+    <script>
+        function hideLogin() {
+            $('#loginForm').hide()
+            $('#signupForm').show()
+        }
+
+        function hideSignUp() {
+            $('#loginForm').show()
+            $('#signupForm').hide()
+        }
+
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/gsignin",
+                    data: {
+                        gtoken: id_token
+                    }
+                })
+                .done(function(response) {
+                    localStorage.setItem('token', response)
+                    window.location.href = "http://localhost:8080/dashboard.html";
+                })
+                .fail(function(error) {
+                    console.log(error)
+                })
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+                localStorage.removeItem('token')
+                console.log('User signed out.');
+            });
+        }
+        $('#loginForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                    method: 'POST',
+                    url: "http://localhost:3000/users/signin",
+                    data: {
+                        "email": $('#email').val(),
+                        "password": $('#password').val()
+                    }
+                })
+                .done(function(response) {
+                    localStorage.setItem('token', response)
+                    window.location.href = "http://localhost:8080/dashboard.html";
+                })
+                .fail(function(error) {
+                    console.log(JSON.stringify(error));
+                    $('#alert-error').find('p').text(error.responseText);
+                    $('#alert-error').show('fast');
+                })
+
+        });
+
+        $('#signupForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                    method: 'POST',
+                    url: "http://localhost:3000/users/signup",
+                    data: {
+                        "name": $('#name-sg').val(),
+                        "email": $('#email-sg').val(),
+                        "password": $('#password-sg').val()
+                    }
+                })
+                .done(function(response) {
+                    $('#alert-success').show('fast');
+                    $('#loginForm').show()
+                    $('#signupForm').hide()
+                })
+                .fail(function(error) {
+                    console.log(JSON.stringify(error.responseText));
+                    $('#alert').find('p').text(error.responseText);
+                    $('#alert').show('fast');
+                })
+
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+</html>

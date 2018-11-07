@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="651022295294-1ibho6vmseo306h4hak1t1mo9qp6554s.apps.googleusercontent.com">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div style="width: 80%;margin:auto">
+        <h1>Welcome</h1>
+        <div id="alert-error-create" class="alert alert-danger alert-dismissible" role="alert" style="display:none;height:45px;">
+            <strong style="display:inline-block">Create Failed</strong>
+            <p style="display:inline-block"></p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <form id="update_task_form" style="width: 80%;margin:auto;padding:10px;" onload="loadData()">
+                        <h4>Update Task</h4>
+                        <div id="alert-error-update" class="alert alert-danger alert-dismissible" role="alert" style="display:none;height:45px;">
+                            <strong style="display:inline-block">Update Failed</strong>
+                            <p style="display:inline-block"></p>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="update_name" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Description</label>
+                            <input type="text" class="form-control" id="update_desc" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="due_date">Due Date</label>
+                            <input type="datetime-local" class="form-control" id="update_due_date" value="" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="updateValue" type="submit" class="btn btn-primary" onclick="updateTask(this)" value="">Update Task</button>
+                        </div>
+                    </form>
+                    <div class="modal-body">
+                        <div class="te"></div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <form id="input_task_form" style="display:none;width: 80%;margin:auto;padding:10px;">
+            <h4>Input Task</h4>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="task_name" placeholder="Enter name" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Description</label>
+                <textarea type="text" class="form-control" id="task_desc" placeholder="Enter Description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="due_date">Due Date</label>
+                <input type="datetime-local" class="form-control" id="due_date" required>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="addTask()">Add Task</button>
+            </div>
+        </form>
+        <div id="alert-error" class="alert alert-danger alert-dismissible" role="alert" style="display:none;height:45px;">
+            <strong style="display:inline-block">Validation Error</strong>
+            <p style="display:inline-block"></p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <button type="button" class="btn btn-primary" style="margin-bottom:10px" onclick="showForm()">Add</button>
+        <input class="form-control" id="search" type="text" placeholder="Search.." style="margin-bottom:10px">
+        <!-- <div style="display:inline">
+            <p id="display" style="cursor:pointer;color:blue;" onclick="display()">display all</p>
+        </div> -->
+        <div style="display:inline">
+            <p id="displayC" style="display:inline-block;cursor:pointer;color:blue;" onclick="displayC()">display completed</p>
+        </div>
+        <div style="display:inline">
+            <p id="displayA" style="display:none;cursor:pointer;color:blue;" onclick="displayA()">display pending tasks</p>
+        </div>
+        <div id="alltable" style="overflow-x:auto;">
+            <table class="table" style="text-align:center">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Due Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="row_data">
+                    <tr id="no-data">
+                        <th colspan="6" style="text-align:center;">No Task</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <p style="display:inline-block;cursor:pointer;color:blue;" onclick="signOut();">Sign out</p>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init()
+                checkToken()
+                $.ajax({
+                        method: "GET",
+                        url: "http://localhost:3000/users/todos",
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('token', localStorage.getItem("token"));
+                        }
+                    })
+                    .done(function(response) {
+                        if (response.length !== 0) {
+                            $('#no-data').hide()
+                        }
+                        let count = 0;
+                        $.each(response, function(index, value) {
+                            let d = new Date(response[index].due_date)
+                            if (response[index].status === "pending") {
+                                $('#no-data').hide()
+                                count += 1;
+                                $('#row_data').append(
+                                    `<tr class="tohide">
+                        <th scope="row">${count}</th>
+                        <td class="task_name">${response[index].name}</td>
+                        <td>${response[index].description}</td>
+                        <td>${response[index].status}</td>
+                        <td>${d.toLocaleString()}</td>
+                        <td>
+                            <button id="completeBtn" class="btn btn-success" style="margin-right: 10px;" data-id="${response[index]._id}" onclick="complete(this)" value="${response[index]._id}">Mark Completed</button><button id="updateBtn"class="btn btn-secondary" style="margin-right: 10px;" data-id="${response[index]._id}" data-name="${response[index].name}" data-desc="${response[index].description}" data-due_date="${response[index].due_date}" data-toggle="modal" data-target="#myModal" value="tes">Update</button><button class="btn btn-info" style="margin-right: 10px;" onclick="deleteTask('${response[index]._id}')">Delete</button></td>
+                    </tr>`
+                                )
+                            } else if (count === 0) {
+                                $('#no-data').show()
+                            }
+                        });
+                    })
+                    .fail(function(err) {
+                        $('#alert-error').find('p').text(error.responseText);
+                        $('#alert-error').show('fast');
+                    })
+            })
+
+        });
+        $(document).on("click", "#updateBtn", function() {
+            console.log($(this).data('name'));
+            console.log($(this).data('desc'));
+            console.log($(this).data('due_date'));
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var desc = $(this).data('desc');
+            var due_date = $(this).data('due_date');
+            var fix = due_date.substr(0, 16);
+            $(".modal-footer #updateValue").val(id)
+            $(".modal-content #update_name").val(name);
+            $(".modal-content #update_desc").val(desc);
+            $(".modal-content #update_due_date").val(fix);
+        });
+
+        function display() {
+            $('.tohide').show()
+            $('.tocompletehide').show()
+        }
+
+        function displayA() {
+            $('#displayC').show()
+            $('#displayA').hide()
+            $('.tohide').show()
+            $('.tocompletehide').hide()
+        }
+
+        function displayC() {
+            $('.tohide').hide()
+            $.ajax({
+                    method: "GET",
+                    url: "http://localhost:3000/users/todos/completed",
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('token', localStorage.getItem("token"));
+                    }
+                })
+                .done(function(response) {
+                    $('#displayC').hide()
+                    $('#displayA').show()
+                    if (response.length !== 0) {
+                        $('#no-data').hide()
+                    }
+                    let count = 0;
+                    $.each(response, function(index, value) {
+                        let d = new Date(response[index].due_date)
+                        if (response[index].status === "completed") {
+                            $('#no-data').hide()
+                            count += 1;
+                            $('#row_data').append(
+                                `<tr class="tocompletehide">
+                        <th scope="row">${count}</th>
+                        <td class="task_name">${response[index].name}</td>
+                        <td>${response[index].description}</td>
+                        <td>${response[index].status}</td>
+                        <td>${d.toLocaleString()}</td>
+                        <td>
+                            <button id="completeBtn" class="btn btn-success disabled" style="margin-right: 10px;" data-id="${response[index]._id}" value="${response[index]._id}" disbaled>Completed</button><button id="updateBtn"class="btn btn-secondary disabled" style="margin-right: 10px;" data-id="${response[index]._id}" data-name="${response[index].name}" data-desc="${response[index].description}" data-due_date="${response[index].due_date}" value="tes" disbaled>Update</button><button class="btn btn-info disabled" style="margin-right: 10px;" disbaled>Delete</button></td>
+                    </tr>`
+                            )
+                        } else if (count === 0) {
+                            $('#no-data').show()
+                        }
+                    });
+                })
+                .fail(function(err) {
+                    $('#alert-error').find('p').text(error.responseText);
+                    $('#alert-error').show('fast');
+                })
+        }
+
+        function complete(elem) {
+            var id = $(elem).attr("value");
+            if (confirm('Are you done with this task?')) {
+                $.ajax({
+                        method: "GET",
+                        url: `http://localhost:3000/todos/completed/${id}`,
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('token', localStorage.getItem("token"));
+                        },
+                    })
+                    .done(function(response) {
+                        location.reload()
+                    })
+                    .fail(function(err) {
+                        console.log(JSON.stringify(err))
+                        alert('check console, error from client complete')
+                    })
+            }
+        }
+
+        function deleteTask(value) {
+            if (confirm('Are you sure want to delete?')) {
+                // alert(value)
+                $.ajax({
+                        method: "DELETE",
+                        url: `http://localhost:3000/users/delete/${value}`,
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('token', localStorage.getItem("token"));
+                        },
+                    })
+                    .done(function(response) {
+                        location.reload()
+                    })
+                    .fail(function(err) {
+                        console.log(JSON.stringify(err))
+                        alert('check console, error from client deleteTask')
+                    })
+            }
+        }
+
+        function updateTask(elem) {
+            var id = $(elem).attr("value");
+            var _name = $(".modal-content #update_name").val();
+            var _desc = $(".modal-content #update_desc").val();
+            var _date = $(".modal-content #update_due_date").val();
+            var now = new Date()
+            var input = new Date(_date)
+            if (input < now) {
+                $('.modal-content #alert-error-update').find('p').text("Invalid Email");
+                $('.modal-content #alert-error-update').show('fast');
+            } else {
+                $.ajax({
+                        method: "POST",
+                        url: `http://localhost:3000/todos/update/${id}`,
+                        data: {
+                            name: _name,
+                            description: _desc,
+                            due_date: new Date(_date)
+                        }
+                    })
+                    .done(function(response) {
+                        location.reload();
+                    })
+                    .fail(function(error) {
+                        console.log(error)
+                        alert(JSON.stringify(error))
+                    })
+            }
+
+        }
+
+        function checkToken() {
+            let token = localStorage.getItem('token')
+            if (!token) {
+                window.location = 'index.html'
+            }
+        }
+
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users/gsignin",
+                    data: {
+                        gtoken: id_token
+                    }
+                })
+                .done(function(response) {
+                    localStorage.setItem('token', response)
+                })
+                .fail(function(error) {
+                    console.log(error)
+                })
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+                localStorage.removeItem('token')
+                window.location.href = "http://localhost:8080/index.html";
+                console.log('User signed out.');
+            });
+        }
+
+        function showForm() {
+            $('#input_task_form').show()
+        }
+
+        function addTask() {
+            $('#input_task_form').on('submit', function(e) {
+                e.preventDefault()
+                $.ajax({
+                        method: "POST",
+                        url: "http://localhost:3000/users/create/todos",
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('token', localStorage.getItem("token"));
+                        },
+                        data: {
+                            name: $('#task_name').val(),
+                            description: $('#task_desc').val(),
+                            due_date: $('#due_date').val()
+                        }
+                    })
+                    .done(function(response) {
+                        location.reload();
+                    })
+                    .fail(function(err) {
+                        $('#alert-error-create').find('p').text(err.responseText);
+                        $('#alert-error-create').show('fast');
+                    })
+            })
+        }
+        $("#search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#row_data tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+</html>
