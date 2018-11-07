@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 const bcryptPassword = require('../helper/bcryptPass')
 const {gSignin, isLogin} = require('../helper/gSignIn')
@@ -97,7 +98,7 @@ module.exports = {
         }})
         .then((user) => {
             if (bcrypt.compareSync(req.body.password, user.password) === true ) {
-                const token = jwt.sign({user}, "IniRahasiaKitaYa")
+                const token = jwt.sign({user}, process.env.JWT_SECRET)
                 res.status(201).json({
                     user: user,
                     token: token

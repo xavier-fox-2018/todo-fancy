@@ -6,7 +6,7 @@ module.exports = {
         const newTodo = new Todo ({
             title: req.body.title,
             date_time: req.body.date_time,
-            task: req.body.task
+            description: req.body.description
         })
         newTodo.save()
         .then((Todo) => {
@@ -55,10 +55,10 @@ module.exports = {
             { 
                 title: req.body.title,
                 date_time: req.body.date_time,
-                task: req.body.task
+                description: req.body.description
             },   
         )
-        .then((Todo) => {
+        .then((todo) => {
             Todo.findOne({ _id: req.params.id})
             .then((result) => {
                 res.status(200).json({
@@ -75,11 +75,11 @@ module.exports = {
     },
     remove: (req,res) => {
         Todo.findOne({ _id: req.params.id})
-        .then((Todo) => {
-            Todo.deleteOne({_id: req.params.id})
+        .then((todo) => {
+            Todo.deleteOne({ _id: req.params.id})
             .then((result) => {
                 res.status(200).json({
-                    Todo,
+                    todo,
                     message: `Todo detail has been deleted`
                 })
             })

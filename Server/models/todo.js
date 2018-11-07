@@ -6,7 +6,7 @@ const todoSchema = new Schema({
         type: String,
     },
     date_time: Date,
-    task: {
+    description: {
         type: String,
     },
 }, {

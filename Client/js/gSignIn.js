@@ -10,9 +10,9 @@ function onSignIn(googleUser) {
             gToken: id_token
         }
     })
-    .done(jwt => {
-        console.log(jwt.token);
-        localStorage.setItem('token',jwt.token)
+    .done(response => {
+        localStorage.setItem('token',response.token)
+        localStorage.setItem('email',response.email)
         allSignIn()
     })
     .fail(err => {

@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="google-signin-client_id" content="534193051040-q1tah2abccu2dtq50nop9oq58pp5t5ih.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="1049955970825-t0t8qh3fg4rekt89558rv99f09no336p.apps.googleusercontent.com">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
-    <script  src="https://code.jquery.com/jquery-3.3.1.js"   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="   crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -26,6 +25,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto" id="list_navbar">
                 <a href="#" class="nav-item active nav-link" onclick="todoList()">Todo List</a>
+                <a href="#" class="nav-item active nav-link" data-toggle="modal" data-target="#modal_createTodo">Create Todo</a>
                 <a href="#" class="nav-item active nav-link">profile</a>
 
                 <li class="nav-item dropdown">
@@ -38,12 +38,10 @@
             </ul>
 
             <form action="#" method="post" class="form-inline my-2 mylg-0">
-                <input type="search" name="buscar" id="buscar" class="form-control mr-sm-2" placeholder="Buscar em todo o site" aria-label="Buscar">
+                <input type="search" name="buscar" id="buscar" class="form-control mr-sm-2" placeholder="Search for anything" aria-label="Buscar">
                 <div id="fb-root"></div>
-                <!-- <fb:login-button scope="public_profile" onlogin="checkLoginState();" >
-                </fb:login-button> -->
                 <a href="#" onclick="signOut();" id="gSignOut" >Sign out</a>
-                <button type="button" class="btn btn-outline-success" id="myBtn">Login</button>
+                <button type="button" class="btn btn-outline-success" id="loginBtn">Login</button>
                 <button class="btn btn-outline-success" type="submit">Register</button>
             </form>
         </div>
@@ -51,25 +49,25 @@
     
 
     <!-- Login session -->
-    <div class="container">
+    <div class="container" >
         <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal fade" id="loginModal" role="dialog">
             <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="padding:35px 50px;">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" >&times;</button>
                 <h4><span class="glyphicon glyphicon-lock" id="normal_login"></span> Login</h4>
                 </div>
                 <div class="modal-body" style="padding:40px 50px;">
-                    <div class="row">
-                        <div class="col-sm">
+                    <!-- <div class="row"> -->
+                        <!-- <div class="col-sm">
                             <div class="fb-login-button" onlogin="checkLoginState()" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                        </div>
-                        <div class="col-sm">
+                        </div> -->
+                        <!-- <div class="col-sm"> -->
                             <div class="g-signin2" data-onsuccess="onSignIn" id="gSignIn"></div>
-                        </div>
-                    </div>
+                        <!-- </div> -->
+                    <!-- </div> -->
                 <form role="form">
                     <div class="form-group">
                     <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
@@ -96,7 +94,7 @@
         </div> 
     </div>
 
-    <table id="table_todo" border="1" cellspacing="2">
+    <table id="table_todo" border="1" >
         <thead>
             <tr>
                 <th>Title</th>
@@ -109,9 +107,90 @@
         </tbody>
     </table>
 
+    
+    <div id="createTodo">
+        <div class="modal fade" id="modal_createTodo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">Write to us</h4>
+                        <button type="button" class="close_create" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <i class="fa fa-user prefix grey-text"></i>
+                            <input type="text" class="form-control validate" id="task_title">
+                        <label data-error="wrong" data-success="right" >Title</label>
+                    </div>
+    
+                    <div class="md-form mb-5">
+                        <i class="fa fa-envelope prefix grey-text"></i>
+                            <input type="email" class="form-control validate" id="task_date">
+                        <label data-error="wrong" data-success="right" >Date</label>
+                    </div>
+    
+                    <div class="md-form">
+                        <i class="fa fa-pencil prefix grey-text"></i>
+                          <textarea type="text" class="md-textarea form-control" rows="4" id="task_description"></textarea>
+                        <label data-error="wrong" data-success="right" >Description</label>
+                    </div>
+    
+                </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-unique" onclick="createTodo()">Send <i class="fa fa-paper-plane-o ml-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="updateTodo">
+            <div class="modal fade" id="modal_updateTodo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">Write to us</h4>
+                        <button type="button" class="close_create" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <i class="fa fa-user prefix grey-text"></i>
+                            <input type="text" class="form-control validate" id="selected_taskTitle">
+                        <label data-error="wrong" data-success="right" >Title</label>
+                    </div>
+    
+                    <div class="md-form mb-5">
+                        <i class="fa fa-envelope prefix grey-text"></i>
+                            <input type="email" class="form-control validate" id="selected_taskDate">
+                        <label data-error="wrong" data-success="right" >Date</label>
+                    </div>
+    
+                    <div class="md-form">
+                        <i class="fa fa-pencil prefix grey-text"></i>
+                          <textarea type="text" class="md-textarea form-control" rows="4" id="selected_taskDescription"></textarea>
+                        <label data-error="wrong" data-success="right" >Description</label>
+                    </div>
+                </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-unique" onclick="updateTodo(selected_id)">Send <i class="fa fa-paper-plane-o ml-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
     <div id="userdata"></div>
-    <div id="inputdata"></div>
+    <div id="getSignIn"></div>
     <div id="taskId"></div>
+
 
     <script>
 
@@ -121,20 +200,23 @@
 
 
         $(document).ready(function() {
+            $('#gSignIn').show()
             $('#gSignOut').hide()
             $('#table_todo').hide()
             $('#list_navbar').hide()
+            $('#formTask').hide()
+            
             // userData()
-            inputdata()
+            getSignIn()
         })
 
         $(document).ready(function(){
-            $("#myBtn").click(function(){
-                $("#myModal").modal();
+            $("#loginBtn").click(function(){
+                $("#loginModal").modal();
             });
         });
         
-        function inputdata() {
+        function getSignIn() {
             $.ajax({
                 method: 'POST',
                 url: `${config.port}/user`,
@@ -145,14 +227,14 @@
             })
             .done(user => {
                 console.log(user);
-                $('#inputdata').text('')
-                $('#inputdata').append(`
+                $('#getSignIn').text('')
+                $('#getSignIn').append(`
                 <input type="text" value="${user.email}" />
                 <input type="text" value="${user.password}" />
                 `)
             })
             .fail( err => {
-                $('#inputdata').text(err)
+                $('#getSignIn').text(err)
             })
         }
 
@@ -183,18 +265,19 @@
                 url: `${config.port}/todo`
             })
             .done(lists => {
-                console.log(lists.Todo);
+                // console.log(lists.Todo);
                 let tasks = lists.Todo
-                $('#listTodo').text('')
+                $('#listTodo').empty()
                 $('#table_todo').show()
                 tasks.forEach(task => {
-                    
+                    // console.log(task.id);
+                    console.log(task._id);
                     $('#listTodo').append(`
                     <tr>
                     <td>${task.title}</td>
                     <td>${task.date_time.slice(0, 10)}</td>
-                    <td>${task.task}</td>
-                    <td><a onclick="updateTodo(${task._id})">Edit</a>|<a href="">Delete</a></td>
+                    <td>${task.description}</td>
+                    <td><a data-toggle="modal" data-target="#modal_updateTodo" >Edit</a>|<button onclick="deleteTodo(${task._id})">Delete</button></td>
                     </tr>
                     `)
                 })
@@ -203,21 +286,114 @@
                 $('#listTodo').text(err)
             })
         }
+
         
-        // function updateTodo(todoId){
-        //     $.ajax({
-        //         method: 'GET',
-        //         url: `${config.port}/todo/${todoId}`
-        //     })
-        //     .done(task => {
-        //         console.log(task);
-        //         $('#taskId').text('')
-        //         $('#taskId').text(task)
-        //     })
-        //     fail(err => {
-        //         $('#taskId').text(err)
-        //     })
-        // }
+        
+        function updateTodo(id, taskTitle, taskDate, task_description){
+            $('modal_updateTodo')
+            let data = {
+                title : $("#selected_taskTitle").val(),
+                date_time : $("#selected_taskDate").val(),
+                description : $("#selected_taskDescription").val(),
+            }
+            $.ajax({
+                method: 'GET',
+                url: `${config.port}/todo/${id}`,
+                data,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+            .done(task => {
+                console.log(task.Todo);
+                let tasks = task.Todo
+                todoList()
+                $("#task_title").val()
+                $("#task_date").val()
+                $("#task_description").val()
+
+                $('#taskId').empty()
+                $('#table_todo').hide()
+                $('.close_create').click()
+            })
+            fail(err => {
+                $('#taskId').text(err)
+            })
+        }
+
+        function createTodo(){
+            let data = {
+                title : $("#task_title").val(),
+                date_time : $("#task_date").val(),
+                description : $("#task_description").val(),
+            }
+            $.ajax({
+                method: 'POST',
+                url: `${config.port}/todo/`,
+                data,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+            .done(task => {
+                console.log(task.Todo);
+                console.log(task);
+                
+                let tasks = task.Todo
+                todoList()
+                $("#task_title").val()
+                $("#task_date").val()
+                $("#task_description").val()
+
+                $('#taskId').empty()
+                $('#table_todo').hide()
+                $('.close_create').click()
+            })
+            fail(err => {
+                $('#createTodo').text(err)
+            })
+        }
+
+        function deleteTodo(id) {
+            console.log('ke delete todo sini');
+            $.ajax({
+                method: 'DELETE',
+                url: `${config.port}/todo/${id}`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+            .done(task => {
+                console.log('berhasil delete todo');
+                let tasks = task.Todo
+                todoList()
+            })
+            fail(err => {
+                err
+            })
+        }
+
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log(id_token)
+            $.ajax({
+                method: 'POST',
+                url: "http://localhost:3000/user/gsignin",
+                data: {
+                    gToken: id_token
+                }
+            })
+            .done(response => {
+                console.log('ini gtoken',response.gToken);
+                console.log('ini jwt token',Response.token);
+                localStorage.setItem('token', response.token)
+                localStorage.setItem('email', response.response.email)
+                allSignIn()
+            })
+            .fail(err => {
+                console.log(err);
+            })
+        }
 
         function signOut() {
             
@@ -226,31 +402,14 @@
             console.log('User signed out.');
             });
             localStorage.removeItem('token')
+            localStorage.removeItem('email')
             allSignOut()
         }
 
-        
-
-        // function checkToken() {
-        //     const token = localStorage.getItem('token');
-
-        //     if (token) {
-        //         $('#btn-logout').show();
-        //         $('#form-login').hide();
-        //         $('#registerForm').hide();
-        //         $('#main-content').show();
-        //         $('#group-content').show();
-        //     } else {
-        //         $('#btn-logout').hide();
-        //         $('#form-login').show();
-        //         $('#registerForm').show();
-        //         $('#main-content').hide();
-        //         $('#group-content').hide();
-        //     }
-        // }
 
         function allSignOut() {
             $('#navbarSupportedContent').hide()
+            $('#loginBtn').show()
             $('#gSignIn').show()
             $('#gSignOut').hide()
             $('#list_navbar').hide()
@@ -258,12 +417,15 @@
 
         function allSignIn() {
             $('#navbarSupportedContent').show()
+            // $('#login_session').hide()
+            $('#loginBtn').hide()
+            $('.close').click()
             $('#gSignIn').hide()
             $('#gSignOut').show()
             $('#list_navbar').show()
         }
     </script>
-    <script src="./js/fbSignIn.js"></script>
+    <!-- <script src="./js/fbSignIn.js"></script> -->
     <script src="./js/gSignIn.js"></script>
 </body>
 </html>
