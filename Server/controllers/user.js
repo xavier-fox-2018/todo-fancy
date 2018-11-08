@@ -1,8 +1,59 @@
 const bcrypt = require('bcryptjs')
-const User = require('../models/user')
 const bcryptPassword = require('../helper/bcryptPass')
-const {gSignin, isLogin} = require('../helper/gSignIn')
-const Account = require('../models/user')
+const User = require('../models/user')
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(process.env.GCLIENT_ID);
+const jwt = require('jsonwebtoken')
+
+const gSignin = function (req,res) {
+    let token = req.body.gToken // ini dari req.body {token: valueToken}
+    let clientId = process.env.GCLIENT_ID
+    client.verifyIdToken({
+        idToken : token,
+        audience: clientId
+    }, function(err, response) {
+        if(!err){
+            let emailUser = response.payload.email // ini dari payload email
+            User.findOne({
+                email: emailUser
+            },function(error,response) {
+                if (response) {
+                    // console.log(process.env.JWT_SECRET);
+                    // console.log(response.email);
+                    // console.log(response);
+                    const token = jwt.sign(response.email, process.env.JWT_SECRET)
+                    
+                    res.status(200).json({
+                        email: response.email,
+                        role: response.role,
+                        token: token
+                    })
+                }
+                else {
+                    User.create({
+                        email: emailUser,
+                    }, function(error, response) {
+                        if (response) {
+                            const token = jwt.sign({emailUser}, process.env.JWT_SECRET)
+                            res.status(201).json({
+                                email: emailUser,
+                                role: response.role,
+                                token: token
+                            })
+                        }
+                        else{
+                            res.status(400).json({
+                                message: `ini error create gsignin`
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+}
+
+
 
 module.exports = {
     insert: (req,res) => {
@@ -48,7 +99,8 @@ module.exports = {
         })
         .catch((err) => {
             res.status(500).json({
-                message: `User can't be found`
+                message: `User can't be found`,
+                err: err
             })
         })
     },
@@ -93,14 +145,17 @@ module.exports = {
         })
     },
     signIn: (req,res) => {
-        User.findOne({where: {
+        User.findOne({
             email: req.body.email,
-        }})
+        })
         .then((user) => {
+
             if (bcrypt.compareSync(req.body.password, user.password) === true ) {
                 const token = jwt.sign({user}, process.env.JWT_SECRET)
                 res.status(201).json({
-                    user: user,
+                    id: user._id,
+                    email: user.email,
+                    role: user.role,
                     token: token
                 })
             }
@@ -119,5 +174,4 @@ module.exports = {
         })
     },
     gSignin,
-    isLogin,
 }

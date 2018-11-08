@@ -3,12 +3,14 @@ const Schema = mongoose.Schema
 
 const userSchema = new Schema({
     email: {
-        type: String,
-        required: [true, 'is required']
+        type: String
     },
     password: {
+        type: String
+    },
+    role: {
         type: String,
-        required: [true, 'is required']
+        default: 'user'
     }
 }, {
     timestamps : true

@@ -70,17 +70,17 @@
                     <!-- </div> -->
                 <form role="form">
                     <div class="form-group">
-                    <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
-                    <input type="text" class="form-control" id="usrname" placeholder="Enter email">
+                    <label><span class="glyphicon glyphicon-user"></span> Email</label>
+                    <input type="text" class="form-control" id="email" placeholder="Enter email">
                     </div>
                     <div class="form-group">
-                    <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-                    <input type="text" class="form-control" id="psw" placeholder="Enter password">
+                    <label ><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+                    <input type="text" class="form-control" id="password" placeholder="Enter password">
                     </div>
                     <div class="checkbox">
                     <label><input type="checkbox" value="" checked>Remember me</label>
                     </div>
-                    <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+                    <button type="submit" class="btn btn-success btn-block" onclick="getSignIn()">Login</button>
                 </form>
                 </div>
                 <div class="modal-footer">
@@ -122,20 +122,20 @@
                 <div class="modal-body mx-3">
                     <div class="md-form mb-5">
                         <i class="fa fa-user prefix grey-text"></i>
-                            <input type="text" class="form-control validate" id="task_title">
-                        <label data-error="wrong" data-success="right" >Title</label>
+                            <label data-error="wrong" data-success="right" >Title</label>
+                        <input type="text" class="form-control validate" id="task_title">
                     </div>
     
                     <div class="md-form mb-5">
                         <i class="fa fa-envelope prefix grey-text"></i>
-                            <input type="email" class="form-control validate" id="task_date">
-                        <label data-error="wrong" data-success="right" >Date</label>
+                            <label data-error="wrong" data-success="right" >Date</label>
+                        <input type="email" class="form-control validate" id="task_date">
                     </div>
     
                     <div class="md-form">
                         <i class="fa fa-pencil prefix grey-text"></i>
-                          <textarea type="text" class="md-textarea form-control" rows="4" id="task_description"></textarea>
-                        <label data-error="wrong" data-success="right" >Description</label>
+                            <label data-error="wrong" data-success="right" >Description</label>
+                        <textarea type="text" class="md-textarea form-control" rows="4" id="task_description"></textarea>
                     </div>
     
                 </div>
@@ -150,35 +150,38 @@
     <div id="updateTodo">
             <div class="modal fade" id="modal_updateTodo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <h4 class="modal-title w-100 font-weight-bold">Write to us</h4>
-                        <button type="button" class="close_create" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                <div class="modal-body mx-3">
-                    <div class="md-form mb-5">
-                        <i class="fa fa-user prefix grey-text"></i>
-                            <input type="text" class="form-control validate" id="selected_taskTitle">
-                        <label data-error="wrong" data-success="right" >Title</label>
-                    </div>
-    
-                    <div class="md-form mb-5">
-                        <i class="fa fa-envelope prefix grey-text"></i>
-                            <input type="email" class="form-control validate" id="selected_taskDate">
-                        <label data-error="wrong" data-success="right" >Date</label>
-                    </div>
-    
-                    <div class="md-form">
-                        <i class="fa fa-pencil prefix grey-text"></i>
-                          <textarea type="text" class="md-textarea form-control" rows="4" id="selected_taskDescription"></textarea>
-                        <label data-error="wrong" data-success="right" >Description</label>
-                    </div>
-                </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <button class="btn btn-unique" onclick="updateTodo(selected_id)">Send <i class="fa fa-paper-plane-o ml-1"></i></button>
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Write to us</h4>
+                                <button type="button" class="close_create" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <div class="modal-body mx-3">
+                            <div class="md-form mb-5">
+                                <i class="fa fa-user prefix grey-text"></i>
+                                    <label data-error="wrong" data-success="right" >Title</label>
+                                <input type="text" class="form-control validate" id="selected_taskTitle">
+                            </div>
+            
+                            <div class="md-form mb-5">
+                                <i class="fa fa-envelope prefix grey-text"></i>
+                                    <label data-error="wrong" data-success="right" >Date</label>
+                                <input type="email" class="form-control validate" id="selected_taskDate">
+                            </div>
+            
+                            <div class="md-form">
+                                <i class="fa fa-pencil prefix grey-text"></i>
+                                    <label data-error="wrong" data-success="right" >Description</label>
+                                <textarea type="text" class="md-textarea form-control" rows="4" id="selected_taskDescription"></textarea>
+                            </div>
+            
+                        </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-unique" onclick="updateTodo()">Send <i class="fa fa-paper-plane-o ml-1"></i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -186,9 +189,9 @@
     </div>
 
     
-
+    <div id="id_result" hidden></div>
     <div id="userdata"></div>
-    <div id="getSignIn"></div>
+    <!-- <div id="getSignIn"></div> -->
     <div id="taskId"></div>
 
 
@@ -207,8 +210,9 @@
             $('#formTask').hide()
             
             // userData()
-            getSignIn()
+            // getSignIn()
         })
+
 
         $(document).ready(function(){
             $("#loginBtn").click(function(){
@@ -217,21 +221,24 @@
         });
         
         function getSignIn() {
+            // console.log(`haloooo`);
+            let email = $(`#email`).val()
+            let password = $(`#password`).val()
+            // console.log(email);
+            // console.log(password);
             $.ajax({
                 method: 'POST',
-                url: `${config.port}/user`,
+                url: `${config.port}/user/signin`,
                 data: {
-                    email: req.body.email,
-                    password: req.body.pas
+                    email, password
                 }
             })
-            .done(user => {
-                console.log(user);
+            .done(response => {
+                // console.log(response);
                 $('#getSignIn').text('')
-                $('#getSignIn').append(`
-                <input type="text" value="${user.email}" />
-                <input type="text" value="${user.password}" />
-                `)
+                localStorage.setItem('token', response.token)
+                localStorage.setItem('email', response.email)
+                allSignIn()
             })
             .fail( err => {
                 $('#getSignIn').text(err)
@@ -262,22 +269,24 @@
         function todoList() {
             $.ajax({
                 method: 'GET',
-                url: `${config.port}/todo`
+                url: `${config.port}/todo`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
             })
             .done(lists => {
-                // console.log(lists.Todo);
-                let tasks = lists.Todo
+                // console.log(lists.todo);
+                let tasks = lists.todo
                 $('#listTodo').empty()
                 $('#table_todo').show()
                 tasks.forEach(task => {
-                    // console.log(task.id);
-                    console.log(task._id);
+                    // console.log(task._id);
                     $('#listTodo').append(`
                     <tr>
                     <td>${task.title}</td>
                     <td>${task.date_time.slice(0, 10)}</td>
                     <td>${task.description}</td>
-                    <td><a data-toggle="modal" data-target="#modal_updateTodo" >Edit</a>|<button onclick="deleteTodo(${task._id})">Delete</button></td>
+                    <td><button data-toggle="modal" data-target="#modal_updateTodo" onclick="getId('${task._id}')" >Edit</button>|<button onclick="deleteTodo('${task._id}')">Delete</button></td>
                     </tr>
                     `)
                 })
@@ -287,17 +296,21 @@
             })
         }
 
+        function getId(selectedId) {
+            $('#id_result').val(selectedId)
+        }
         
         
-        function updateTodo(id, taskTitle, taskDate, task_description){
-            $('modal_updateTodo')
+        function updateTodo(){
+            let id = $('#id_result').val()
+            // console.log('iniiiiiiiii', id)
             let data = {
                 title : $("#selected_taskTitle").val(),
                 date_time : $("#selected_taskDate").val(),
                 description : $("#selected_taskDescription").val(),
             }
             $.ajax({
-                method: 'GET',
+                method: 'PUT',
                 url: `${config.port}/todo/${id}`,
                 data,
                 headers: {
@@ -305,12 +318,11 @@
                 }
             })
             .done(task => {
-                console.log(task.Todo);
-                let tasks = task.Todo
                 todoList()
                 $("#task_title").val()
                 $("#task_date").val()
                 $("#task_description").val()
+                $('#id_result').empty()
 
                 $('#taskId').empty()
                 $('#table_todo').hide()
@@ -336,7 +348,7 @@
                 }
             })
             .done(task => {
-                console.log(task.Todo);
+                // console.log(task.Todo);
                 console.log(task);
                 
                 let tasks = task.Todo
@@ -349,13 +361,13 @@
                 $('#table_todo').hide()
                 $('.close_create').click()
             })
-            fail(err => {
-                $('#createTodo').text(err)
+            fail((err) => {
+                // $('#createTodo').text(err)
+                console.log(err.message);
             })
         }
 
         function deleteTodo(id) {
-            console.log('ke delete todo sini');
             $.ajax({
                 method: 'DELETE',
                 url: `${config.port}/todo/${id}`,
@@ -373,9 +385,12 @@
             })
         }
 
+        function getSignUp() {
+
+        }
+
         function onSignIn(googleUser) {
             var id_token = googleUser.getAuthResponse().id_token;
-            console.log(id_token)
             $.ajax({
                 method: 'POST',
                 url: "http://localhost:3000/user/gsignin",
@@ -384,10 +399,8 @@
                 }
             })
             .done(response => {
-                console.log('ini gtoken',response.gToken);
-                console.log('ini jwt token',Response.token);
                 localStorage.setItem('token', response.token)
-                localStorage.setItem('email', response.response.email)
+                localStorage.setItem('email', response.email)
                 allSignIn()
             })
             .fail(err => {
@@ -413,6 +426,7 @@
             $('#gSignIn').show()
             $('#gSignOut').hide()
             $('#list_navbar').hide()
+            $('#table_todo').hide()
         }
 
         function allSignIn() {
@@ -423,9 +437,9 @@
             $('#gSignIn').hide()
             $('#gSignOut').show()
             $('#list_navbar').show()
+            // $('#table_todo').show()
         }
     </script>
     <!-- <script src="./js/fbSignIn.js"></script> -->
-    <script src="./js/gSignIn.js"></script>
 </body>
 </html>

@@ -1,4 +1,3 @@
-const gSignin = require('../helper/gSignIn')
 const Todo = require('../models/todo')
 
 module.exports = {
@@ -9,42 +8,45 @@ module.exports = {
             description: req.body.description
         })
         newTodo.save()
-        .then((Todo) => {
+        .then((todo) => {
             res.status(200).json({
-                Todo: Todo,
+                todo: todo,
                 message: `Todo has been created`
             })
         })
         .catch((err) => {
             res.status(500).json({
+                err,
                 message: `Todo creation failed`
             })
         })
     },
     findAll: (req,res) => {
         Todo.find({})
-        .then((Todo) => {
+        .then((todo) => {
             res.status(200).json({
-                Todo,
+                todo,
                 message: `Todo has been found`
             })
         })
         .catch((err) => {
             res.status(500).json({
+                err,
                 message: `Todo can't be found`
             })
         })
     },
     findBy: (req,res) => {
         Todo.findById(req.params.id)
-        .then((Todo) => {
+        .then((todo) => {
             res.status(200).json({
-                Todo: Todo,
+                Todo: todo,
                 message: `a Todo has found `
             })
         })
         .catch((err) => {
             res.status(500).json({
+                err,
                 message: `Todo can't be found`
             })
         })
@@ -69,6 +71,7 @@ module.exports = {
         })
         .catch((err) => {
             res.status(500).json({
+                err,
                 message: `failed updating Todo detail`
             })
         })
@@ -86,35 +89,9 @@ module.exports = {
         })
         .catch((err) => {
             res.status(500).json({
+                err,
                 message: `Todo failed to delete`
             })
         })
-    },
-    signIn: (req,res) => {
-        Todo.findOne({where: {
-            email: req.body.email,
-        }})
-        .then((Todo) => {
-            if (bcrypt.compareSync(req.body.password, Todo.password) === true ) {
-                const token = jwt.sign({Todo}, process.env.JWT_SECRET)
-                res.status(201).json({
-                    Todo: Todo,
-                    token: token
-                })
-            }
-            else {
-                let err = {
-                    message: 'Username or password wrong'
-                }
-                res.status(400).json(err)
-            }
-        })
-        .catch((err)=> {
-            // console.log(err)
-            res.status(400).json({
-                message: err.message
-            })
-        })
-    },
-    gSignin,
+    }
 }
