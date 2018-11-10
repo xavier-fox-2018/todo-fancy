@@ -49,22 +49,24 @@ module.exports = {
                     }
                 })
                 .catch( err => {
-                    console.log(err);
+                    res.status(500).json(err.message)
                 })
         })
         .catch( err => {
-            console.log(err)
+            // console.log(err)
             res.status(500).json(err.message)
         })
         
     },
 
     google: (req, res)=>{
+        console.log(`masukpakkk ekoo`, req.body);
         let token = req.body.gtoken
         client.verifyIdToken({
             idToken: token,
             audience: CLIENT_ID
         }, (err, response)=>{
+            // console.log(`inii respone`,response);
             if(!err){
                 User.findOne({email: response.payload.email})
                 .then(result =>{
@@ -76,12 +78,12 @@ module.exports = {
                         }
                         User.create(googleId)
                         .then(newUser =>{
-                            console.log(`ini useerrrr baru`,newUser);
+                            // console.log(`ini useerrrr baru`,newUser);
                             res.status(201).json({
                                 err: false,
                                 message: `Succes to add ${newUser.name}`,
                                 data: newUser,
-                                token: hash.jwtEncode({
+                                token: jwt.jwtEncode({
                                     id: newUser._id,
                                     name: newUser.name,
                                     email: newUser.email
@@ -89,7 +91,7 @@ module.exports = {
                             })
                         })  
                     } else {
-                        let token = hash.jwtEncode({
+                        let token = jwt.jwtEncode({
                             id: result._id,
                             name: result.name,
                             email: result.email

@@ -1,5 +1,4 @@
-// const url ='https://todo.arul21.com'
-const url ='http://localhost:3000'
+const url = 'https://todo.arul21.com'
 
 $(document).ready( function() {
     checkLogin()
@@ -14,9 +13,9 @@ function checkLogin() {
 }
 
 // function logout(){
-//     // gapi.load('auth2', function () {
-//     //     console.log('----asdsadas')
-//     //     gapi.auth2.init()
+//     gapi.load('auth2', function () {
+//         // console.log('----asdsadas')
+//         gapi.auth2.init()
 
 //         localStorage.removeItem('token')
 //         var auth2 = gapi.auth2.getAuthInstance();
@@ -24,31 +23,22 @@ function checkLogin() {
 //             console.log('User signed out.');
 //             window.location ='/'
 //         });
-        
 //     })  
 // }
 
-function logout() {
-    gapi.load('auth2', function() {
-        gapi.auth2.init({
-        client_id:'1046697136236-2f2i505cvp6j3phdui5o08p9dju0j5b6.apps.googleusercontent.com'
-        // client_id:'803894408351-8uclep7lb8052h78vhoofq8vs77ahub5.apps.googleusercontent.com'
-        })
-        .then(function() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log('User signed out.');
-            localStorage.removeItem('token');
-            window.location.replace('/');
-        });
-        })
-    });
+function logout(){
+    localStorage.removeItem('token')
+    window.location ='/'   
 }
+
+
+
+
 
 
 function myTodo(){
     $.ajax({
-        url: url + `/task`,
+        url: `https://todo.arul21.com/task`,
         method: 'GET',
         headers: {
             token: localStorage.getItem('token')
@@ -66,7 +56,6 @@ function myTodo(){
             </div>
         `)
         result.task.forEach(task => {
-            let share = url+'/task._id'
            $("#myTodo").append(`
                 <div class="card mb-3">
                     <div class="card-body">
@@ -75,7 +64,6 @@ function myTodo(){
                         <button class="btn-sm btn-outline-success" onclick="setDone('${task._id}')">Done</button>
                         <button class="btn-sm btn-outline-primary" onclick="goUpdate('${task._id}')">Edit</button>
                         <button class="btn-sm btn-outline-danger" onclick="deleteTodo('${task._id}')">Delete</button>
-                        <div class="fb-share-button ml-2 mt-5" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='${share}'" class="fb-xfbml-parse-ignore">Share</a></div>
                         
                     </div>
                     <div id="fb-root"></div>
@@ -101,7 +89,7 @@ function myTodo(){
 
 function todoDone(){
     $.ajax({
-        url: url + `/task/done`,
+        url: `https://todo.arul21.com/task/done`,
         method: 'GET',
         headers: {
             token: localStorage.getItem('token')
@@ -155,7 +143,7 @@ function createTodo(){
     let description = $("#description").val()
     let dueDate = $("#dueDate").val()
     $.ajax({
-        url: url+ `/task`,
+        url:`https://todo.arul21.com/task`,
         method: "POST",
         data: {
             name: name,
@@ -185,7 +173,7 @@ function fromDB(tgl) {
 
 function goUpdate(id) {
     $.ajax({
-        url: url + `/task/${id}`,
+        url:`https://todo.arul21.com/task/${id}`,
         method: 'GET',
         headers: {
             token: localStorage.getItem('token')
@@ -217,7 +205,7 @@ function updateOne(id) {
     let description = $("#description").val()
     let dueDate = $("#dueDate").val()
     $.ajax({
-        url: url + `/task/${id}`,
+        url: `https://todo.arul21.com/task/${id}`,
         method: 'PUT',
         data: {
             name: name,
@@ -242,7 +230,7 @@ function updateOne(id) {
 
 function setDone(id){
     $.ajax({
-        url: url +`/task/${id}/done`,
+        url: `https://todo.arul21.com/task/${id}/done`,
         method: 'PATCH',
         headers: {
             token: localStorage.getItem('token')
@@ -259,7 +247,7 @@ function setDone(id){
 
 function setDo(id){
     $.ajax({
-        url: url +`/task/${id}/do`,
+        url: `https://todo.arul21.com/task/${id}/do`,
         method: 'PATCH',
         headers: {
             token: localStorage.getItem('token')
@@ -276,7 +264,7 @@ function setDo(id){
 
 function deleteTodo(id){
     $.ajax({
-        url: url + `/task/${id}`,
+        url: `https://todo.arul21.com/task/${id}`,
         method: 'DELETE',
         headers: {
             token: localStorage.getItem('token')
@@ -293,7 +281,7 @@ function deleteTodo(id){
 
 function deleteDone(id){
     $.ajax({
-        url: url + `/task/${id}`,
+        url:  `https://todo.arul21.com/task/${id}`,
         method: 'DELETE',
         headers: {
             token: localStorage.getItem('token')
@@ -336,7 +324,3 @@ function failed(msg) {
         $("#alert").text("")
     }, 3000);
 }
-
-
-
-

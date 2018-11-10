@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const hash = require('../helpers/bcrypt')
 const jwt = require('../helpers/jwt')
+const sgMail = require('@sendgrid/mail')
 
 module.exports = {
     signup: (req, res) => {
@@ -12,6 +13,16 @@ module.exports = {
             if(user.length === 0) {
                 User.create({name, email, password})
                 .then(newUser => {
+                    sgMail.setApiKey(process.env.SENDGRID)
+                    const msg = {
+                    to: email,
+                    from: 'aruldjaduls@gmail.com',
+                    subject: 'Wellcome To Arul Todo',
+                    text: 'Thanks For Join ',
+                    html: `<p>Hello ${name}, Wellcome to Todo-Fancy! Enjoy </p>`
+                }
+              sgMail.send(msg)
+
                     res.status(201).json({
                         err: false,
                         message: `Success to add ${newUser.name}`,
@@ -24,12 +35,12 @@ module.exports = {
                     })
                 })
                 .catch(err => {
-                    res.status(500).json(err)
+                    res.status(500).json({
+                        message: `Please input email incorrect`
+                    })
                 })
-
             } else {
                 res.status(400).json({message:'Email already registered!'})
-                // console.log(`masuk pak ekooo`);
             }
         })
         .catch( err => {
@@ -53,10 +64,9 @@ module.exports = {
                         email: user.email
                     })
                 })
-                // console.log(`masukk login`);
             } else {
                 res.status(400).json({message:"Password is wrong"})
-                // console.log(`masukkk sini`);   
+                
             }
         })
         .catch(err => {

@@ -1,13 +1,12 @@
-// const url = 'https://todo.arul21.com'
-const url = 'http://localhost:3000'
+const url = 'https://todo.arul21.com'
+// const url = 'http://localhost:3000'
 
 function doLogin(){
     let email = $(`#email`).val()
     let password = $(`#password`).val()
-// console.log(`masuk`);
 
     $.ajax({
-        url: url + `/user/signin`,
+        url: `https://todo.arul21.com/user/signin`,
         method : "POST",
         data :{
           email, password
@@ -19,7 +18,7 @@ function doLogin(){
         }
     })
     .fail(function(err){
-        console.log(err); 
+        failed(`Email/Password incorrect`)
     })
 }
 
@@ -52,19 +51,18 @@ function toRegister(){
     let password = $('#password').val()
 
     $.ajax({
-        url: url + `/user/signup`,
+        url: `https://todo.arul21.com/user/signup`,
         method: 'POST',
         data: { name, email, password}
     })
     .done(function(result){
         if(result.token){
             localStorage.setItem('token', result.token)
-            success(`Please Check Your Email`)
             window.location = '/'
         }
     })
     .fail(function(err){
-        failed(`Your data was unsuccessful, please review the errors below.`);
+        failed('Email already registered!')
     })
 }
 
@@ -76,7 +74,7 @@ function onSignIn(googleUser) {
     
     $.ajax({
         method: 'POST',
-        url: url + '/user/gsignin',
+        url: 'https://todo.arul21.com/user/gsignin',
         data: {
             gtoken: id_token
         }
@@ -99,7 +97,7 @@ function checkLoginState() {
     if(response.status == 'connected'){
         $.ajax({
             method: 'POST',
-            url: url+'/user/signinfb',
+            url: 'https://todo.arul21.com/user/signinfb',
             data: {
                 accessToken: response.authResponse.accessToken
             }
@@ -142,6 +140,7 @@ function testAPI() {
     });
 }
 
+
 function success(msg) {
     $("#alert").append(`
         <div class="alert alert-success" role="alert">
@@ -162,7 +161,7 @@ function failed(msg) {
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <p>Sorry! ${msg}</p>
+            <p>Sorry, ${msg}</p>
         </div>
     `)
     setTimeout(() => {
