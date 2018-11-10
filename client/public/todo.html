@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Toodo</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <!-- <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script> -->
+        <!-- <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script> -->
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <meta name="google-signin-client_id" content="1046697136236-2f2i505cvp6j3phdui5o08p9dju0j5b6.apps.googleusercontent.com">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link rel="canonical" href="/web/tweet-button">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    </head>
+    <body class="mt-5">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Toodoku </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-item nav-link" href="#">Contact</a>
+                    </div>
+                </div>
+                <div class="fullname text-light"></div>
+                <!-- <a href="#" onclick="signOut();">Sign out</a> -->
+                <button type="button" onclick="logout();" class="btn btn-outline-danger">SignOut</button>
+            </div>
+        </nav>
+        
+        <div class="container-fluid">
+            <div id="alert"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 mb-3">
+                            <div id="listMenu" class="mt-5">
+                                <a href="#" class="list-group-item bg-dark text-white text-center"> Todo Manager </a>
+                                <a href="#" class="list-group-item" onclick="addTodo()"> Add Todo</a>
+                                <a href="#" class="list-group-item" onclick="myTodo()"> My Todo Progress</a>
+                                <a href="#" class="list-group-item" onclick="todoDone()"> My Todo Complete</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 mt-5" id="contentNow"></div>
+                    </div>
+                        
+                </div>
+                    
+             </div>
+        </div>
+
+        
+    <footer class="bg-dark text-white mt-5 fixed-bottom">
+        <div class="container ">
+            <div class="row pt-3 ">
+                <div class="col text-center">
+                    <p>Copyright arul@ 2018</p>
+                </div>
+            </div>
+        </div>
+    </footer>    
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    
+    <script src="script/todo.js"></script>
+    <script src="script/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <script>
+        
+    </script>
+</body>
+</html>
